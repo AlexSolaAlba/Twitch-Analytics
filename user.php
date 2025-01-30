@@ -3,7 +3,7 @@
 	$metodo = $_SERVER['REQUEST_METHOD'];
 	$accestoken = '07lhzqjw4ckfffzlcqad1rr3hzbvfk';
     $clientID = 'mqf0orb9t2ufb34nhd3em686qpb8xc';
-	if(strcmp($metodo, 'GET') === 0 && isset($_GET['id'])){
+	if(strcmp($metodo, 'GET') === 0 && isset($_GET['id']) && count($_GET) === 1){
         $id = $_GET['id'];
         $ch = curl_init();
 
@@ -14,12 +14,11 @@
             "Authorization: Bearer $accestoken"
         ]);
         $response = curl_exec($ch);
-        echo(curl_error($ch));
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         $response_data = json_decode($response, true);
         switch($http_code){
-            case '200':
+            case 200:
                 if (isset($response_data['data'][0])) {
                     echo $response;
                 }else{
@@ -31,7 +30,7 @@
                     echo json_encode($error_message);
                 }
                 break;
-            case'400':
+            case 400:
                 $error_message = [
                     'error' => 'Invalid or missing id parameter.',
                     'status_code' => $http_code,
@@ -64,5 +63,11 @@
                 echo json_encode($error_message);
                 break;
         }
+    }else{
+        $error_message = [
+            'error' => 'Invalid or missing id parameter.',
+            'status_code' => 400
+        ];
+        echo json_encode($error_message);
     }
 ?>
