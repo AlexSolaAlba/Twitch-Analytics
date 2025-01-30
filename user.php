@@ -24,7 +24,7 @@
                 }else{
                     $error_message = [
                         'error' => 'User not found.',
-                        'status_code' => $http_code,
+                        'status_code' => 404,
                         'response' => json_decode($response, true)
                     ];
                     echo json_encode($error_message);
