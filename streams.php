@@ -33,6 +33,7 @@
                 echo json_encode($filtered_streams,JSON_UNESCAPED_UNICODE);
                 break;
             case 401:
+            	http_response_code(401);
                 $error_message = [
                     'error' => 'Unauthorized. Twitch access token is invalid or has expired.',
                     'status_code' => $http_code,
@@ -41,6 +42,7 @@
                 echo json_encode($error_message);
                 break;
             case 500:
+				http_response_code(500);
                 $error_message = [
                     'error' => 'Internal server error.',
                     'status_code' => $http_code,

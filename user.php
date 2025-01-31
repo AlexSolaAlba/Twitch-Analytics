@@ -23,6 +23,7 @@
                   if (isset($response_data['data'][0])) {
                       echo $response;
                   }else{
+                      http_response_code(404);
                       $error_message = [
                           'error' => 'User not found.',
                           'status_code' => 404,
@@ -32,6 +33,7 @@
                   }
                   break;
               case 400:
+              	  http_response_code(400);
                   $error_message = [
                       'error' => 'Invalid or missing id parameter.',
                       'status_code' => $http_code,
@@ -40,6 +42,7 @@
                   echo json_encode($error_message);
                   break;
               case 401:
+              	  http_response_code(401);
                   $error_message = [
                       'error' => 'Unauthorized. Twitch access token is invalid or has expired.',
                       'status_code' => $http_code,
@@ -48,6 +51,7 @@
                   echo json_encode($error_message);
                   break;
               case 404:
+              	  http_response_code(404);
                   $error_message = [
                       'error' => 'User not found.',
                       'status_code' => $http_code,
@@ -56,6 +60,7 @@
                   echo json_encode($error_message);
                   break;
               case 500:
+              	  http_response_code(500);
                   $error_message = [
                       'error' => 'Internal server error.',
                       'status_code' => $http_code,
@@ -65,6 +70,7 @@
                   break;
         	}
         }else{
+            http_response_code(400);
           	$error_message = [
                 'error' => 'Invalid or missing id parameter.',
                 'status_code' => 400
@@ -72,6 +78,7 @@
             echo json_encode($error_message);
         }
     }else{
+      	http_response_code(400);
         $error_message = [
             'error' => 'Invalid or missing id parameter.',
             'status_code' => 400
