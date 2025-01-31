@@ -1,4 +1,4 @@
-# Twitch-Analitics
+# Twitch-Analytics
 Twitch genera una cantidad masiva de datos valiosos, pero las marcas, creadores y
 empresas no siempre saben cómo usarlos. Twitch Analytics transforma esos datos en
 insights accionables.
