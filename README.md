@@ -5,13 +5,13 @@ insights accionables.
 ## Entorno de desarrollo local
 Hasta 7/3/2025 habiamos trabajado directamente desplegando las funcionalidades en el dominio público.
 Nos hemos dado cuenta de que esto nos ha servido porque hasta ahora ha sido un proyecto simple, pero, no tiene sentido 
-realizar las pruebas y el desarrollo en la pagina web. Por ello a partir de ahora hemos decidido llevarlo
+realizar las pruebas y el desarrollo en la pagina web. Por ello, a partir de ahora hemos decidido llevarlo
 a cabo de manera local. Aquí estan los pasos que debe realizar cada miembro del equipo para desarrollar un 
 proyecto:
-1. Instalar php en tu ordenador.
+1. Instalar XAMP en tu ordenador.
 2. Descargar los archivos a modificar, introducir los nuevos archivos y los modificados en un mismo directorio.
-3. Ejecutar "php -S localhost:puerto" en ese directorio para poder hacer pruebas.
-4. Buscar en el navegador "localhost:puerto/archivo.php" para ver los cambios.
+3. Arrastrar el directorio a htdocs en XAMP.
+4. Buscar en el navegador "localhost:puerto/directorio/archivo.php" para ver los cambios.
 5. Hacer el despliegue en el entorno web.
 ## Primer caso de uso: CONSULTAR INFORMACIÓN DE UN STREAMER DE TWITCH
 Este endpoint permite a los clientes consultar la información de un streamer de Twitch
