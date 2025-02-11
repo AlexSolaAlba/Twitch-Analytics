@@ -55,27 +55,21 @@
                 case 400:
                 	http_response_code(400);
                     $error_message = [
-                        'error' => 'Invalid or missing limit parameter.',
-                        'status_code' => $http_code,
-                        'response' => json_decode($response, true)
+                        'error' => 'Invalid or missing limit parameter.'
                     ];
                     echo json_encode($error_message);
                     break;
                 case 401:
                 	http_response_code(401);
                     $error_message = [
-                        'error' => 'Unauthorized. Twitch access token is invalid or has expired.',
-                        'status_code' => $http_code,
-                        'response' => json_decode($response, true)
+                        'error' => 'Unauthorized. Twitch access token is invalid or has expired.'
                     ];
                     echo json_encode($error_message);
                     break;
                 case 500:
                 	http_response_code(500);
                     $error_message = [
-                        'error' => 'Internal server error.',
-                        'status_code' => $http_code,
-                        'response' => json_decode($response, true)
+                        'error' => 'Internal server error.'
                     ];
                     echo json_encode($error_message);
                     break;
@@ -83,16 +77,14 @@
         }else{
           	http_response_code(400);
             $error_message = [
-                'error' => 'Invalid or missing limit parameter.',
-                'status_code' => 400
+                'error' => 'Invalid or missing limit parameter.'
             ];
             echo json_encode($error_message);
         }
     }else{
       	http_response_code(400);
         $error_message = [
-            'error' => 'Invalid or missing limit parameter.',
-            'status_code' => 400
+            'error' => 'Invalid or missing limit parameter.'
         ];
         echo json_encode($error_message);
     }
