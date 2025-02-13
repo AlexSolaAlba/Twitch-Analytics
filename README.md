@@ -119,3 +119,29 @@ Siendo `XXX` un email cualquiera.
 - Si la dejas la variable `email` vacía → **Error 400**
 - Si la variable `email` es invalida → **Error 400**
 - Internal server error → **Error 500**
+
+---
+
+## OBTENCION DE TOKEN
+El programa recibe un email y una API Key y genera un token unico, despues devuelve el token al usuario.
+
+
+**Comando para hacer la petición:**  
+```sh
+curl -X POST https://vyvbts.com/analytics/token.php -d "email=XXX&api_key=XXX2"
+```
+
+**En local:**  
+Hay que cambiar conexión a la BBDD como por ejemplo: $conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
+```
+curl -X POST http://localhost/Twitch-Analytics-main/token.php -d "email=XXX&api_key=XXX2"
+```
+
+Siendo `XXX` un email valido.
+Siendo `XXX2` una api_key valida.
+### Posibles errores:
+- Si no pones la variable `email` o `api_key`→ **Error 400**
+- Si la dejas la variable `email` o `api_key` vacía → **Error 400**
+- Si la variable `email` es invalida → **Error 400**
+- Si la variable `api_key` es invalida → **Error 401**
+- Internal server error → **Error 500**
