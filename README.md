@@ -20,12 +20,12 @@ detallada del usuario.
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/user?id=XXX"
+curl -X GET "https://vyvbts.com/analytics/user?id=XXX"
 ```
 
 **En el navegador:**  
 ```
-https://vyvbts.com/user?id=XXX
+https://vyvbts.com/analytics/user?id=XXX
 ```
 
 **En local:**  
@@ -50,12 +50,12 @@ en vivo en Twitch. El sistema consulta la API de Twitch utilizando un token de a
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/streams"
+curl -X GET "https://vyvbts.com/analytics/streams"
 ```
 
 **En el navegador:**  
 ```
-https://vyvbts.com/streams
+https://vyvbts.com/analytics/streams
 ```
 
 **En local:**  
@@ -74,12 +74,12 @@ Este caso de uso realiza un filtrado y enriquecimiento del listado de Streams en
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/enriched?limit=XXX"
+curl -X GET "https://vyvbts.com/analytics/enriched?limit=XXX"
 ```
 
 **En el navegador:**  
 ```
-https://vyvbts.com/enriched?limit=XXX
+https://vyvbts.com/analytics/enriched?limit=XXX
 ```
 
 **En local:**  
@@ -93,4 +93,29 @@ Siendo `XXX` cualquier límite entre `1` y `100`.
 - Si no pones la variable `limit` → **Error 400**
 - Si la dejas vacía (`enriched?limit=`) → **Error 400**
 - Token expirado → **Error 401**
+- Internal server error → **Error 500**
+
+---
+
+## REGISTRO DE USUARIOS
+El registro de usaurio recibe un email y genera una API Key única, despues devuelve la API Key al usuario.
+
+
+**Comando para hacer la petición:**  
+```sh
+curl -X POST https://vyvbts.com/analytics/register.php -d "email=XXX"
+```
+
+**En local:**  
+Hay que cambiar conexión a la BBDD como por ejemplo: $conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
+```
+curl -X POST http://localhost/Twitch-Analytics-main/register.php -d "email=XXX"
+```
+
+Siendo `XXX` un email cualquiera.
+
+### Posibles errores:
+- Si no pones la variable `email` → **Error 400**
+- Si la dejas la variable `email` vacía → **Error 400**
+- Si la variable `email` es invalida → **Error 400**
 - Internal server error → **Error 500**
