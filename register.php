@@ -6,11 +6,18 @@
             $email = $_POST['email'];
             if(comprobarEmail($email)){
                 $key = bin2hex(random_bytes(16));
-                guardarEnBBDD($email,$key);
-                $message = [
-                    'api_key' => $key
-                ];
-                echo json_encode($message);
+                if(guardarEnBBDD($email,$key)){
+                    $message = [
+                        'api_key' => $key
+                    ];
+                    echo json_encode($message);
+                }else{
+                    http_response_code(500);
+                    $error_message = [
+                        'error' => 'Internal server error'
+                    ];
+                    echo json_encode($error_message);
+                }
             }else{
                 http_response_code(400);
                 $error_message = [
@@ -41,13 +48,15 @@
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
     
-        if ($conexion->connect_error) {
-            die("Error de conexión de base de datos: " . $conexion->connect_errno . " - " . $conexion->connect_error);
+        if (!$conexion) {
+            return false;
         }
     
         $consulta = $conexion->prepare("SELECT userID FROM User WHERE userEmail = ?");
-        $consulta->bind_param("s", $email);
-        $consulta->execute();
+        $consulta->bind_param("s", $email);      
+        if(!$consulta->execute()){
+            return false;
+        }
         $resultado = $consulta->get_result();
         $datos = $resultado->fetch_assoc();
         $consulta->close();
@@ -61,10 +70,13 @@
             $stmt->bind_param("ss", $email, $key);
         }
     
-        $stmt->execute();
+        if(!$stmt->execute()){
+            return false;
+        }
     
         $stmt->close();
         $conexion->close();
+        return true;
     }
     
 ?>
