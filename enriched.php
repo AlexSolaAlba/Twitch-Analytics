@@ -1,8 +1,10 @@
 <?php
     header("Content-Type: application/json");
+    include("restaurarToken.php");
 	$metodo = $_SERVER['REQUEST_METHOD'];
-	$accestoken = '07lhzqjw4ckfffzlcqad1rr3hzbvfk';
-    $clientID = 'mqf0orb9t2ufb34nhd3em686qpb8xc';
+	$headerData = getValidToken();
+    $clientID = $headerData['clientId'];
+    $accesstoken = $headerData['accessToken'];
 	if(strcmp($metodo, 'GET') === 0 && isset($_GET['limit']) && count($_GET) === 1){
         $limit = $_GET['limit'];
       	if(preg_match("/[0-9]/",$limit) === 1){
@@ -12,7 +14,7 @@
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "Client-ID: $clientID",
-                "Authorization: Bearer $accestoken"
+                "Authorization: Bearer $accesstoken"
             ]);
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -30,7 +32,7 @@
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                     curl_setopt($ch, CURLOPT_HTTPHEADER, [
                         "Client-ID: $clientID",
-                        "Authorization: Bearer $accestoken"
+                        "Authorization: Bearer $accesstoken"
                     ]);
                     $response2 = curl_exec($ch);
                     curl_close($ch);
