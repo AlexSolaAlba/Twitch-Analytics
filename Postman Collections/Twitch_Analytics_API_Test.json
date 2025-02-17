@@ -177,6 +177,18 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Registro de usuarios",
+			"id": "b36b0033-8178-4589-8a42-5f577bcec72f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
