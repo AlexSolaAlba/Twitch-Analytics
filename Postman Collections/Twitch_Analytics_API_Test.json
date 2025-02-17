@@ -6,189 +6,212 @@
 	},
 	"item": [
 		{
-			"name": "Caso de uso 1 respuesta 200",
-			"id": "8b0a7150-1fbf-4938-8957-9eac21aa9e81",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://vyvbts.com/user?id=2",
-					"protocol": "https",
-					"host": [
-						"vyvbts",
-						"com"
-					],
-					"path": [
-						"user"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "2"
+			"name": "Entrega 1",
+			"item": [
+				{
+					"name": "Caso de uso 1 respuesta 200",
+					"id": "8b0a7150-1fbf-4938-8957-9eac21aa9e81",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/user?id=2",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Caso de uso 1 respuesta 400",
-			"id": "671ec291-263c-460b-a0e3-ae7e5a97cf19",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://vyvbts.com/user?id=XXX",
-					"protocol": "https",
-					"host": [
-						"vyvbts",
-						"com"
-					],
-					"path": [
-						"user"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "XXX"
+				{
+					"name": "Caso de uso 1 respuesta 400",
+					"id": "671ec291-263c-460b-a0e3-ae7e5a97cf19",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/user?id=XXX",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "XXX"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Caso de uso 1 respuesta 404",
-			"id": "87b07643-f8ad-4af2-b35b-74b13da2d7c4",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://vyvbts.com/user?id=1900000009",
-					"protocol": "https",
-					"host": [
-						"vyvbts",
-						"com"
-					],
-					"path": [
-						"user"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1900000009"
+				{
+					"name": "Caso de uso 1 respuesta 404",
+					"id": "87b07643-f8ad-4af2-b35b-74b13da2d7c4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/user?id=1900000009",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1900000009"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Caso de uso 2 respuesta 200",
-			"id": "b85817d4-ec18-474d-aa5c-d18935787edf",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": "https://vyvbts.com/streams"
-			},
-			"response": []
-		},
-		{
-			"name": "Caso de uso 3 respuesta 200",
-			"id": "2021bba7-c5fa-40dd-ad99-0c41a4f85442",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
+				{
+					"name": "Caso de uso 2 respuesta 200",
+					"id": "b85817d4-ec18-474d-aa5c-d18935787edf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://vyvbts.com/streams"
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://vyvbts.com/enriched?limit=10",
-					"protocol": "https",
-					"host": [
-						"vyvbts",
-						"com"
-					],
-					"path": [
-						"enriched"
-					],
-					"query": [
-						{
-							"key": "limit",
-							"value": "10"
+				{
+					"name": "Caso de uso 3 respuesta 200",
+					"id": "2021bba7-c5fa-40dd-ad99-0c41a4f85442",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/enriched?limit=10",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"enriched"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Caso de uso 3 respuesta 400",
-			"id": "66157a39-003b-47ff-a337-f4a520da69f8",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://vyvbts.com/enriched?limit=XXX",
-					"protocol": "https",
-					"host": [
-						"vyvbts",
-						"com"
-					],
-					"path": [
-						"enriched"
-					],
-					"query": [
-						{
-							"key": "limit",
-							"value": "XXX"
+				{
+					"name": "Caso de uso 3 respuesta 400",
+					"id": "66157a39-003b-47ff-a337-f4a520da69f8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/enriched?limit=XXX",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"enriched"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "XXX"
+								}
+							]
 						}
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"id": "485d2ebb-c100-4728-b070-22f1500fedf2"
 		},
 		{
-			"name": "Registro de usuarios",
-			"id": "b36b0033-8178-4589-8a42-5f577bcec72f",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Entrega 2",
+			"item": [
+				{
+					"name": "Registro de usuarios",
+					"id": "b36b0033-8178-4589-8a42-5f577bcec72f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"type": "text",
+									"key": "email",
+									"value": "holaquetal22@gmail.com"
+								}
+							]
+						},
+						"url": "https://vyvbts.com/analytics/register.php"
+					},
+					"response": []
+				}
+			],
+			"id": "6d69daa4-2ddc-43b9-8cc4-74ee01023bc7"
 		}
 	]
 }
