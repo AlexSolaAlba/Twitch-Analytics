@@ -24,7 +24,7 @@
                     }else{
                         http_response_code(401);
                         $error_message = [
-                            'error' => 'Unauthorized. API access token is invalid."'
+                            'error' => 'Unauthorized. API access token is invalid.'
                         ];
                         echo json_encode($error_message);
                     }
