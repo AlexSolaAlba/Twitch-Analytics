@@ -188,7 +188,7 @@
 			"name": "Entrega 2",
 			"item": [
 				{
-					"name": "Registro de usuarios",
+					"name": "Registro de usuarios 200",
 					"id": "b36b0033-8178-4589-8a42-5f577bcec72f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -207,6 +207,58 @@
 							]
 						},
 						"url": "https://vyvbts.com/analytics/register.php"
+					},
+					"response": []
+				},
+				{
+					"name": "Registro de usuarios 400 (1)",
+					"id": "cf9902e6-2b3f-4aa5-8376-767f6ee482ef",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"type": "text",
+									"key": "email",
+									"value": "XXX"
+								}
+							]
+						},
+						"url": "https://vyvbts.com/analytics/register.php"
+					},
+					"response": []
+				},
+				{
+					"name": "Registro de usuarios 400 (2)",
+					"id": "355533b7-4f98-436b-8774-32273209edee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": "https://vyvbts.com/analytics/register.php"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "12df91f7-1fe2-4bec-847b-994b9e341a0f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
