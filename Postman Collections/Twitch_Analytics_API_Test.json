@@ -251,8 +251,64 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Obtención token 200",
 					"id": "12df91f7-1fe2-4bec-847b-994b9e341a0f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"type": "text",
+									"key": "email",
+									"value": "holaquetal22@gmail.com"
+								},
+								{
+									"type": "text",
+									"key": "api_key",
+									"value": "8ebf2dd9e613b068ae3cfbdffbeb730f"
+								}
+							]
+						},
+						"url": "https://vyvbts.com/analytics/token.php"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtencion token 400 (1)",
+					"id": "2f34fbaf-8ef3-40bb-acc1-17667851da1a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"type": "text",
+									"key": "email",
+									"value": "XXX"
+								},
+								{
+									"type": "text",
+									"key": "api_key",
+									"value": "XXX2"
+								}
+							]
+						},
+						"url": "https://vyvbts.com/analytics/token.php"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtencion token 400 (2)",
+					"id": "f0b2e334-8514-4d25-867a-51c6acb87869",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
