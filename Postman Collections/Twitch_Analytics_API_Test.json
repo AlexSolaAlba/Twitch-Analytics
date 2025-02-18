@@ -206,7 +206,7 @@
 								}
 							]
 						},
-						"url": "https://vyvbts.com/analytics/register.php"
+						"url": "https://vyvbts.com/analytics/register"
 					},
 					"response": []
 				},
@@ -229,7 +229,7 @@
 								}
 							]
 						},
-						"url": "https://vyvbts.com/analytics/register.php"
+						"url": "https://vyvbts.com/analytics/register"
 					},
 					"response": []
 				},
@@ -246,7 +246,7 @@
 							"mode": "urlencoded",
 							"urlencoded": []
 						},
-						"url": "https://vyvbts.com/analytics/register.php"
+						"url": "https://vyvbts.com/analytics/register"
 					},
 					"response": []
 				},
@@ -274,7 +274,7 @@
 								}
 							]
 						},
-						"url": "https://vyvbts.com/analytics/token.php"
+						"url": "https://vyvbts.com/analytics/token"
 					},
 					"response": []
 				},
@@ -302,7 +302,7 @@
 								}
 							]
 						},
-						"url": "https://vyvbts.com/analytics/token.php"
+						"url": "https://vyvbts.com/analytics/token"
 					},
 					"response": []
 				},
@@ -319,7 +319,7 @@
 							"mode": "urlencoded",
 							"urlencoded": []
 						},
-						"url": "https://vyvbts.com/analytics/token.php"
+						"url": "https://vyvbts.com/analytics/token"
 					},
 					"response": []
 				},
