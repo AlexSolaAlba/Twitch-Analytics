@@ -342,7 +342,7 @@
 								}
 							]
 						},
-						"url": "https://vyvbts.com/analytics/token.php"
+						"url": "https://vyvbts.com/analytics/token"
 					},
 					"response": []
 				},
@@ -370,7 +370,7 @@
 								}
 							]
 						},
-						"url": "https://vyvbts.com/analytics/token.php"
+						"url": "https://vyvbts.com/analytics/token"
 					},
 					"response": []
 				}
