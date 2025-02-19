@@ -20,7 +20,7 @@ detallada del usuario.
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/analytics/user?id=XXX"
+curl -X GET "https://vyvbts.com/analytics/user?id=XXX" -H "Authorization: Bearer ********************************"
 ```
 
 **En el navegador:**  
@@ -34,6 +34,7 @@ localhost/Twitch-Analytics-main/user.php?id=XXX
 ```
 
 Siendo `XXX` cualquier id válido, como puede ser el `id=1` mismamente.
+Siendo `********************************` un token de usuario valido.
 
 ### Posibles errores:
 - Si no pones la variable `id` → **Error 400**
@@ -50,7 +51,7 @@ en vivo en Twitch. El sistema consulta la API de Twitch utilizando un token de a
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/analytics/streams"
+curl -X GET "https://vyvbts.com/analytics/streams" -H "Authorization: Bearer ********************************"
 ```
 
 **En el navegador:**  
@@ -60,8 +61,10 @@ https://vyvbts.com/analytics/streams
 
 **En local:**  
 ```
-localhost/Twitch-Analytics-main/streams.php
+localhost/Twitch-Analytics-main/streams.php 
 ```
+
+Siendo `********************************` un token de usuario valido.
 
 ### Posibles errores:
 - Token expirado → **Error 401**
@@ -74,7 +77,7 @@ Este caso de uso realiza un filtrado y enriquecimiento del listado de Streams en
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/analytics/enriched?limit=XXX"
+curl -X GET "https://vyvbts.com/analytics/enriched?limit=XXX" -H "Authorization: Bearer ********************************"
 ```
 
 **En el navegador:**  
@@ -88,6 +91,7 @@ localhost/Twitch-Analytics-main/enriched.php?limit=XXX
 ```
 
 Siendo `XXX` cualquier límite entre `1` y `100`.
+Siendo `********************************` un token de usuario valido.
 
 ### Posibles errores:
 - Si no pones la variable `limit` → **Error 400**
@@ -153,7 +157,7 @@ El programa muestra los datos de los videos más vistos de las categorías más 
 
 **Comando para hacer la petición:**  
 ```sh
-curl -X GET "https://vyvbts.com/analytics/topsofthetops?since=XXX"
+curl -X GET "https://vyvbts.com/analytics/topsofthetops?since=XXX" -H "Authorization: Bearer ********************************"
 ```
 
 **En el navegador:**  
@@ -167,6 +171,7 @@ localhost/Twitch-Analytics-main/topsofthetops.php?since=XXX
 ```
 
 Siendo `XXX` un número mayor que `0`. Este parámetro es opcional y por defecto estará inicializado en `600`, en caso de que no se utilice.
+Siendo `********************************` un token de usuario valido.
 
 ### Posibles errores:
 - Si dejas la variable `since` vacía (`topsofthetops?since=`) → **Error 400**
