@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "203836b6-5a5f-4235-b19c-cfa1070a12d7",
 		"name": "Twitch Analytics",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.postman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -371,6 +371,39 @@
 							]
 						},
 						"url": "https://vyvbts.com/analytics/token"
+					},
+					"response": []
+				},
+				{
+					"name": "Tops de videos 200",
+					"id": "04fefe5d-1c59-45fc-afee-8b47d5ed120f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/topsofthetops?since=30",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"topsofthetops"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "30"
+								}
+							]
+						}
 					},
 					"response": []
 				}
