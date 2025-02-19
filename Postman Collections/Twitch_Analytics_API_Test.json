@@ -385,7 +385,13 @@
 							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 415c26c1fa28ad66f658846e48203e53",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "https://vyvbts.com/analytics/topsofthetops?since=30",
 							"protocol": "https",
