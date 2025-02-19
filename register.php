@@ -52,7 +52,7 @@
             return false;
         }
     
-        $consulta = $conexion->prepare("SELECT userID FROM User WHERE userEmail = ?");
+        $consulta = $conexion->prepare("SELECT userID FROM user WHERE userEmail = ?");
         $consulta->bind_param("s", $email);      
         if(!$consulta->execute()){
             return false;
@@ -63,10 +63,10 @@
     
         if (isset($datos['userID'])) {
             $id = $datos['userID'];
-            $stmt = $conexion->prepare("UPDATE User SET userApiKey = ? WHERE userID = ?");
+            $stmt = $conexion->prepare("UPDATE user SET userApiKey = ? WHERE userID = ?");
             $stmt->bind_param("si", $key, $id);
         } else {
-            $stmt = $conexion->prepare("INSERT INTO User (userEmail, userApiKey) VALUES (?, ?)");
+            $stmt = $conexion->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
             $stmt->bind_param("ss", $email, $key);
         }
     

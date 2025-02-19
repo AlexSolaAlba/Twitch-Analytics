@@ -3,13 +3,17 @@
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
         if (!$conexion) {
-            die("Error al conectar a la base de datos: " . mysqli_connect_error());
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
-        $consulta = $conexion->prepare("SELECT clientId, clientSecret FROM Token WHERE tokenID = 1");     
+        $consulta = $conexion->prepare("SELECT clientId, clientSecret FROM token WHERE tokenID = 1");     
         if(!$consulta->execute()){
             $consulta->close();
             $conexion->close();
-            die("Error en la consulta: " . mysqli_error($conexion));
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
         $resultado = $consulta->get_result();
         $datos = $resultado->fetch_assoc();
@@ -36,7 +40,9 @@
             saveTokenToDB($data['access_token'], $data['expires_in']);
             return $data['access_token'];
         } else {
-            die("Error obteniendo el token: " . $response);
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
     }
 
@@ -45,14 +51,18 @@
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
         if(!$conexion){
-            die("Error al conectar a la base de datos: " . mysqli_connect_error());
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
-        $consulta = $conexion->prepare("UPDATE Token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
+        $consulta = $conexion->prepare("UPDATE token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
         $consulta->bind_param("si", $accessToken,$expiresAt); 
         if(!$consulta->execute()){
             $consulta->close();
             $conexion->close();
-            die("Error en la consulta: " . mysqli_error($conexion));
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
         $consulta->close();
         $conexion->close();
@@ -62,15 +72,19 @@
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
         if(!$conexion){
-            die("Error al conectar a la base de datos: " . mysqli_connect_error());
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
-        $consulta = $conexion->prepare("SELECT accessToken, tokenExpire, clientId FROM Token WHERE tokenID =?");
+        $consulta = $conexion->prepare("SELECT accessToken, tokenExpire, clientId FROM token WHERE tokenID =?");
         $id = 1;
         $consulta->bind_param("i", $id);
         if(!$consulta->execute()){
             $consulta->close();
             $conexion->close();
-            die("Error en la consulta: " . mysqli_error($conexion));
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
         }
         $resultado = $consulta->get_result();
         $datos = $resultado->fetch_assoc();
@@ -89,5 +103,51 @@
             return ['accessToken' => $newToken, 'clientId' => $tokenData['clientId']];
         }
         return ['accessToken' => $tokenData['accessToken'], 'clientId' => $tokenData['clientId']];
+    }
+
+    function verificarTokenUser(){
+      	$headers = getallheaders();
+      	$authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? $headers['Authorization'] ?? null;
+        if (!$authHeader) {
+            http_response_code(401);
+            echo json_encode(["error" => "Unauthorized. Token is invalid or expired."]);
+            exit();
+        }
+
+        list($type, $token) = explode(' ', $authHeader, 2);
+        if ($type !== 'Bearer' || empty($token)) {
+            http_response_code(401);
+            echo json_encode(["error" => "Unauthorized. Token is invalid or expired."]);
+            exit();
+        }
+
+        $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
+        #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
+        if(!$conexion){
+          	$conexion.close();
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
+        }
+        $stmt = $conexion->prepare("SELECT * FROM user WHERE userToken = ?");
+        $stmt->bind_param("s", $token);
+      	if(!$stmt->execute()){
+            $consulta->close();
+            $conexion->close();
+            http_response_code(500);
+            echo json_encode(["error" => "Internal server error."]);
+            exit();
+        }
+        $result = $stmt->get_result();
+		
+        $usuario = $result->fetch_assoc();
+        $stmt->close();
+        $conexion->close();
+        if (($result->num_rows === 0) or ($usuario['userTokenExpire'] < time())) {
+            
+            http_response_code(401);
+            echo json_encode(["error" => "Unauthorized. Token is invalid or expired."]);
+            exit();
+        }
     }
 ?>

@@ -1,6 +1,7 @@
 <?php
-    header("Content-Type: application/json");
     include("restaurarToken.php");
+    $usuario = verificarTokenUser();
+    header("Content-Type: application/json");
 	$metodo = $_SERVER['REQUEST_METHOD'];
 	$headerData = getValidToken();
     $clientID = $headerData['clientId'];
@@ -50,8 +51,9 @@
                 break;
         }
     }else{
+      	http_response_code(500);
         $error_message = [
-            'error' => 'Invalid request, not a GET request'
+            'error' => 'Internal server error.'
         ];
         echo json_encode($error_message);
     }

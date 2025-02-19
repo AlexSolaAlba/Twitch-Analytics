@@ -66,7 +66,7 @@
                 return false;
             }
         
-            $consulta = $conexion->prepare("SELECT userID FROM User WHERE userEmail = ?");
+            $consulta = $conexion->prepare("SELECT userID FROM user WHERE userEmail = ?");
             $consulta->bind_param("s", $email);      
             if(!$consulta->execute()){
                 return false;
@@ -93,7 +93,7 @@
             return false;
         }
     
-        $consulta = $conexion->prepare("SELECT userApiKey FROM User WHERE userEmail = ?");
+        $consulta = $conexion->prepare("SELECT userApiKey FROM user WHERE userEmail = ?");
         $consulta->bind_param("s", $email);      
         if(!$consulta->execute()){
             return false;
@@ -116,7 +116,7 @@
             return false;
         }
     
-        $consulta = $conexion->prepare("SELECT userID FROM User WHERE userEmail = ?");
+        $consulta = $conexion->prepare("SELECT userID FROM user WHERE userEmail = ?");
         $consulta->bind_param("s", $email);      
         if(!$consulta->execute()){
             return false;
@@ -127,7 +127,7 @@
     
         $id = $datos['userID'];
         $expiration = time() + 259200;
-        $stmt = $conexion->prepare("UPDATE User SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
+        $stmt = $conexion->prepare("UPDATE user SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
         $stmt->bind_param("sdi", $token, $expiration, $id);
 
     

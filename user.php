@@ -1,6 +1,7 @@
 <?php
-    header("Content-Type: application/json");
     include("restaurarToken.php");
+    $usuario = verificarTokenUser(); 
+    header("Content-Type: application/json");
 	$metodo = $_SERVER['REQUEST_METHOD'];
 	$headerData = getValidToken();
     $clientID = $headerData['clientId'];

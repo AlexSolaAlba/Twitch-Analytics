@@ -1,6 +1,7 @@
 <?php
     header("Content-Type: application/json");
     include("restaurarToken.php");
+    $usuario = verificarTokenUser();
 	$metodo = $_SERVER['REQUEST_METHOD'];
 	$headerData = getValidToken();
     $clientID = $headerData['clientId'];
@@ -98,7 +99,7 @@
                         echo json_encode($error_message);
                         break;
                   }
-            } else if (preg_match("/[0-9]/",$since) !== 1) {
+            } else if (!preg_match("/[0-9]/",$since) !== 1) {
                 http_response_code(400);
                 $error_message = [
                     'error' => 'Bad Request. Invalid or missing parameters.'
@@ -115,7 +116,11 @@
        #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
        if (!$conexion) {
             http_response_code(500);
-           die("Error al conectar a la base de datos: ". mysqli_connect_error());
+           	$error_message = [
+              	'error' => 'Internal server error. Please try again later.'
+            ];
+         	echo json_encode($error_message);
+         	exit();
        } 
        if(!$conexion->query("DELETE FROM topscache")){
             $conexion->close();
@@ -130,7 +135,11 @@
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
         if (!$conexion) {
             http_response_code(500);
-            die("Error al conectar a la base de datos: ". mysqli_connect_error());
+           	$error_message = [
+              	'error' => 'Internal server error. Please try again later.'
+            ];
+         	echo json_encode($error_message);
+         	exit();
         }
         
         $consulta = $conexion->prepare("INSERT INTO topscache(game_id, game_name, user_name, total_videos, total_views,
@@ -155,7 +164,11 @@
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
         if (!$conexion) {
             http_response_code(500);
-            die("Error al conectar a la base de datos: ". mysqli_connect_error());
+           	$error_message = [
+              	'error' => 'Internal server error. Please try again later.'
+            ];
+         	echo json_encode($error_message);
+         	exit();
         }
         $resultado = $conexion->query("SELECT * FROM topscache");
         if ($resultado == false) {
