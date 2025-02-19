@@ -145,3 +145,31 @@ Siendo `XXX2` una api_key valida.
 - Si la variable `email` es invalida → **Error 400**
 - Si la variable `api_key` es invalida → **Error 401**
 - Internal server error → **Error 500**
+
+---
+
+## CONSULTAR VIDEOS MÁS VISTOS
+El programa muestra los datos de los videos más vistos de las categorías más populares.
+
+**Comando para hacer la petición:**  
+```sh
+curl -X GET "https://vyvbts.com/analytics/topsofthetops?since=XXX"
+```
+
+**En el navegador:**  
+```
+https://vyvbts.com/analytics/topsofthetops?since=XXX
+```
+
+**En local:**  
+```
+localhost/Twitch-Analytics-main/topsofthetops.php?since=XXX
+```
+
+Siendo `XXX` un número mayor que `0`. Este parámetro es opcional y por defecto estará inicializado en `600`, en caso de que no se utilice.
+
+### Posibles errores:
+- Si dejas la variable `since` vacía (`topsofthetops?since=`) → **Error 400**
+- Si no hay datos sobre los videos → **Error 404**
+- Token expirado → **Error 401**
+- Internal server error → **Error 500**
