@@ -10,7 +10,9 @@
         $filtered_videos = leerCache();
         $currentDate = time();
         $interval = $currentDate - strtotime($filtered_videos[0]["created_at"]);
-        array_pop($filtered_videos);
+        foreach($filtered_videos as $game){
+            array_pop($game);
+        }
         if ($interval > 600 || (isset($_GET["since"]) && count($_GET) === 1)) {
             $since = $_GET["since"];
             if (!isset($_GET["since"]) || ((preg_match("/[0-9]/",$since) === 1) && ($since < $interval))) {
