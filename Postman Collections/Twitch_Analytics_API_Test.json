@@ -15,16 +15,23 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "415c26c1fa28ad66f658846e48203e53"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://vyvbts.com/user?id=2",
+							"raw": "https://vyvbts.com/analytics/user?id=2",
 							"protocol": "https",
 							"host": [
 								"vyvbts",
 								"com"
 							],
 							"path": [
+								"analytics",
 								"user"
 							],
 							"query": [
@@ -45,18 +52,22 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "415c26c1fa28ad66f658846e48203e53"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://vyvbts.com/user?id=XXX",
+							"raw": "https://vyvbts.com/analytics/user?id=XXX",
 							"protocol": "https",
 							"host": [
 								"vyvbts",
 								"com"
 							],
 							"path": [
+								"analytics",
 								"user"
 							],
 							"query": [
