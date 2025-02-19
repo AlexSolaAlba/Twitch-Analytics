@@ -88,18 +88,22 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "415c26c1fa28ad66f658846e48203e53"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://vyvbts.com/user?id=1900000009",
+							"raw": "https://vyvbts.com/analytics/user?id=1900000009",
 							"protocol": "https",
 							"host": [
 								"vyvbts",
 								"com"
 							],
 							"path": [
+								"analytics",
 								"user"
 							],
 							"query": [
@@ -120,11 +124,14 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "415c26c1fa28ad66f658846e48203e53"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": "https://vyvbts.com/streams"
+						"url": "https://vyvbts.com/analytics/streams"
 					},
 					"response": []
 				},
@@ -136,18 +143,22 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "415c26c1fa28ad66f658846e48203e53"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://vyvbts.com/enriched?limit=10",
+							"raw": "https://vyvbts.com/analytics/enriched?limit=10",
 							"protocol": "https",
 							"host": [
 								"vyvbts",
 								"com"
 							],
 							"path": [
+								"analytics",
 								"enriched"
 							],
 							"query": [
@@ -168,18 +179,22 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "415c26c1fa28ad66f658846e48203e53"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://vyvbts.com/enriched?limit=XXX",
+							"raw": "https://vyvbts.com/analytics/enriched?limit=XXX",
 							"protocol": "https",
 							"host": [
 								"vyvbts",
 								"com"
 							],
 							"path": [
+								"analytics",
 								"enriched"
 							],
 							"query": [
