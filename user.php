@@ -24,8 +24,33 @@
         ];
         echo json_encode($error_message);
     }
-    //funcion guardar en BBDD
- 
+    
+	function guardarEnBBDD($user){
+        $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
+        #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
+        if (!$conexion) {
+            http_response_code(500);
+            $error_message = [
+                'error' => 'Internal server error. Please try again later.'
+            ];
+            echo json_encode($error_message);
+            exit();
+        }
+
+        $consulta = $conexion->prepare("INSERT INTO usersTwitch(id, user_login, display_name, user_type, broadcaster_type,
+        user_description, profile_image_url, offline_image_url, view_count, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+        $consulta->bind_param("ssssssssss", $user["id"], $user["login"], $user["display_name"], 
+            $user["type"], $user["broadcaster_type"], $user["description"], $user["profile_image_url"], 
+            $user["offline_image_url"], $user["view_count"], $user["created_at"]);
+        if (!$consulta->execute()) {
+            $consulta->close();
+            $conexion->close();
+            http_response_code(400);
+            die("Error en la consulta: ". mysqli_error($conexion));
+        }
+        $consulta->close();
+        $conexion->close();
+    }
     function leerCache($id,$clientID,$accesstoken){
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
