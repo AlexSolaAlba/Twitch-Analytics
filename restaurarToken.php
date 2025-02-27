@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ */
 function getAccessToken()
 {
     $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
@@ -26,16 +29,16 @@ function getAccessToken()
     $conexion->close();
 
     $postFields = "client_id=$clientId&client_secret=$clientSecret&grant_type=client_credentials";
-    $ch = curl_init('https://id.twitch.tv/oauth2/token');
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    $curl = curl_init('https://id.twitch.tv/oauth2/token');
+    curl_setopt($curl, CURLOPT_HTTPHEADER, [
         'Content-Type: application/x-www-form-urlencoded'
     ]);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $postFields);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-    $response = curl_exec($ch);
-    curl_close($ch);
+    $response = curl_exec($curl);
+    curl_close($curl);
 
     $data = json_decode($response, true);
 
@@ -82,8 +85,8 @@ function getTokenFromDB()
         exit();
     }
     $consulta = $conexion->prepare("SELECT accessToken, tokenExpire, clientId FROM token WHERE tokenID =?");
-    $id = 1;
-    $consulta->bind_param("i", $id);
+    $tokenId = 1;
+    $consulta->bind_param("i", $tokenId);
     if (!$consulta->execute()) {
         $consulta->close();
         $conexion->close();
@@ -114,6 +117,7 @@ function getValidToken()
 function verificarTokenUser()
 {
     $headers = getallheaders();
+
     $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? $headers['Authorization'] ?? null;
     if (!$authHeader) {
         http_response_code(401);

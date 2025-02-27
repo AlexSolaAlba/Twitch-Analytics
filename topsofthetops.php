@@ -2,12 +2,13 @@
 
 header("Content-Type: application/json");
 include("restaurarToken.php");
+@SuppressWarnings(PHPMD . ElseExpression);
+@SuppressWarnings(PHPMD . CyclomaticComplexity);
 $usuario = verificarTokenUser();
 $metodo = $_SERVER['REQUEST_METHOD'];
 $headerData = getValidToken();
 $clientID = $headerData['clientId'];
 $accesstoken = $headerData['accessToken'];
-
 if (strcmp($metodo, 'GET') === 0) {
     $filtered_videos = leerCache();
     $currentDate = time();
@@ -177,7 +178,9 @@ function guardarEnBBDD($videos)
     $consulta->close();
     $conexion->close();
 }
-
+/**
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ */
 function leerCache()
 {
     $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");

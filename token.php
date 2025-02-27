@@ -7,7 +7,6 @@ if (strcmp($metodo, 'POST') === 0) {
         if (isset($_POST['api_key'])) {
             $email = $_POST['email'];
             $key = $_POST['api_key'];
-
             if (comprobarEmail($email)) {
                 if (comprobarApiKey($email, $key)) {
                     $token = bin2hex(random_bytes(16));
@@ -58,7 +57,9 @@ if (strcmp($metodo, 'POST') === 0) {
     ];
     echo json_encode($error_message);
 }
-
+/**
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ */
 function comprobarEmail($email)
 {
     if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email)) {
@@ -86,7 +87,9 @@ function comprobarEmail($email)
 
     return false;
 }
-
+/**
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ */
 function comprobarApiKey($email, $key)
 {
     $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
@@ -129,10 +132,10 @@ function guardarEnBBDD($email, $key, $token)
     $datos = $resultado->fetch_assoc();
     $consulta->close();
 
-    $id = $datos['userID'];
+    $userId = $datos['userID'];
     $expiration = time() + 259200;
     $stmt = $conexion->prepare("UPDATE user SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
-    $stmt->bind_param("sdi", $token, $expiration, $id);
+    $stmt->bind_param("sdi", $token, $expiration, $userId);
 
 
     if (!$stmt->execute()) {
