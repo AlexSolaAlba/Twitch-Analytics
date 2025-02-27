@@ -6,3 +6,6 @@ grumphp:
       case_insensitive: false
       multiline: false
       enforce_capitalized_subject: false
+
+    phpcs:
+      standard: PSR12
