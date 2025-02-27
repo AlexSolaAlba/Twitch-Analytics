@@ -1,15 +1,17 @@
 <?php
 
 include("restaurarToken.php");
+@SuppressWarnings(PHPMD . ElseExpression);
+@SuppressWarnings(PHPMD . CyclomaticComplexity);
 $usuario = verificarTokenUser();
 header("Content-Type: application/json");
 $metodo = $_SERVER['REQUEST_METHOD'];
 $headerData = getValidToken();
 $clientID = $headerData['clientId'];
 $accesstoken = $headerData['accessToken'];
+
 if (strcmp($metodo, 'GET') === 0) {
     $ch = curl_init();
-
 
     curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/streams?first=100");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

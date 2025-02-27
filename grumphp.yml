@@ -12,6 +12,7 @@ grumphp:
       exclude:
         - PSR1.Files.SideEffects
         - Generic.Files.LineLength
+
     phpmd:
       ruleset:
         - cleancode

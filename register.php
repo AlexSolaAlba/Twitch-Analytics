@@ -1,7 +1,6 @@
 <?php
 
 header("Content-Type: application/json");
-
 $metodo = $_SERVER['REQUEST_METHOD'];
 if (strcmp($metodo, 'POST') === 0) {
     if (isset($_POST['email'])) {
@@ -47,6 +46,9 @@ function comprobarEmail($email)
     return preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email);
 }
 
+/**
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ */
 function guardarEnBBDD($email, $key)
 {
     $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
@@ -66,9 +68,9 @@ function guardarEnBBDD($email, $key)
     $consulta->close();
 
     if (isset($datos['userID'])) {
-        $id = $datos['userID'];
+        $userId = $datos['userID'];
         $stmt = $conexion->prepare("UPDATE user SET userApiKey = ? WHERE userID = ?");
-        $stmt->bind_param("si", $key, $id);
+        $stmt->bind_param("si", $key, $userId);
     } else {
         $stmt = $conexion->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
         $stmt->bind_param("ss", $email, $key);

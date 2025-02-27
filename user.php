@@ -7,7 +7,6 @@ $metodo = $_SERVER['REQUEST_METHOD'];
 $headerData = getValidToken();
 $clientID = $headerData['clientId'];
 $accesstoken = $headerData['accessToken'];
-
 if (strcmp($metodo, 'GET') === 0 && isset($_GET['id']) && count($_GET) === 1) {
     $id = $_GET['id'];
     if (preg_match("/[0-9]/", $id) === 1) {
@@ -66,8 +65,11 @@ function guardarEnBBDD($user)
     $consulta->close();
     $conexion->close();
 }
-
-function leerCache($id, $clientID, $accesstoken)
+/**
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ */
+function leerCache($userId, $clientID, $accesstoken)
 {
     $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
     #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
@@ -79,7 +81,7 @@ function leerCache($id, $clientID, $accesstoken)
         echo json_encode($error_message);
         exit();
     }
-    $resultado = $conexion->query("SELECT * FROM usersTwitch where id = $id");
+    $resultado = $conexion->query("SELECT * FROM usersTwitch where id = $userId");
     if ($resultado == false) {
         http_response_code(400);
         die("Error en la consulta: " . mysqli_error($conexion));
@@ -102,17 +104,17 @@ function leerCache($id, $clientID, $accesstoken)
         }
         echo json_encode($datos);
     } else {
-        $ch = curl_init();
+        $curl = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/users?id=$id");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        curl_setopt($curl, CURLOPT_URL, "https://api.twitch.tv/helix/users?id=$userId");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Client-ID: $clientID",
             "Authorization: Bearer $accesstoken"
         ]);
-        $response = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $response = curl_exec($curl);
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
         $response_data = json_decode($response, true);
 
 
