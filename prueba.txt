@@ -1,1 +1,2 @@
-aaaaaaaaaaaa
+Prueba composer commit issue 12
+

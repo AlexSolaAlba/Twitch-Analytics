@@ -1,0 +1,8 @@
+grumphp:
+  tasks:
+    git_commit_message:
+      matchers:
+        - '/\[#\d+\] - .+/' 
+      case_insensitive: false
+      multiline: false
+      enforce_capitalized_subject: false
