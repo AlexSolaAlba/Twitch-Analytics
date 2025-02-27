@@ -1,0 +1,13 @@
+{
+    "name": "grumphp/grumphp",
+    "description": "Analisis de datos de Twitch",
+    "require-dev": {
+        "phpro/grumphp": "^2.11",
+        "squizlabs/php_codesniffer": "^3.11"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpro/grumphp": true
+        }
+    }
+}
