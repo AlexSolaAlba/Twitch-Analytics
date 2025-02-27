@@ -13,10 +13,10 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
         '3da389f428d8ee50333e4391c3f45046' => __DIR__ . '/..' . '/amphp/serialization/src/functions.php',
         'bcb7d4fc55f4b1a7e10f5806723e9892' => __DIR__ . '/..' . '/amphp/sync/src/functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        '6c2681bc13923b80242cc286856cab22' => __DIR__ . '/..' . '/amphp/byte-stream/src/functions.php',
-        '4ee21bf8253a2272056aefb41f7f0116' => __DIR__ . '/..' . '/amphp/byte-stream/src/Internal/functions.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '6c2681bc13923b80242cc286856cab22' => __DIR__ . '/..' . '/amphp/byte-stream/src/functions.php',
+        '4ee21bf8253a2272056aefb41f7f0116' => __DIR__ . '/..' . '/amphp/byte-stream/src/Internal/functions.php',
         '107d0b55c0ad2d07d8643394552ac029' => __DIR__ . '/..' . '/amphp/process/src/functions.php',
         '445532134d762b3cbc25500cac266092' => __DIR__ . '/..' . '/daverandom/libdns/src/functions.php',
         'f4c761ca07639428acc28ba36643243e' => __DIR__ . '/..' . '/amphp/dns/src/functions.php',
@@ -69,6 +69,7 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
+            'PDepend\\' => 8,
         ),
         'O' => 
         array (
@@ -97,6 +98,11 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
         array (
             'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\Common\\Collections\\' => 28,
+        ),
+        'C' => 
+        array (
+            'Composer\\XdebugHandler\\' => 23,
+            'Composer\\Pcre\\' => 14,
         ),
         'A' => 
         array (
@@ -228,6 +234,10 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'PDepend\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pdepend/pdepend/src/main/php/PDepend',
+        ),
         'OndraM\\CiDetector\\' => 
         array (
             0 => __DIR__ . '/..' . '/ondram/ci-detector/src',
@@ -268,6 +278,14 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
         'Doctrine\\Common\\Collections\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/collections/src',
+        ),
+        'Composer\\XdebugHandler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/xdebug-handler/src',
+        ),
+        'Composer\\Pcre\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/pcre/src',
         ),
         'Amp\\Sync\\' => 
         array (
@@ -315,6 +333,16 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPMD\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpmd/phpmd/src/main/php',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
@@ -326,6 +354,7 @@ class ComposerStaticInitf25f2d014ab849b49c060236fa3db042
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf25f2d014ab849b49c060236fa3db042::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf25f2d014ab849b49c060236fa3db042::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf25f2d014ab849b49c060236fa3db042::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitf25f2d014ab849b49c060236fa3db042::$classMap;
 
         }, null, ClassLoader::class);
