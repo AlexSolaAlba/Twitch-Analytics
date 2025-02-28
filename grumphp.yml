@@ -2,6 +2,7 @@ grumphp:
   tasks:
     git_commit_message:
       matchers:
+        - '/^.{1,100}$/'
         - '/\[#\d+\](\[#\d+\])? - .+/'
       case_insensitive: false
       multiline: false
