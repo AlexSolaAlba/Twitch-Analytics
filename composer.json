@@ -1,6 +1,7 @@
 {
     "name": "grumphp/grumphp",
     "description": "Analisis de datos de Twitch",
+    "license": "MIT",
     "require-dev": {
         "phpro/grumphp": "^2.11",
         "squizlabs/php_codesniffer": "^3.11",

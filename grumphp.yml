@@ -1,12 +1,12 @@
 grumphp:
   tasks:
     git_commit_message:
-      matchers:
-        - '/^.{1,100}$/'
-        - '/\[#\d+\](\[#\d+\])? - .+/'
-      case_insensitive: false
-      multiline: false
+      allow_empty_message: false
       enforce_capitalized_subject: false
+      case_insensitive: false
+      max_subject_width: 100
+      matchers:
+        Must follow format [#1234] - Description or [#1234][#2345] - Description: '/^(\[#[0-9]*\])?\[#[0-9]*\] - [A-Z][a-zA-Z\s]*/'
 
     phpcs:
       standard: PSR12
