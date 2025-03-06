@@ -26,6 +26,7 @@ if (strcmp($requestMethod, 'GET') === 0 && isset($_GET['id']) && count($_GET) ==
     echo json_encode($error_message);
 }
 
+
 /**
  * @SuppressWarnings(PHPMD.ElseExpression)
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
