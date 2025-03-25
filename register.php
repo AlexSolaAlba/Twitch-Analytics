@@ -3,8 +3,15 @@
 header("Content-Type: application/json");
 $metodo = $_SERVER['REQUEST_METHOD'];
 if (strcmp($metodo, 'POST') === 0) {
+    $input = file_get_contents("php://input");
+    $data = json_decode($input, true);
     if (isset($_POST['email'])) {
         $email = $_POST['email'];
+    } elseif (isset($data['email'])) {
+        $email = $data['email'];
+    }
+
+    if (isset($email)) {
         if (comprobarEmail($email)) {
             $key = bin2hex(random_bytes(16));
             if (guardarEnBBDD($email, $key)) {

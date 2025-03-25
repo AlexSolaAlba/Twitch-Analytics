@@ -3,10 +3,22 @@
 header("Content-Type: application/json");
 $metodo = $_SERVER['REQUEST_METHOD'];
 if (strcmp($metodo, 'POST') === 0) {
-    if (isset($_POST['email'])) {
-        if (isset($_POST['api_key'])) {
-            $email = $_POST['email'];
-            $key = $_POST['api_key'];
+    $input = file_get_contents("php://input");
+    $data = json_decode($input, true);
+    if (isset($_POST['email']) ) {
+        $email = $_POST['email'];
+    } elseif (isset($data['email'])) {
+        $email = $data['email'];
+    }
+
+    if (isset($_POST['api_key'])) {
+        $key = $_POST['api_key'];
+    } elseif (isset($data['api_key']) ) {
+        $key = $data['api_key'];
+    }
+
+    if (isset($email)) {
+        if (isset($key)) {
             if (comprobarEmail($email)) {
                 if (comprobarApiKey($email, $key)) {
                     $token = bin2hex(random_bytes(16));
