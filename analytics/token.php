@@ -5,7 +5,7 @@ $metodo = $_SERVER['REQUEST_METHOD'];
 if (strcmp($metodo, 'POST') === 0) {
     $input = file_get_contents("php://input");
     $data = json_decode($input, true);
-    if (isset($_POST['email']) ) {
+    if (isset($_POST['email'])) {
         $email = $_POST['email'];
     } elseif (isset($data['email'])) {
         $email = $data['email'];
@@ -13,7 +13,7 @@ if (strcmp($metodo, 'POST') === 0) {
 
     if (isset($_POST['api_key'])) {
         $key = $_POST['api_key'];
-    } elseif (isset($data['api_key']) ) {
+    } elseif (isset($data['api_key'])) {
         $key = $data['api_key'];
     }
 
