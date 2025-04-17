@@ -36,4 +36,27 @@ class RegisterTest extends TestCase
         $this->assertEquals(400, $httpCode);
         $this->assertEquals($expectedResponseData, $httpResponseData);
     }
+    /**
+     * @test
+     */
+    public function notGivenAnEmailReturnsError(): void
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "https://vyvbts.com/register");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+
+        $httpResponse = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        $httpResponseData = json_decode($httpResponse, true);
+        $expectedResponseData = ["error" => "The email is mandatory"];
+
+        $this->assertEquals(400, $httpCode);
+        $this->assertEquals($expectedResponseData, $httpResponseData);
+    }
 }
