@@ -17,4 +17,11 @@ class RegisterTest extends TestCase
     {
         $this->assertEquals(1, comprobarEmail("test@test.com"));
     }
+    /**
+     * @test
+     */
+    public function givenInvalidEmailReturns0()
+    {
+        $this->assertEquals(0, comprobarEmail("testtest.com"));
+    }
 }
