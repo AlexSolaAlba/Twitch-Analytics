@@ -8,4 +8,32 @@ use PHPUnit\Framework\TestCase;
 
 class RegisterTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function givenWrongEmailReturnsError(): void
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "https://vyvbts.com/register");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $email = json_encode([
+            "email" => "XXX"
+        ]);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $email);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($email)
+        ]);
+
+        $httpResponse = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        $httpResponseData = json_decode($httpResponse, true);
+        $expectedResponseData = ["error" => "The email must be a valid email address"];
+
+        $this->assertEquals(400, $httpCode);
+        $this->assertEquals($expectedResponseData, $httpResponseData);
+    }
 }
