@@ -5,14 +5,22 @@
     "require-dev": {
         "phpro/grumphp": "^2.11",
         "squizlabs/php_codesniffer": "^3.11",
-        "phpmd/phpmd": "^2.15"
+        "phpmd/phpmd": "^2.15",
+        "phpunit/phpunit": "10"
     },
     "config": {
         "allow-plugins": {
             "phpro/grumphp": true
         }
     },
+    "scripts": {
+        "test": [
+            "parallel-lint . --exclude vendor",
+            "phpunit --configuration phpunit.xml"
+        ]
+    },
   "require": {
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-curl": "*"
   }
 }
