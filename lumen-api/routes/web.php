@@ -20,3 +20,7 @@ $router->get('streams', function () {
 $router->get('user', function () {
     require __DIR__ . '/../src/user.php';
 });
+
+$router->get('enriched', function () {
+    require __DIR__ . '/../src/enriched.php';
+});
