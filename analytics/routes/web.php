@@ -1,0 +1,30 @@
+<?php
+
+/** @var \Laravel\Lumen\Routing\Router $router */
+
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It is a breeze. Simply tell Lumen the URIs it should respond to
+| and give it the Closure to call when that URI is requested.
+|
+*/
+
+$router->get('streams', function () {
+    require __DIR__ . '/../src/streams.php';
+});
+
+$router->get('user', function () {
+    require __DIR__ . '/../src/user.php';
+});
+
+$router->get('enriched', function () {
+    require __DIR__ . '/../src/enriched.php';
+});
+
+$router->get('topsofthetops', function () {
+    require __DIR__ . '/../src/topsofthetops.php';
+});

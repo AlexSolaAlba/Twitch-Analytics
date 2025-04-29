@@ -2,8 +2,6 @@
 
 header("Content-Type: application/json");
 include("restaurarToken.php");
-@SuppressWarnings(PHPMD . ElseExpression);
-@SuppressWarnings(PHPMD . CyclomaticComplexity);
 $usuario = verificarTokenUser();
 $metodo = $_SERVER['REQUEST_METHOD'];
 $headerData = getValidToken();
