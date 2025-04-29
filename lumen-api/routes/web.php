@@ -16,3 +16,7 @@
 $router->get('streams', function () {
     require __DIR__ . '/../src/streams.php';
 });
+
+$router->get('user', function () {
+    require __DIR__ . '/../src/user.php';
+});
