@@ -1,8 +1,6 @@
 <?php
 
 include("restaurarToken.php");
-@SuppressWarnings(PHPMD . ElseExpression);
-@SuppressWarnings(PHPMD . CyclomaticComplexity);
 $usuario = verificarTokenUser();
 header("Content-Type: application/json");
 $metodo = $_SERVER['REQUEST_METHOD'];

@@ -24,3 +24,7 @@ $router->get('user', function () {
 $router->get('enriched', function () {
     require __DIR__ . '/../src/enriched.php';
 });
+
+$router->get('topsofthetops', function () {
+    require __DIR__ . '/../src/topsofthetops.php';
+});
