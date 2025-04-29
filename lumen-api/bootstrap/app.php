@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -106,17 +106,17 @@ $app->configure('app');
 |
 */
 $app->router->post("/register", function () {
-    require __DIR__."/../src/register.php";
+    require __DIR__ . "/../src/register.php";
 });
 
 $app->router->post("/token", function () {
-    require __DIR__."/../src/token.php";
+    require __DIR__ . "/../src/token.php";
 });
 
 $app->router->group([
     'prefix' => 'analytics',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;
