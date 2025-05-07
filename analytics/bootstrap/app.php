@@ -1,5 +1,7 @@
 <?php
 
+use TwitchAnalytics\Controllers\Register\RegisterController;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -37,6 +39,10 @@ $app = new Laravel\Lumen\Application(
 | your own bindings here if you like or you can make another file.
 |
 */
+
+$app->singleton(
+    TwitchAnalytics\Application\Services\RegisterService::class
+);
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -105,9 +111,10 @@ $app->configure('app');
 | can respond to, as well as the controllers that may handle them.
 |
 */
-$app->router->post("/register", function () {
-    require __DIR__ . "/../src/register.php";
-});
+
+$app->router->post("/register", [
+    'uses' => RegisterController::class,
+]);
 
 $app->router->post("/token", function () {
     require __DIR__ . "/../src/token.php";

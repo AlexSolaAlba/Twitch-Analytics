@@ -11,6 +11,7 @@ if (strcmp($metodo, 'GET') === 0) {
     $filtered_videos = leerCache();
     $currentDate = time();
     $interval = $currentDate - strtotime($filtered_videos[0]["created_at"]);
+
     foreach ($filtered_videos as $game) {
         array_pop($game);
     }
@@ -103,7 +104,7 @@ if (strcmp($metodo, 'GET') === 0) {
                     break;
             }
         } else {
-            if (!preg_match("/[0-9]/", $since) !== 1) {
+            if (!preg_match("/[0-9]/", $since)) {
                 http_response_code(400);
                 $error_message = [
                     'error' => 'Bad Request. Invalid or missing parameters.'
@@ -112,7 +113,12 @@ if (strcmp($metodo, 'GET') === 0) {
             }
         }
     } else {
-        echo json_encode($filtered_videos, JSON_UNESCAPED_UNICODE);
+        $response = [];
+        foreach ($filtered_videos as $item) {
+            unset($item["created_at"]);
+            $response[] = $item;
+        }
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 }
 
@@ -155,7 +161,7 @@ function guardarEnBBDD($videos)
     );
     foreach ($videos as $video) {
         $consulta->bind_param(
-            "isiiisiss",
+            "issiisiss",
             $video["game_id"],
             $video["game_name"],
             $video["user_name"],
