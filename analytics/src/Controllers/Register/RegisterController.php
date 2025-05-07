@@ -15,36 +15,30 @@ class RegisterController extends BaseController
         $this->registerService = $registerService;
     }
 
-    public function __invoke(Request $request): false|string
+    public function __invoke(Request $request): JsonResponse
     {
         if (!$request->isMethod('post')) {
-            http_response_code(500);
-            $error_message = [
-                'error' => 'Internal server error'
-            ];
-            echo json_encode($error_message);
+            return response()->json(['error' => 'Internal server error'], 500);
         }
+
         if (!$request->has('email')) {
-            http_response_code(400);
-            $error_message = [
-                'error' => 'The email is mandatory'
-            ];
-            echo json_encode($error_message);
+            return response()->json(['error' => 'The email is mandatory'], 400);
         }
 
         $email = $request->get('email');
-        if (!comprobarEmail($email)) {
-            http_response_code(400);
-            $error_message = [
-                'error' => 'The email must be a valid email address'
-            ];
-            echo json_encode($error_message);
+
+        if (!$this->comprobarEmail($email)) {
+            return response()->json(['error' => 'The email must be a valid email address'], 400);
         }
-        return $this->registerService->register($email);
+
+        return response()->json(json_decode($this->registerService->register($email), true));
+    }
+
+
+    private function comprobarEmail($email): false|int
+    {
+        return preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email);
     }
 }
 
-function comprobarEmail($email): false|int
-{
-    return preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email);
-}
+
