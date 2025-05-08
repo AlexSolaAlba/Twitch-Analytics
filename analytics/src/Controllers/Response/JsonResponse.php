@@ -6,6 +6,6 @@ class JsonResponse
 {
     public function __construct(array $message, ?int $status = 200)
     {
-        $this->response = response()->json($message,$status);
+        $this->response = response()->json($message, $status);
     }
 }

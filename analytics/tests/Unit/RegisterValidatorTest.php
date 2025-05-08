@@ -4,7 +4,6 @@ namespace TwitchAnalytics\Tests\Unit;
 
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\Register\RegisterValidator;
-
 use TwitchAnalytics\Controllers\ValidationException;
 
 use function PHPUnit\Framework\assertEquals;
@@ -58,6 +57,6 @@ class RegisterValidatorTest extends TestCase
      */
     public function givenRightEmailReturnsEmail(): void
     {
-        assertEquals("hola@gmail.com",$this->registerValidator->validate("hola@gmail.com"));
+        assertEquals("hola@gmail.com", $this->registerValidator->validate("hola@gmail.com"));
     }
 }
