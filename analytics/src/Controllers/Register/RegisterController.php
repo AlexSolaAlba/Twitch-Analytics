@@ -31,5 +31,4 @@ class RegisterController extends BaseController
 
         return response()->json($this->registerService->register($email));
     }
-
 }

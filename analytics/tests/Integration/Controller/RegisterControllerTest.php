@@ -19,13 +19,6 @@ class RegisterControllerTest extends TestCase
     private RegisterService $registerService;
     private RegisterValidator $registerValidator;
 
-    /*protected function setUp(): void
-    {
-        $this->registerService = Mockery::mock(RegisterService::class);
-
-        $this->registerController = new RegisterController($this->registerService);
-    }*/
-
     /**
      * @test
      * @SuppressWarnings(PHPMD.StaticAccess)
@@ -34,7 +27,7 @@ class RegisterControllerTest extends TestCase
     {
         $this->registerService = new RegisterService();
         $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService,$this->registerValidator);
+        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
 
         $request = Request::create('/register', 'POST');
 
@@ -48,12 +41,13 @@ class RegisterControllerTest extends TestCase
 
     /**
      * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function gets400WhenEmailParameterIsWrong(): void
     {
         $this->registerService = new RegisterService();
         $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService,$this->registerValidator);
+        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
 
         $request = Request::create('/register', 'POST', [
             'email' => 'testexample.com'
@@ -69,13 +63,14 @@ class RegisterControllerTest extends TestCase
 
     /**
      * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function gets200WhenEmailParameterIsRight(): void
     {
         $this->registerService = Mockery::mock(RegisterService::class);
         $this->registerService->allows()->register("test@example.com")->andReturns(['api_key' => "fafs"]);
         $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService,$this->registerValidator);
+        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
 
         $request = Request::create('/register', 'POST', [
             'email' => 'test@example.com'
@@ -86,6 +81,4 @@ class RegisterControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(['api_key' => "fafs"], $response->getData(true));
     }
-
-
 }

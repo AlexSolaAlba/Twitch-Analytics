@@ -37,8 +37,14 @@ class RegisterService
      */
     public function guardarEnBBDD($email, $key): bool
     {
-        $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
+        #$conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
+        $conexion = mysqli_connect(
+            env('DB_HOST'),
+            env('DB_USERNAME'),
+            env('DB_PASSWORD'),
+            env('DB_DATABASE')
+        );
 
         if (!$conexion) {
             return false;

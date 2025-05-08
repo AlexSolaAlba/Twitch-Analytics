@@ -21,14 +21,14 @@ class RegisterValidator
             throw new ValidationException('The email must be a valid email address');
         }
 
-        if (!$this->comprobarEmail($email)) {
+        if (!$this->checkEmail($email)) {
             throw new ValidationException('The email must be a valid email address');
         }
 
         return $email;
     }
 
-    private function comprobarEmail($email): false|int
+    private function checkEmail($email): false|int
     {
         return preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email);
     }

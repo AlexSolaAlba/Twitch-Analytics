@@ -8,7 +8,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
     dirname(__DIR__)
 ))->bootstrap();
 
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC+2'));
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +25,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->safeLoad();
 // $app->withFacades();
 
 // $app->withEloquent();
