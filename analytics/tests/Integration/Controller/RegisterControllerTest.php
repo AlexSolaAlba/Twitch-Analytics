@@ -5,9 +5,11 @@ namespace Integration\Controller;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;
+use Random\RandomException;
 use TwitchAnalytics\Application\Services\RegisterService;
 use TwitchAnalytics\Controllers\Register\RegisterController;
 use TwitchAnalytics\Controllers\Register\RegisterValidator;
+use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
 class RegisterControllerTest extends TestCase
 {
@@ -18,7 +20,20 @@ class RegisterControllerTest extends TestCase
     private RegisterController $registerController;
     private RegisterService $registerService;
     private RegisterValidator $registerValidator;
+    private RandomKeyGenerator $keyGenerator;
 
+    /**
+     * @throws RandomException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->keyGenerator = Mockery::mock(RandomKeyGenerator::class);
+        $this->keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
+        $this->registerService = new RegisterService($this->keyGenerator);
+        $this->registerValidator = new RegisterValidator();
+        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
+    }
 
 
     /**
@@ -27,10 +42,6 @@ class RegisterControllerTest extends TestCase
      */
     public function gets400WhenEmailParameterIsMissing(): void
     {
-        $this->registerService = new RegisterService();
-        $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
-
         $request = Request::create('/register', 'POST');
 
         $response = $this->registerController->__invoke($request);
@@ -47,10 +58,6 @@ class RegisterControllerTest extends TestCase
      */
     public function gets400WhenEmailParameterIsWrong(): void
     {
-        $this->registerService = new RegisterService();
-        $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
-
         $request = Request::create('/register', 'POST', [
             'email' => 'testexample.com'
         ]);
@@ -69,11 +76,6 @@ class RegisterControllerTest extends TestCase
      */
     public function gets200WhenEmailParameterIsRight(): void
     {
-        $this->registerService = Mockery::mock(RegisterService::class);
-        $this->registerService->allows()->register("test@example.com")->andReturns(['api_key' => "fafs"]);
-        $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
-
         $request = Request::create('/register', 'POST', [
             'email' => 'test@example.com'
         ]);
@@ -81,6 +83,6 @@ class RegisterControllerTest extends TestCase
         $response = $this->registerController->__invoke($request);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(['api_key' => "fafs"], $response->getData(true));
+        $this->assertEquals(['api_key' => "24e9a3dea44346393f632e4161bc83e6"], $response->getData(true));
     }
 }
