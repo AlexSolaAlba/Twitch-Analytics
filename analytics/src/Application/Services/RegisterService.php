@@ -3,7 +3,6 @@
 namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
-
 use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\DB\DBException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;

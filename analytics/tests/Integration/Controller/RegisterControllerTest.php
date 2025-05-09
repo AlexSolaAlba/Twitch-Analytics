@@ -31,7 +31,7 @@ class RegisterControllerTest extends TestCase
         $keyGenerator = Mockery::mock(RandomKeyGenerator::class);
         $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
         $dataBaseHandler = new DatabaseHandler();
-        $registerService = new RegisterService($keyGenerator,$dataBaseHandler);
+        $registerService = new RegisterService($keyGenerator, $dataBaseHandler);
         $registerValidator = new RegisterValidator();
         $this->registerController = new RegisterController($registerService, $registerValidator);
     }
