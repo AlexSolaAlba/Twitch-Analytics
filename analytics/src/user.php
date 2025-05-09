@@ -38,7 +38,7 @@ function returnUserInfo($userId, $clientID, $accessToken)
     if (!$conection) {
         http_response_code(500);
         $errorMessage = [
-            'error' => 'Internal server error. Please try again later.'
+            'error' => 'Internal server error.'
         ];
         echo json_encode($errorMessage);
         exit();

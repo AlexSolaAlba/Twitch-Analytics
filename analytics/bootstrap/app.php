@@ -1,7 +1,5 @@
 <?php
 
-use TwitchAnalytics\Controllers\Register\RegisterController;
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -46,7 +44,8 @@ $app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
-            $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class)
+            $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
+            $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class)
         );
     }
 );
