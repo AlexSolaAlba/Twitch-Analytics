@@ -20,15 +20,13 @@ class RegisterController extends BaseController
 
     public function __invoke(Request $request): JsonResponse
     {
-        if (!$request->isMethod('post')) {
-            return response()->json(['error' => 'Internal server error'], 500);
-        }
         try {
             $email = $this->validator->validate($request->get('email'));
+            return response()->json($this->registerService->register($email));
         } catch (ValidationException $ex) {
             return response()->json(['error' => $ex->getMessage()], 400);
+        } catch (\Throwable $ex) {
+            return response()->json(['error' => $ex->getMessage()], 500);
         }
-
-        return response()->json($this->registerService->register($email));
     }
 }

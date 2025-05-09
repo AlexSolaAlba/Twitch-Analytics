@@ -19,6 +19,8 @@ class RegisterControllerTest extends TestCase
     private RegisterService $registerService;
     private RegisterValidator $registerValidator;
 
+
+
     /**
      * @test
      * @SuppressWarnings(PHPMD.StaticAccess)
