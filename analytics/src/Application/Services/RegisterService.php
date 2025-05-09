@@ -3,27 +3,22 @@
 namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
-use TwitchAnalytics\Domain\Exceptions\ApplicationException;
-use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
 class RegisterService
 {
-    private RandomKeyGenerator $keyGenerator;
-    public function __construct(RandomKeyGenerator $keyGenerator)
+    public function __construct()
     {
-        $this->keyGenerator = $keyGenerator;
     }
 
 
-    /**
-     * @throws RandomException
-     */
     public function register($email): array
     {
         try {
-            $key = $this->keyGenerator->generateRandomKey();
+            $key = bin2hex(random_bytes(16));
         } catch (RandomException) {
-            throw new RandomException('Internal server error');
+            return [
+                'error' => 'Internal server error'
+            ];
         }
 
         if ($this->guardarEnBBDD($email, $key)) {
@@ -32,7 +27,9 @@ class RegisterService
             ];
         }
 
-        throw new ApplicationException('Internal server error');
+        return [
+            'error' => 'Internal server error'
+        ];
     }
 
     /**
