@@ -18,21 +18,19 @@ class RegisterControllerTest extends TestCase
         return require __DIR__ . '/../../../bootstrap/app.php';
     }
     private RegisterController $registerController;
-    private RegisterService $registerService;
-    private RegisterValidator $registerValidator;
-    private RandomKeyGenerator $keyGenerator;
 
     /**
      * @throws RandomException
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->keyGenerator = Mockery::mock(RandomKeyGenerator::class);
-        $this->keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
-        $this->registerService = new RegisterService($this->keyGenerator);
-        $this->registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($this->registerService, $this->registerValidator);
+        $keyGenerator = Mockery::mock(RandomKeyGenerator::class);
+        $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
+        $registerService = new RegisterService($keyGenerator);
+        $registerValidator = new RegisterValidator();
+        $this->registerController = new RegisterController($registerService, $registerValidator);
     }
 
 
