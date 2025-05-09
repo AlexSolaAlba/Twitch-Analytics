@@ -19,6 +19,7 @@ class RegisterControllerTest extends TestCase
     }
     private RegisterController $registerController;
 
+
     /**
      * @throws RandomException
      * @SuppressWarnings(PHPMD.StaticAccess)
@@ -32,6 +33,7 @@ class RegisterControllerTest extends TestCase
         $registerValidator = new RegisterValidator();
         $this->registerController = new RegisterController($registerService, $registerValidator);
     }
+
 
 
     /**

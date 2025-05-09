@@ -24,6 +24,7 @@ class RegisterService
             $key = $this->keyGenerator->generateRandomKey();
         } catch (RandomException) {
             throw new RandomException('Internal server error');
+
         }
 
         if ($this->guardarEnBBDD($email, $key)) {
