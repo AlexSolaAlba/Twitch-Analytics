@@ -12,6 +12,9 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+$router->get('/', function () use ($router) {
+    return $router->app->version();
+});
 
 $router->get('streams', function () {
     require __DIR__ . '/../src/streams.php';
@@ -21,7 +24,7 @@ $router->get('user', function () {
     require __DIR__ . '/../src/user.php';
 });
 
-$router->get('enriched', function () {
+$router->get('/streams/enriched', function () {
     require __DIR__ . '/../src/enriched.php';
 });
 

@@ -1,12 +1,14 @@
 <?php
 
+use TwitchAnalytics\Controllers\Register\RegisterController;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
 ))->bootstrap();
 
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC+2'));
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->safeLoad();
 // $app->withFacades();
 
 // $app->withEloquent();
@@ -37,6 +41,10 @@ $app = new Laravel\Lumen\Application(
 | your own bindings here if you like or you can make another file.
 |
 */
+
+$app->singleton(
+    TwitchAnalytics\Application\Services\RegisterService::class
+);
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -105,9 +113,10 @@ $app->configure('app');
 | can respond to, as well as the controllers that may handle them.
 |
 */
-$app->router->post("/register", function () {
-    require __DIR__ . "/../src/register.php";
-});
+
+$app->router->post("/register", [
+    'uses' => RegisterController::class,
+]);
 
 $app->router->post("/token", function () {
     require __DIR__ . "/../src/token.php";
