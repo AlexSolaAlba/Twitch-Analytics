@@ -41,7 +41,12 @@ $dotenv->safeLoad();
 */
 
 $app->singleton(
-    TwitchAnalytics\Application\Services\RegisterService::class
+    TwitchAnalytics\Application\Services\RegisterService::class,
+    function ($app) {
+        return new TwitchAnalytics\Application\Services\RegisterService(
+            $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class)
+        );
+    }
 );
 
 $app->singleton(
