@@ -19,6 +19,7 @@ class RegisterControllerTest extends TestCase
     }
     private RegisterController $registerController;
 
+
     /**
      * @throws RandomException
      * @SuppressWarnings(PHPMD.StaticAccess)

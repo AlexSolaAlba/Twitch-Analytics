@@ -3,6 +3,7 @@
 namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
+
 use TwitchAnalytics\Domain\Exceptions\ApplicationException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
@@ -31,7 +32,6 @@ class RegisterService
                 'api_key' => $key
             ];
         }
-
         throw new ApplicationException('Internal server error');
     }
 
