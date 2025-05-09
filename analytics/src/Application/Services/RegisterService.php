@@ -4,15 +4,18 @@ namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
 
-use TwitchAnalytics\Domain\Exceptions\ApplicationException;
+use TwitchAnalytics\Domain\DB\DataBaseHandler;
+use TwitchAnalytics\Domain\DB\DBException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
 class RegisterService
 {
     private RandomKeyGenerator $keyGenerator;
-    public function __construct(RandomKeyGenerator $keyGenerator)
+    private DataBaseHandler $databaseHandler;
+    public function __construct(RandomKeyGenerator $keyGenerator, DataBaseHandler $databaseHandler)
     {
         $this->keyGenerator = $keyGenerator;
+        $this->databaseHandler = $databaseHandler;
     }
 
 
@@ -23,60 +26,14 @@ class RegisterService
     {
         try {
             $key = $this->keyGenerator->generateRandomKey();
-        } catch (RandomException) {
-            throw new RandomException('Internal server error');
-        }
-
-        if ($this->guardarEnBBDD($email, $key)) {
+            $this->databaseHandler->saveUserAndApiKeyInDB($email, $key);
             return [
                 'api_key' => $key
             ];
+        } catch (RandomException) {
+            throw new RandomException('Internal server error');
+        } catch (DBException $e) {
+            throw new DBException($e->getMessage());
         }
-        throw new ApplicationException('Internal server error');
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function guardarEnBBDD($email, $key): bool
-    {
-        #$conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
-        #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
-        $conexion = mysqli_connect(
-            env('DB_HOST'),
-            env('DB_USERNAME'),
-            env('DB_PASSWORD'),
-            env('DB_DATABASE')
-        );
-
-        if (!$conexion) {
-            return false;
-        }
-
-        $consulta = $conexion->prepare("SELECT userID FROM user WHERE userEmail = ?");
-        $consulta->bind_param("s", $email);
-        if (!$consulta->execute()) {
-            return false;
-        }
-        $resultado = $consulta->get_result();
-        $datos = $resultado->fetch_assoc();
-        $consulta->close();
-
-        if (isset($datos['userID'])) {
-            $userId = $datos['userID'];
-            $stmt = $conexion->prepare("UPDATE user SET userApiKey = ? WHERE userID = ?");
-            $stmt->bind_param("si", $key, $userId);
-        } else {
-            $stmt = $conexion->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
-            $stmt->bind_param("ss", $email, $key);
-        }
-
-        if (!$stmt->execute()) {
-            return false;
-        }
-
-        $stmt->close();
-        $conexion->close();
-        return true;
     }
 }
