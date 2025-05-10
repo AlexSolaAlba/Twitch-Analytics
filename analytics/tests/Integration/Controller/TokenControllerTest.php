@@ -39,7 +39,7 @@ class TokenControllerTest extends TestCase
      */
     public function gets400WhenEmailParameterIsMissing(): void
     {
-        $request = Request::create('/register', 'POST');
+        $request = Request::create('/token', 'POST');
 
         $response = $this->tokenController->__invoke($request);
 
@@ -55,7 +55,7 @@ class TokenControllerTest extends TestCase
      */
     public function gets400WhenEmailParameterIsWrong(): void
     {
-        $request = Request::create('/register', 'POST', [
+        $request = Request::create('/token', 'POST', [
             'email' => 'testexample.com'
         ]);
 
@@ -73,7 +73,7 @@ class TokenControllerTest extends TestCase
      */
     public function gets400WhenEmailParameterIsRightAndKeyParameterIsMissing(): void
     {
-        $request = Request::create('/register', 'POST', [
+        $request = Request::create('/token', 'POST', [
             'email' => 'test@example.com'
         ]);
 
@@ -91,7 +91,7 @@ class TokenControllerTest extends TestCase
      */
     public function gets400WhenEmailParameterIsRightAndKeyParameterIsWrong(): void
     {
-        $request = Request::create('/register', 'POST', [
+        $request = Request::create('/token', 'POST', [
             'email' => 'test@example.com',
             'api_key' => '21343fse'
         ]);
@@ -102,5 +102,22 @@ class TokenControllerTest extends TestCase
         $this->assertEquals([
             'error' => 'The key must be a valid key'
         ], $response->getData(true));
+    }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function gets200WhenEmailParameterIsRightAndKeyParameterIsRight(): void
+    {
+        $request = Request::create('/token', 'POST', [
+            'email' => 'test@example.com',
+            'api_key' => '24e9a3dea44346393f632e4161bc83e6'
+        ]);
+
+        $response = $this->tokenController->__invoke($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(['token' => "24e9a3dea44346393f632e4161bc83e6"], $response->getData(true));
     }
 }
