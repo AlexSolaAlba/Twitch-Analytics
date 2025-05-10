@@ -1,5 +1,8 @@
 <?php
 
+use TwitchAnalytics\Controllers\Register\RegisterController;
+use TwitchAnalytics\Controllers\Token\TokenController;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -45,6 +48,15 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
             $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
+            $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class)
+        );
+    }
+);
+
+$app->singleton(
+    TwitchAnalytics\Controllers\Token\TokenController::class,
+    function ($app) {
+        return new TwitchAnalytics\Controllers\Token\TokenController(
             $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class)
         );
     }
@@ -122,10 +134,14 @@ $app->router->post("/register", [
     'uses' => RegisterController::class,
 ]);
 
+$app->router->post("/token", [
+    'uses' => TokenController::class,
+]);
+/*
 $app->router->post("/token", function () {
     require __DIR__ . "/../src/token.php";
 });
-
+*/
 $app->router->group([
     'prefix' => 'analytics',
 ], function ($router) {
