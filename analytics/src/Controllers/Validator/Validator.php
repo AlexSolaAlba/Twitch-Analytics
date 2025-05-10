@@ -1,12 +1,12 @@
 <?php
 
-namespace TwitchAnalytics\Controllers\Register;
+namespace TwitchAnalytics\Controllers\Validator;
 
 use TwitchAnalytics\Controllers\ValidationException;
 
-class RegisterValidator
+class Validator
 {
-    public function validate(?string $email): string
+    public function validateEmail(?string $email): string
     {
         if (!isset($email)) {
             throw new ValidationException('The email is mandatory');
