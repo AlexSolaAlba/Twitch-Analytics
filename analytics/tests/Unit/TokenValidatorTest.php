@@ -29,4 +29,32 @@ class TokenValidatorTest extends TestCase
         $this->expectExceptionMessage('The key is mandatory');
         $this->tokenValidator->validateKey(null);
     }
+
+    /**
+     * @test
+     */
+    public function whenSanitizedKeyIsEmptyReturnsAnException(): void
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('The key must be a valid key');
+        $this->tokenValidator->validateKey("=)?");
+    }
+
+    /**
+     * @test
+     */
+    public function whenSanitizedKeyIsWrongReturnsAnException(): void
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('The key must be a valid key');
+        $this->tokenValidator->validateKey("219naufe2");
+    }
+
+    /**
+     * @test
+     */
+    public function givenRightKeyReturnsKey(): void
+    {
+        $this->assertEquals("24e9a3dea44346393f632e4161bc83e6", $this->tokenValidator->validateKey("24e9a3dea44346393f632e4161bc83e6"));
+    }
 }
