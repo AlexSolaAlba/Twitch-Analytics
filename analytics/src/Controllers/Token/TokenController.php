@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Domain\DB\DataBaseHandler;
 
-
 class TokenController extends BaseController
 {
     private DataBaseHandler $databaseHandler;
     private TokenValidator $validator;
-    public function __construct(DataBaseHandler $databaseHandler,TokenValidator $validator)
+    public function __construct(DataBaseHandler $databaseHandler, TokenValidator $validator)
     {
         $this->databaseHandler = $databaseHandler;
         $this->validator = $validator;

@@ -28,9 +28,9 @@ $app = new Laravel\Lumen\Application(
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
-// $app->withFacades();
+//$app->withFacades();
 
-// $app->withEloquent();
+//$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
