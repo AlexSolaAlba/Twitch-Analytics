@@ -10,7 +10,7 @@ class TokenValidator extends Validator
     public function validateKey(?string $key): string
     {
         if (!isset($key)) {
-            throw new ValidationException('The email is mandatory');
+            throw new ValidationException('The key is mandatory');
         }
 
         $sanitizedKey = strip_tags($key);
