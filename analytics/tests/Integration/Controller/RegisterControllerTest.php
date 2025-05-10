@@ -9,6 +9,7 @@ use Random\RandomException;
 use TwitchAnalytics\Application\Services\RegisterService;
 use TwitchAnalytics\Controllers\Register\RegisterController;
 use TwitchAnalytics\Controllers\Register\RegisterValidator;
+use TwitchAnalytics\Controllers\Validator\Validator;
 use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
@@ -32,8 +33,8 @@ class RegisterControllerTest extends TestCase
         $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
         $dataBaseHandler = new DatabaseHandler();
         $registerService = new RegisterService($keyGenerator, $dataBaseHandler);
-        $registerValidator = new RegisterValidator();
-        $this->registerController = new RegisterController($registerService, $registerValidator);
+        $validator = new Validator();
+        $this->registerController = new RegisterController($registerService, $validator);
     }
 
 

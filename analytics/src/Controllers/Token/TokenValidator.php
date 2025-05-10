@@ -7,7 +7,6 @@ use TwitchAnalytics\Controllers\Validator\Validator;
 
 class TokenValidator extends Validator
 {
-
     public function validateKey(?string $key): string
     {
         if (!isset($key)) {

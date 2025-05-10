@@ -3,7 +3,7 @@
 namespace TwitchAnalytics\Tests\Unit;
 
 use Laravel\Lumen\Testing\TestCase;
-use TwitchAnalytics\Controllers\Register\RegisterValidator;
+use TwitchAnalytics\Controllers\Validator\Validator;
 use TwitchAnalytics\Controllers\ValidationException;
 
 use function PHPUnit\Framework\assertEquals;
@@ -15,11 +15,11 @@ class RegisterValidatorTest extends TestCase
         return require __DIR__ . '/../../bootstrap/app.php';
     }
 
-    private RegisterValidator $registerValidator;
+    private Validator $validator;
     protected function setUp(): void
     {
         parent::setUp();
-        $this->registerValidator = new RegisterValidator();
+        $this->validator = new Validator();
     }
 
     /**
@@ -29,7 +29,7 @@ class RegisterValidatorTest extends TestCase
     {
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The email is mandatory');
-        $this->registerValidator->validate(null);
+        $this->validator->validateEmail(null);
     }
 
     /**
@@ -39,7 +39,7 @@ class RegisterValidatorTest extends TestCase
     {
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The email must be a valid email address');
-        $this->registerValidator->validate("=)?");
+        $this->validator->validateEmail("=)?");
     }
 
     /**
@@ -49,7 +49,7 @@ class RegisterValidatorTest extends TestCase
     {
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The email must be a valid email address');
-        $this->registerValidator->validate("shgfdjshfdjus.com");
+        $this->validator->validateEmail("shgfdjshfdjus.com");
     }
 
     /**
@@ -57,6 +57,6 @@ class RegisterValidatorTest extends TestCase
      */
     public function givenRightEmailReturnsEmail(): void
     {
-        assertEquals("hola@gmail.com", $this->registerValidator->validate("hola@gmail.com"));
+        assertEquals("hola@gmail.com", $this->validator->validateEmail("hola@gmail.com"));
     }
 }
