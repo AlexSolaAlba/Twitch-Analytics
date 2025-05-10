@@ -48,4 +48,22 @@ class TokenControllerTest extends TestCase
             'error' => 'The email is mandatory'
         ], $response->getData(true));
     }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function gets400WhenEmailParameterIsWrong(): void
+    {
+        $request = Request::create('/register', 'POST', [
+            'email' => 'testexample.com'
+        ]);
+
+        $response = $this->tokenController->__invoke($request);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'The email must be a valid email address'
+        ], $response->getData(true));
+    }
 }
