@@ -5,16 +5,20 @@ namespace TwitchAnalytics\Controllers\Token;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\DB\DataBaseHandler;
+use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
 class TokenController extends BaseController
 {
     private DataBaseHandler $databaseHandler;
     private TokenValidator $validator;
-    public function __construct(DataBaseHandler $databaseHandler, TokenValidator $validator)
+    private RandomKeyGenerator $keyGenerator;
+    public function __construct(DataBaseHandler $databaseHandler, TokenValidator $validator, RandomKeyGenerator $keyGenerator)
     {
         $this->databaseHandler = $databaseHandler;
         $this->validator = $validator;
+        $this->keyGenerator = $keyGenerator;
     }
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
@@ -30,7 +34,7 @@ class TokenController extends BaseController
                 if (isset($key)) {
                     if ($this->comprobarEmail($email)) {
                         if ($this->comprobarApiKey($email, $key)) {
-                            $token = bin2hex(random_bytes(16));
+                            $token = $this->keyGenerator->generateRandomKey();
                             if ($this->guardarEnBBDD($email, $key, $token)) {
                                 return response()->json(['token' => $token]);
                             } else {
@@ -49,6 +53,8 @@ class TokenController extends BaseController
                 http_response_code(400);
                 return response()->json(['error' => 'The email is mandatory'], 400);
             }
+        } catch (ValidationException $ex) {
+            return response()->json(['error' => $ex->getMessage()], 400);
         } catch (\Throwable $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
