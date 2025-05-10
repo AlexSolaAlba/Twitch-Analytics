@@ -57,7 +57,8 @@ $app->singleton(
     TwitchAnalytics\Controllers\Token\TokenController::class,
     function ($app) {
         return new TwitchAnalytics\Controllers\Token\TokenController(
-            $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class)
+            $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class),
+            $app->make(TwitchAnalytics\Controllers\Token\TokenValidator::class),
         );
     }
 );
