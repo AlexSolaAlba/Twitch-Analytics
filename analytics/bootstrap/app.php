@@ -59,6 +59,7 @@ $app->singleton(
         return new TwitchAnalytics\Controllers\Token\TokenController(
             $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class),
             $app->make(TwitchAnalytics\Controllers\Token\TokenValidator::class),
+            $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class)
         );
     }
 );
