@@ -5,6 +5,7 @@ namespace TwitchAnalytics\Tests\Unit;
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\Token\TokenValidator;
 use TwitchAnalytics\Controllers\ValidationException;
+use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 
 class TokenValidatorTest extends TestCase
 {
@@ -35,8 +36,8 @@ class TokenValidatorTest extends TestCase
      */
     public function whenSanitizedKeyIsEmptyReturnsAnException(): void
     {
-        $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('The api_key must be a valid key');
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. API access token is invalid.');
         $this->tokenValidator->validateKey("=)?");
     }
 
@@ -45,8 +46,8 @@ class TokenValidatorTest extends TestCase
      */
     public function whenSanitizedKeyIsWrongReturnsAnException(): void
     {
-        $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('The api_key must be a valid key');
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. API access token is invalid.');
         $this->tokenValidator->validateKey("219naufe2");
     }
 

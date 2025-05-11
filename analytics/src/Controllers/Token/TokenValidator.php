@@ -4,6 +4,7 @@ namespace TwitchAnalytics\Controllers\Token;
 
 use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Controllers\Validator\Validator;
+use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 
 class TokenValidator extends Validator
 {
@@ -19,11 +20,11 @@ class TokenValidator extends Validator
         $sanitizedKey = filter_var($sanitizedKey, FILTER_SANITIZE_EMAIL);
 
         if (empty($sanitizedKey)) {
-            throw new ValidationException('The api_key must be a valid key');
+            throw new ApiKeyException('Unauthorized. API access token is invalid.');
         }
 
         if (!$this->checkKey($key)) {
-            throw new ValidationException('The api_key must be a valid key');
+            throw new ApiKeyException('Unauthorized. API access token is invalid.');
         }
 
         return $key;

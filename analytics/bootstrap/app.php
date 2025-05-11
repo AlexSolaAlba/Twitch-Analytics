@@ -54,12 +54,21 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Application\Services\TokenService::class,
+    function ($app) {
+        return new TwitchAnalytics\Application\Services\TokenService(
+            $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
+            $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class)
+        );
+    }
+);
+
+$app->singleton(
     TwitchAnalytics\Controllers\Token\TokenController::class,
     function ($app) {
         return new TwitchAnalytics\Controllers\Token\TokenController(
-            $app->make(TwitchAnalytics\Domain\DB\DataBaseHandler::class),
             $app->make(TwitchAnalytics\Controllers\Token\TokenValidator::class),
-            $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class)
+            $app->make(TwitchAnalytics\Application\Services\TokenService::class)
         );
     }
 );
