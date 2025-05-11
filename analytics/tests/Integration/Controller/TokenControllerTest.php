@@ -81,7 +81,7 @@ class TokenControllerTest extends TestCase
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals([
-            'error' => 'The key is mandatory'
+            'error' => 'The api_key is mandatory'
         ], $response->getData(true));
     }
 
@@ -100,7 +100,7 @@ class TokenControllerTest extends TestCase
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals([
-            'error' => 'The key must be a valid key'
+            'error' => 'The api_key must be a valid key'
         ], $response->getData(true));
     }
 

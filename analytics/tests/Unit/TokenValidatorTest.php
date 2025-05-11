@@ -26,7 +26,7 @@ class TokenValidatorTest extends TestCase
     public function notGivenAKeyReturnsAnException(): void
     {
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('The key is mandatory');
+        $this->expectExceptionMessage('The api_key is mandatory');
         $this->tokenValidator->validateKey(null);
     }
 
@@ -36,7 +36,7 @@ class TokenValidatorTest extends TestCase
     public function whenSanitizedKeyIsEmptyReturnsAnException(): void
     {
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('The key must be a valid key');
+        $this->expectExceptionMessage('The api_key must be a valid key');
         $this->tokenValidator->validateKey("=)?");
     }
 
@@ -46,7 +46,7 @@ class TokenValidatorTest extends TestCase
     public function whenSanitizedKeyIsWrongReturnsAnException(): void
     {
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('The key must be a valid key');
+        $this->expectExceptionMessage('The api_key must be a valid key');
         $this->tokenValidator->validateKey("219naufe2");
     }
 

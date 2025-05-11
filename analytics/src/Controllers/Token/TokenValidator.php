@@ -10,20 +10,20 @@ class TokenValidator extends Validator
     public function validateKey(?string $key): string
     {
         if (!isset($key)) {
-            throw new ValidationException('The key is mandatory');
+            throw new ValidationException('The api_key is mandatory');
         }
 
         $sanitizedKey = strip_tags($key);
         $sanitizedKey = htmlspecialchars($sanitizedKey, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
-        $sanitizedEmail = filter_var($sanitizedKey, FILTER_SANITIZE_EMAIL);
+        $sanitizedKey = filter_var($sanitizedKey, FILTER_SANITIZE_EMAIL);
 
         if (empty($sanitizedKey)) {
-            throw new ValidationException('The key must be a valid key');
+            throw new ValidationException('The api_key must be a valid key');
         }
 
         if (!$this->checkKey($key)) {
-            throw new ValidationException('The key must be a valid key');
+            throw new ValidationException('The api_key must be a valid key');
         }
 
         return $key;
