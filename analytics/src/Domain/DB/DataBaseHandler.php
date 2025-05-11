@@ -2,6 +2,8 @@
 
 namespace TwitchAnalytics\Domain\DB;
 
+use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+
 class DataBaseHandler
 {
     public function connectWithDB(): false|\mysqli
@@ -103,5 +105,71 @@ class DataBaseHandler
         $stmt = $connection->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
         $stmt->bind_param("ss", $email, $key);
         return $stmt;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
+    public function checkEmailExists($email): void
+    {
+        $connection = $this->connectWithDB();
+
+        $this->checkConnection($connection);
+
+        $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
+        $this->checkStmtExecution($stmt);
+
+        $dataRaw = $stmt->get_result();
+        $data = $dataRaw->fetch_assoc();
+        $stmt->close();
+        if (!isset($data['userID'])) {
+            throw new DBException('The email must be a valid email address');
+        }
+    }
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
+    public function checkApiKeyExists($email, $key): void
+    {
+        $connection = $this->connectWithDB();
+
+        $this->checkConnection($connection);
+
+        $stmt = $connection->prepare("SELECT userApiKey FROM user WHERE userEmail = ?");
+        $stmt->bind_param("s", $email);
+        $this->checkStmtExecution($stmt);
+
+        $dataRaw = $stmt->get_result();
+        $data = $dataRaw->fetch_assoc();
+        $stmt->close();
+        if ($key != $data['userApiKey']) {
+            throw new ApiKeyException('Unauthorized. API access token is invalid.');
+        }
+    }
+
+    public function insertTokenIntoDB($email, $token): void
+    {
+        $connection = $this->connectWithDB();
+
+        $this->checkConnection($connection);
+
+        $stmt = $connection->prepare("SELECT userID FROM user WHERE userEmail = ?");
+        $stmt->bind_param("s", $email);
+
+        $this->checkStmtExecution($stmt);
+        $dataRaw = $stmt->get_result();
+        $data = $dataRaw->fetch_assoc();
+        $stmt->close();
+
+        $userId = $data['userID'];
+        $expiration = time() + 259200;
+        $stmt = $connection->prepare("UPDATE user SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
+        $stmt->bind_param("sdi", $token, $expiration, $userId);
+
+
+        $this->checkStmtExecution($stmt);
+
+        $stmt->close();
+        $connection->close();
     }
 }

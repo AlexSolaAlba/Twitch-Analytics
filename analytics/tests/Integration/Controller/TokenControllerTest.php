@@ -6,6 +6,7 @@ use Laravel\Lumen\Testing\TestCase;
 use Mockery;
 use Illuminate\Http\Request;
 use Random\RandomException;
+use TwitchAnalytics\Application\Services\TokenService;
 use TwitchAnalytics\Controllers\Token\TokenController;
 use TwitchAnalytics\Controllers\Token\TokenValidator;
 use TwitchAnalytics\Domain\DB\DataBaseHandler;
@@ -30,7 +31,8 @@ class TokenControllerTest extends TestCase
         $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
         $dataBaseHandler = new DatabaseHandler();
         $tokenValidator = new TokenValidator();
-        $this->tokenController = new TokenController($dataBaseHandler, $tokenValidator, $keyGenerator);
+        $tokenService = new TokenService($keyGenerator, $dataBaseHandler);
+        $this->tokenController = new TokenController($tokenValidator, $tokenService);
     }
 
     /**
@@ -81,7 +83,7 @@ class TokenControllerTest extends TestCase
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals([
-            'error' => 'The key is mandatory'
+            'error' => 'The api_key is mandatory'
         ], $response->getData(true));
     }
 
@@ -89,7 +91,7 @@ class TokenControllerTest extends TestCase
      * @test
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function gets400WhenEmailParameterIsRightAndKeyParameterIsWrong(): void
+    public function gets401WhenEmailParameterIsRightAndKeyParameterIsWrong(): void
     {
         $request = Request::create('/token', 'POST', [
             'email' => 'test@example.com',
@@ -98,9 +100,9 @@ class TokenControllerTest extends TestCase
 
         $response = $this->tokenController->__invoke($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
         $this->assertEquals([
-            'error' => 'The key must be a valid key'
+            'error' => 'Unauthorized. API access token is invalid.'
         ], $response->getData(true));
     }
 
