@@ -1,8 +1,9 @@
 <?php
 
-namespace TwitchAnalytics\Domain\DB;
+namespace TwitchAnalytics\Infraestructure\DB;
 
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Models\User;
 
 class DataBaseHandler
 {
@@ -33,7 +34,7 @@ class DataBaseHandler
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function saveUserAndApiKeyInDB($email, $key): void
+    public function saveUserAndApiKeyInDB($email, $key): User
     {
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
@@ -58,6 +59,8 @@ class DataBaseHandler
 
         $stmt->close();
         $connection->close();
+
+        return new User($email, $key, "", 0);
     }
 
     /**
@@ -72,13 +75,10 @@ class DataBaseHandler
         return $stmt;
     }
 
-    /**
-     * @param false|array|null $datos
-     * @return bool
-     */
-    public function existUserID(false|array|null $datos): bool
+
+    public function existUserID(false|array|null $userId): bool
     {
-        return isset($datos['userID']);
+        return isset($userId['userID']);
     }
 
     /**

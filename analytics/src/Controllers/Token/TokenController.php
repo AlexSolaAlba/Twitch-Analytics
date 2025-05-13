@@ -7,10 +7,8 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Application\Services\TokenService;
 use TwitchAnalytics\Controllers\ValidationException;
-use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\EmailException;
-use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
 class TokenController extends BaseController
 {

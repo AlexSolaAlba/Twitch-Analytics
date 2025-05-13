@@ -1,6 +1,6 @@
 <?php
 
-namespace TwitchAnalytics\Domain\DB;
+namespace TwitchAnalytics\Infraestructure\DB;
 
 use TwitchAnalytics\Domain\Exceptions\ApplicationException;
 

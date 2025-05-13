@@ -3,11 +3,11 @@
 namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
-use TwitchAnalytics\Domain\DB\DataBaseHandler;
-use TwitchAnalytics\Domain\DB\DBException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\EmailException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\DB\DBException;
 
 class TokenService
 {
