@@ -18,4 +18,12 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->databaseHandler->saveUserAndApiKeyInDB($email, $key);
     }
+    public function checkUserExists(string $email, string $key): User
+    {
+        return $this->databaseHandler->checkUserExistsInDB($email, $key);
+    }
+    public function assignTokenToUser(User $user, string $token): void
+    {
+        $this->databaseHandler->insertTokenIntoDB($user, $token);
+    }
 }

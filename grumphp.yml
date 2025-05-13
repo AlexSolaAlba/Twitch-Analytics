@@ -13,6 +13,7 @@ grumphp:
       exclude:
         - PSR1.Files.SideEffects
         - Generic.Files.LineLength
+        - Generic.Files.LineEndings
 
     phpmd:
       ruleset:

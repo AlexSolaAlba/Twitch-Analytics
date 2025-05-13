@@ -6,31 +6,30 @@ use Random\RandomException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\EmailException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
-use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\DB\DBException;
 
 class TokenService
 {
     private RandomKeyGenerator $keyGenerator;
-    private DataBaseHandler $databaseHandler;
-    public function __construct(RandomKeyGenerator $keyGenerator, DataBaseHandler $databaseHandler)
+    private UserRepositoryInterface $userRepository;
+    public function __construct(RandomKeyGenerator $keyGenerator, UserRepositoryInterface $userRepository)
     {
         $this->keyGenerator = $keyGenerator;
-        $this->databaseHandler = $databaseHandler;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @throws RandomException
      */
-    public function generateToken($email, $key): array
+    public function generateToken(string $email, string $key): array
     {
         try {
-            $this->databaseHandler->checkEmailExists($email);
-            $this->databaseHandler->checkApiKeyExists($email, $key);
+            $user = $this->userRepository->checkUserExists($email, $key);
             $token = $this->keyGenerator->generateRandomKey();
-            $this->databaseHandler->insertTokenIntoDB($email, $token);
+            $this->userRepository->assignTokenToUser($user, $token);
             return [
-                'token' => $token
+                'token' => $user->getToken()
             ];
         } catch (RandomException) {
             throw new RandomException('Internal server error');
