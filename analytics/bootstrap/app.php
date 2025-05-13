@@ -48,7 +48,7 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
             $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
-            $app->make(\TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface::class)
+            $app->make(TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface::class)
         );
     }
 );
@@ -58,7 +58,7 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\TokenService(
             $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
-            $app->make(\TwitchAnalytics\Infraestructure\DB\DataBaseHandler::class)
+            $app->make(TwitchAnalytics\Infraestructure\DB\DataBaseHandler::class)
         );
     }
 );

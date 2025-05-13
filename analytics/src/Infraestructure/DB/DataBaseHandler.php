@@ -53,6 +53,12 @@ class DataBaseHandler
             $stmt = $this->updateApiKey($connection, $key, $userId);
         } else {
             $stmt = $this->insertNewUserAndApiKey($connection, $email, $key);
+            $this->checkStmtExecution($stmt);
+            $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
+            $this->checkStmtExecution($stmt);
+            $userIdRaw = $stmt->get_result();
+            $userId = $userIdRaw->fetch_assoc();
+            $userId = $userId['userID'];
         }
 
         $this->checkStmtExecution($stmt);
@@ -60,14 +66,9 @@ class DataBaseHandler
         $stmt->close();
         $connection->close();
 
-        return new User($email, $key, "", 0);
+        return new User($userId, $email, $key, "", 0);
     }
 
-    /**
-     * @param false|\mysqli $connection
-     * @param $email
-     * @return false|\mysqli_stmt
-     */
     public function getUserIDWithEmailFromDB(false|\mysqli $connection, $email): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT userID FROM user WHERE userEmail = ?");
@@ -75,18 +76,11 @@ class DataBaseHandler
         return $stmt;
     }
 
-
     public function existUserID(false|array|null $userId): bool
     {
         return isset($userId['userID']);
     }
 
-    /**
-     * @param false|\mysqli $connection
-     * @param $key
-     * @param mixed $userId
-     * @return false|\mysqli_stmt
-     */
     public function updateApiKey(false|\mysqli $connection, $key, mixed $userId): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("UPDATE user SET userApiKey = ? WHERE userID = ?");
@@ -94,12 +88,6 @@ class DataBaseHandler
         return $stmt;
     }
 
-    /**
-     * @param false|\mysqli $connection
-     * @param $email
-     * @param $key
-     * @return false|\mysqli_stmt
-     */
     public function insertNewUserAndApiKey(false|\mysqli $connection, $email, $key): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
