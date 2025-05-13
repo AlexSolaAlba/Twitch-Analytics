@@ -12,6 +12,7 @@ use TwitchAnalytics\Controllers\Register\RegisterValidator;
 use TwitchAnalytics\Controllers\Validator\Validator;
 use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
+use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepository;
 
 class RegisterControllerTest extends TestCase
 {
@@ -32,7 +33,8 @@ class RegisterControllerTest extends TestCase
         $keyGenerator = Mockery::mock(RandomKeyGenerator::class);
         $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
         $dataBaseHandler = new DatabaseHandler();
-        $registerService = new RegisterService($keyGenerator, $dataBaseHandler);
+        $userRepository = new UserRepository($dataBaseHandler);
+        $registerService = new RegisterService($keyGenerator, $userRepository);
         $validator = new Validator();
         $this->registerController = new RegisterController($registerService, $validator);
     }

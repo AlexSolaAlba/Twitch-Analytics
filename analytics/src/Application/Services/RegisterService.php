@@ -3,18 +3,18 @@
 namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
-use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\DB\DBException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
+use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepository;
 
 class RegisterService
 {
     private RandomKeyGenerator $keyGenerator;
-    private DataBaseHandler $databaseHandler;
-    public function __construct(RandomKeyGenerator $keyGenerator, DataBaseHandler $databaseHandler)
+    private UserRepository $userRepository;
+    public function __construct(RandomKeyGenerator $keyGenerator, UserRepository $userRepository)
     {
         $this->keyGenerator = $keyGenerator;
-        $this->databaseHandler = $databaseHandler;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -25,9 +25,9 @@ class RegisterService
     {
         try {
             $key = $this->keyGenerator->generateRandomKey();
-            $this->databaseHandler->saveUserAndApiKeyInDB($email, $key);
+            $user = $this->userRepository->registerUser($email, $key);
             return [
-                'api_key' => $key
+                'api_key' => $user->getApiKey()
             ];
         } catch (RandomException) {
             throw new RandomException('Internal server error');
