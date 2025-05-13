@@ -8,11 +8,10 @@ use Mockery;
 use Random\RandomException;
 use TwitchAnalytics\Application\Services\RegisterService;
 use TwitchAnalytics\Controllers\Register\RegisterController;
-use TwitchAnalytics\Controllers\Register\RegisterValidator;
 use TwitchAnalytics\Controllers\Validator\Validator;
-use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
-use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepository;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 
 class RegisterControllerTest extends TestCase
 {

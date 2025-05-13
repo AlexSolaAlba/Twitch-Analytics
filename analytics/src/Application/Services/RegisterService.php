@@ -3,15 +3,15 @@
 namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
-use TwitchAnalytics\Domain\DB\DBException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
-use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepository;
+use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Infraestructure\DB\DBException;
 
 class RegisterService
 {
     private RandomKeyGenerator $keyGenerator;
-    private UserRepository $userRepository;
-    public function __construct(RandomKeyGenerator $keyGenerator, UserRepository $userRepository)
+    private UserRepositoryInterface $userRepository;
+    public function __construct(RandomKeyGenerator $keyGenerator, UserRepositoryInterface $userRepository)
     {
         $this->keyGenerator = $keyGenerator;
         $this->userRepository = $userRepository;

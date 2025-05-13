@@ -1,11 +1,12 @@
 <?php
 
-namespace TwitchAnalytics\Domain\Repositories\UserRepository;
+namespace TwitchAnalytics\Infraestructure\Repositories;
 
-use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\Models\User;
+use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
     private DataBaseHandler $databaseHandler;
     public function __construct(DataBaseHandler $databaseHandler)

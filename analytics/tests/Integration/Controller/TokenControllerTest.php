@@ -2,15 +2,15 @@
 
 namespace Integration\Controller;
 
+use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;
-use Illuminate\Http\Request;
 use Random\RandomException;
 use TwitchAnalytics\Application\Services\TokenService;
 use TwitchAnalytics\Controllers\Token\TokenController;
 use TwitchAnalytics\Controllers\Token\TokenValidator;
-use TwitchAnalytics\Domain\DB\DataBaseHandler;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
 class TokenControllerTest extends TestCase
 {
