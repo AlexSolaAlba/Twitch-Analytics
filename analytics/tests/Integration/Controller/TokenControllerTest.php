@@ -11,6 +11,7 @@ use TwitchAnalytics\Controllers\Token\TokenController;
 use TwitchAnalytics\Controllers\Token\TokenValidator;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 
 class TokenControllerTest extends TestCase
 {
@@ -30,8 +31,9 @@ class TokenControllerTest extends TestCase
         $keyGenerator = Mockery::mock(RandomKeyGenerator::class);
         $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
         $dataBaseHandler = new DatabaseHandler();
+        $userRepository = new UserRepository($dataBaseHandler);
         $tokenValidator = new TokenValidator();
-        $tokenService = new TokenService($keyGenerator, $dataBaseHandler);
+        $tokenService = new TokenService($keyGenerator, $userRepository);
         $this->tokenController = new TokenController($tokenValidator, $tokenService);
     }
 

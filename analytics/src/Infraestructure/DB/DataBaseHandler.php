@@ -34,42 +34,52 @@ class DataBaseHandler
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function saveUserAndApiKeyInDB($email, $key): User
+    public function saveUserAndApiKeyInDB(string $email, string $key): User
     {
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
 
+        $stmt = null;
 
-        $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
-
-        $this->checkStmtExecution($stmt);
-
-        $userIdRaw = $stmt->get_result();
-        $userId = $userIdRaw->fetch_assoc();
-        $stmt->close();
-
-        if ($this->existUserID($userId)) {
-            $userId = $userId['userID'];
-            $stmt = $this->updateApiKey($connection, $key, $userId);
-        } else {
-            $stmt = $this->insertNewUserAndApiKey($connection, $email, $key);
-            $this->checkStmtExecution($stmt);
+        try {
             $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
             $this->checkStmtExecution($stmt);
+
             $userIdRaw = $stmt->get_result();
-            $userId = $userIdRaw->fetch_assoc();
-            $userId = $userId['userID'];
+            $userIdAssoc = $userIdRaw->fetch_assoc();
+            $stmt->close();
+
+            if ($this->existUserID($userIdAssoc)) {
+                $userId = $userIdAssoc['userID'];
+                $stmt = $this->updateApiKey($connection, $key, $userId);
+                $this->checkStmtExecution($stmt);
+            } else {
+                $stmt = $this->insertNewUserAndApiKey($connection, $email, $key);
+                $this->checkStmtExecution($stmt);
+                $stmt->close();
+
+                $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
+                $this->checkStmtExecution($stmt);
+
+                $userIdRaw = $stmt->get_result();
+                $userIdAssoc = $userIdRaw->fetch_assoc();
+                $userId = $userIdAssoc['userID'];
+            }
+            $stmt->close();
+
+            return new User($userId, $email, $key, "", 0);
+        } finally {
+            if ($stmt instanceof \mysqli_stmt) {
+                $stmt->close();
+            }
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
         }
-
-        $this->checkStmtExecution($stmt);
-
-        $stmt->close();
-        $connection->close();
-
-        return new User($userId, $email, $key, "", 0);
     }
 
-    public function getUserIDWithEmailFromDB(false|\mysqli $connection, $email): false|\mysqli_stmt
+
+    public function getUserIDWithEmailFromDB(false|\mysqli $connection, string $email): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT userID FROM user WHERE userEmail = ?");
         $stmt->bind_param("s", $email);
@@ -81,29 +91,54 @@ class DataBaseHandler
         return isset($userId['userID']);
     }
 
-    public function updateApiKey(false|\mysqli $connection, $key, mixed $userId): false|\mysqli_stmt
+    public function updateApiKey(false|\mysqli $connection, string $key, int $userId): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("UPDATE user SET userApiKey = ? WHERE userID = ?");
         $stmt->bind_param("si", $key, $userId);
         return $stmt;
     }
 
-    public function insertNewUserAndApiKey(false|\mysqli $connection, $email, $key): false|\mysqli_stmt
+    public function insertNewUserAndApiKey(false|\mysqli $connection, string $email, string $key): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
         $stmt->bind_param("ss", $email, $key);
         return $stmt;
     }
 
+    public function checkUserExistsInDB(string $email, string $key): User
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        $stmt = null;
+
+        try {
+            $this->checkEmailExists($connection, $email);
+            $this->checkApiKeyExists($connection, $email, $key);
+
+            $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
+            $this->checkStmtExecution($stmt);
+
+            $userIdRaw = $stmt->get_result();
+            $userIdAssoc = $userIdRaw->fetch_assoc();
+            $userId = $userIdAssoc['userID'];
+            $stmt->close();
+
+            return new User($userId, $email, $key, "", 0);
+        } finally {
+            if ($stmt instanceof \mysqli_stmt) {
+                $stmt->close();
+            }
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function checkEmailExists($email): void
+    public function checkEmailExists(\mysqli $connection, string $email): void
     {
-        $connection = $this->connectWithDB();
-
-        $this->checkConnection($connection);
-
         $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
         $this->checkStmtExecution($stmt);
 
@@ -117,12 +152,8 @@ class DataBaseHandler
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function checkApiKeyExists($email, $key): void
+    public function checkApiKeyExists(\mysqli $connection, string $email, string $key): void
     {
-        $connection = $this->connectWithDB();
-
-        $this->checkConnection($connection);
-
         $stmt = $connection->prepare("SELECT userApiKey FROM user WHERE userEmail = ?");
         $stmt->bind_param("s", $email);
         $this->checkStmtExecution($stmt);
@@ -135,29 +166,33 @@ class DataBaseHandler
         }
     }
 
-    public function insertTokenIntoDB($email, $token): void
+    public function insertTokenIntoDB(User $user, string $token): void
     {
         $connection = $this->connectWithDB();
-
         $this->checkConnection($connection);
 
-        $stmt = $connection->prepare("SELECT userID FROM user WHERE userEmail = ?");
-        $stmt->bind_param("s", $email);
+        $stmt = null;
 
-        $this->checkStmtExecution($stmt);
-        $dataRaw = $stmt->get_result();
-        $data = $dataRaw->fetch_assoc();
-        $stmt->close();
+        try {
+            $expiration = time() + 259200;
+            $stmt = $this->updateTokenAndTokenExpire($connection, $token, $expiration, $user->getUserId());
+            $this->checkStmtExecution($stmt);
+            $user->setToken($token);
+            $user->setTokenExpire($expiration);
+        } finally {
+            if ($stmt instanceof \mysqli_stmt) {
+                $stmt->close();
+            }
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
 
-        $userId = $data['userID'];
-        $expiration = time() + 259200;
+    public function updateTokenAndTokenExpire(false|\mysqli $connection, string $token, int $expiration, int $userId): false|\mysqli_stmt
+    {
         $stmt = $connection->prepare("UPDATE user SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
         $stmt->bind_param("sdi", $token, $expiration, $userId);
-
-
-        $this->checkStmtExecution($stmt);
-
-        $stmt->close();
-        $connection->close();
+        return $stmt;
     }
 }

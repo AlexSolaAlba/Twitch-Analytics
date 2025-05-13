@@ -4,23 +4,23 @@ namespace TwitchAnalytics\Domain\Models;
 
 class User
 {
-    private int $id;
+    private int $userId;
     private string $email;
     private string $apiKey;
     private string $token;
     private int $tokenExpire;
-    public function __construct(int $id, string $email, string $apiKey, string $token, int $tokenExpire)
+    public function __construct(int $userId, string $email, string $apiKey, string $token, int $tokenExpire)
     {
-        $this->id = $id;
+        $this->userId = $userId;
         $this->email = $email;
         $this->apiKey = $apiKey;
         $this->token = $token;
         $this->tokenExpire = $tokenExpire;
     }
 
-    public function getId(): int
+    public function getUserId(): int
     {
-        return $this->id;
+        return $this->userId;
     }
 
     public function getEmail(): string
@@ -41,5 +41,30 @@ class User
     public function getTokenExpire(): int
     {
         return $this->tokenExpire;
+    }
+
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setApiKey(string $apiKey): void
+    {
+        $this->apiKey = $apiKey;
+    }
+
+    public function setToken(string $token): void
+    {
+        $this->token = $token;
+    }
+
+    public function setTokenExpire(int $tokenExpire): void
+    {
+        $this->tokenExpire = $tokenExpire;
     }
 }
