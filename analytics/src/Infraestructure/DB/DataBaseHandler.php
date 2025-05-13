@@ -176,6 +176,7 @@ class DataBaseHandler
             $expiration = time() + 259200;
             $stmt = $this->updateTokenAndTokenExpire($connection, $token, $expiration, $user->getUserId());
             $this->checkStmtExecution($stmt);
+
             $user->setToken($token);
             $user->setTokenExpire($expiration);
         } finally {
