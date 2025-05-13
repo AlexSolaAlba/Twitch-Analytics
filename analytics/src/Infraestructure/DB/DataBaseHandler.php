@@ -7,7 +7,7 @@ use TwitchAnalytics\Domain\Models\User;
 
 class DataBaseHandler
 {
-    public function connectWithDB(): false|\mysqli
+    private function connectWithDB(): false|\mysqli
     {
         return mysqli_connect(
             env('DB_HOST'),
@@ -17,14 +17,14 @@ class DataBaseHandler
         );
     }
 
-    public function checkConnection(false|\mysqli $connection): void
+    private function checkConnection(false|\mysqli $connection): void
     {
         if (!$connection) {
             throw new DBException('Internal server error.');
         }
     }
 
-    public function checkStmtExecution(false|\mysqli_stmt $stmt): void
+    private function checkStmtExecution(false|\mysqli_stmt $stmt): void
     {
         if (!$stmt->execute()) {
             throw new DBException('Internal server error.');
@@ -78,27 +78,26 @@ class DataBaseHandler
         }
     }
 
-
-    public function getUserIDWithEmailFromDB(false|\mysqli $connection, string $email): false|\mysqli_stmt
+    private function getUserIDWithEmailFromDB(false|\mysqli $connection, string $email): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT userID FROM user WHERE userEmail = ?");
         $stmt->bind_param("s", $email);
         return $stmt;
     }
 
-    public function existUserID(false|array|null $userId): bool
+    private function existUserID(false|array|null $userId): bool
     {
         return isset($userId['userID']);
     }
 
-    public function updateApiKey(false|\mysqli $connection, string $key, int $userId): false|\mysqli_stmt
+    private function updateApiKey(false|\mysqli $connection, string $key, int $userId): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("UPDATE user SET userApiKey = ? WHERE userID = ?");
         $stmt->bind_param("si", $key, $userId);
         return $stmt;
     }
 
-    public function insertNewUserAndApiKey(false|\mysqli $connection, string $email, string $key): false|\mysqli_stmt
+    private function insertNewUserAndApiKey(false|\mysqli $connection, string $email, string $key): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("INSERT INTO user (userEmail, userApiKey) VALUES (?, ?)");
         $stmt->bind_param("ss", $email, $key);
@@ -137,7 +136,7 @@ class DataBaseHandler
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function checkEmailExists(\mysqli $connection, string $email): void
+    private function checkEmailExists(\mysqli $connection, string $email): void
     {
         $stmt = $this->getUserIDWithEmailFromDB($connection, $email);
         $this->checkStmtExecution($stmt);
@@ -152,7 +151,7 @@ class DataBaseHandler
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function checkApiKeyExists(\mysqli $connection, string $email, string $key): void
+    private function checkApiKeyExists(\mysqli $connection, string $email, string $key): void
     {
         $stmt = $connection->prepare("SELECT userApiKey FROM user WHERE userEmail = ?");
         $stmt->bind_param("s", $email);
@@ -189,7 +188,7 @@ class DataBaseHandler
         }
     }
 
-    public function updateTokenAndTokenExpire(false|\mysqli $connection, string $token, int $expiration, int $userId): false|\mysqli_stmt
+    private function updateTokenAndTokenExpire(false|\mysqli $connection, string $token, int $expiration, int $userId): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("UPDATE user SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
         $stmt->bind_param("sdi", $token, $expiration, $userId);
