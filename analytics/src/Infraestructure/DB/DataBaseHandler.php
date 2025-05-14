@@ -3,6 +3,7 @@
 namespace TwitchAnalytics\Infraestructure\DB;
 
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
 
 class DataBaseHandler
@@ -197,12 +198,12 @@ class DataBaseHandler
 
         $stmt = $this->getUserWithToken($connection, $token);
         $this->checkStmtExecution($stmt);
-        $resultRaw = $stmt->get_result();
+        $dataRaw = $stmt->get_result();
 
-        $user = $resultRaw->fetch_assoc();
+        $user = $dataRaw->fetch_assoc();
         $stmt->close();
         $connection->close();
-        if (($resultRaw->num_rows === 0) or ($user['userTokenExpire'] < time())) {
+        if (($dataRaw->num_rows === 0) or ($user['userTokenExpire'] < time())) {
             throw new ApiKeyException('Unauthorized. Token is invalid or expired.');
         }
     }
@@ -211,6 +212,32 @@ class DataBaseHandler
     {
         $stmt = $connection->prepare("SELECT * FROM user WHERE userToken = ?");
         $stmt->bind_param("s", $token);
+        return $stmt;
+    }
+
+    public function getTwitchUserFromDB(): TwitchUser
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        $stmt = $this->getTwitchUserQuery($connection);
+        $this->checkStmtExecution($stmt);
+
+        $dataRaw = $stmt->get_result();
+        $twitchUser = $dataRaw->fetch_assoc();
+        $accessToken = $twitchUser['accessToken'];
+        $tokenExpire = $twitchUser['tokenExpire'];
+        $clientId = $twitchUser['clientId'];
+        $stmt->close();
+        $connection->close();
+        return new TwitchUser(1, $accessToken, $tokenExpire, $clientId, "");
+    }
+
+    private function getTwitchUserQuery(false|\mysqli $connection): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("SELECT accessToken, tokenExpire, clientId FROM token WHERE tokenID =?");
+        $tokenId = 1;
+        $stmt->bind_param("i", $tokenId);
         return $stmt;
     }
 }
