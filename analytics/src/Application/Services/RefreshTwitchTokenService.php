@@ -2,12 +2,29 @@
 
 namespace TwitchAnalytics\Application\Services;
 
+use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
+use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use Illuminate\Http\Request;
+
 class RefreshTwitchTokenService
 {
+    private RandomKeyGenerator $keyGenerator;
+    private UserRepositoryInterface $userRepository;
+    public function __construct(RandomKeyGenerator $keyGenerator, UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->keyGenerator = $keyGenerator;
+    }
+    public function refreshTwitchToken(string $token): void
+    {
+        $this->userRepository->verifyUserToken($token);
+        $this->getValidToken();
+    }
+
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function getAccessToken()
+    private function getAccessToken()
     {
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
@@ -47,7 +64,7 @@ class RefreshTwitchTokenService
         $data = json_decode($response, true);
 
         if (isset($data['access_token'])) {
-            saveTokenToDB($data['access_token'], $data['expires_in']);
+            $this->saveTokenToDB($data['access_token'], $data['expires_in']);
             return $data['access_token'];
         } else {
             http_response_code(500);
@@ -56,7 +73,7 @@ class RefreshTwitchTokenService
         }
     }
 
-    public function saveTokenToDB($accessToken, $expiresIn)
+    private function saveTokenToDB($accessToken, $expiresIn): void
     {
         $expiresAt = time() + $expiresIn;
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
@@ -79,7 +96,7 @@ class RefreshTwitchTokenService
         $conexion->close();
     }
 
-    public function getTokenFromDB()
+    private function getTokenFromDB()
     {
         $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
         #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
@@ -108,60 +125,13 @@ class RefreshTwitchTokenService
         return ['accessToken' => $accessToken, 'tokenExpire' => $tokenExpire, 'clientId' => $clientId];
     }
 
-    public function getValidToken()
+    private function getValidToken()
     {
-        $tokenData = getTokenFromDB();
+        $tokenData = $this->getTokenFromDB();
         if (!$tokenData || time() >= $tokenData['tokenExpire']) {
-            $newToken = getAccessToken();
+            $newToken = $this->getAccessToken();
             return ['accessToken' => $newToken, 'clientId' => $tokenData['clientId']];
         }
         return ['accessToken' => $tokenData['accessToken'], 'clientId' => $tokenData['clientId']];
-    }
-
-    public function verificarTokenUser()
-    {
-        $headers = getallheaders();
-
-        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? $headers['Authorization'] ?? null;
-        if (!$authHeader) {
-            http_response_code(401);
-            echo json_encode(["error" => "Unauthorized. Token is invalid or expired."]);
-            exit();
-        }
-
-        list($type, $token) = explode(' ', $authHeader, 2);
-        if ($type !== 'Bearer' || empty($token)) {
-            http_response_code(401);
-            echo json_encode(["error" => "Unauthorized. Token is invalid or expired."]);
-            exit();
-        }
-
-        $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
-        #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
-        if (!$conexion) {
-            $conexion . close();
-            http_response_code(500);
-            echo json_encode(["error" => "Internal server error."]);
-            exit();
-        }
-        $stmt = $conexion->prepare("SELECT * FROM user WHERE userToken = ?");
-        $stmt->bind_param("s", $token);
-        if (!$stmt->execute()) {
-            $stmt->close();
-            $conexion->close();
-            http_response_code(500);
-            echo json_encode(["error" => "Internal server error."]);
-            exit();
-        }
-        $result = $stmt->get_result();
-
-        $usuario = $result->fetch_assoc();
-        $stmt->close();
-        $conexion->close();
-        if (($result->num_rows === 0) or ($usuario['userTokenExpire'] < time())) {
-            http_response_code(401);
-            echo json_encode(["error" => "Unauthorized. Token is invalid or expired."]);
-            exit();
-        }
     }
 }

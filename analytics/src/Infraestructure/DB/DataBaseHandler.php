@@ -189,4 +189,28 @@ class DataBaseHandler
         $stmt->bind_param("sdi", $token, $expiration, $userId);
         return $stmt;
     }
+
+    public function verifyToken(string $token): void
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        $stmt = $this->getUserWithToken($connection, $token);
+        $this->checkStmtExecution($stmt);
+        $resultRaw = $stmt->get_result();
+
+        $user = $resultRaw->fetch_assoc();
+        $stmt->close();
+        $connection->close();
+        if (($resultRaw->num_rows === 0) or ($user['userTokenExpire'] < time())) {
+            throw new ApiKeyException('Unauthorized. Token is invalid or expired.');
+        }
+    }
+
+    private function getUserWithToken(false|\mysqli $connection, string $token): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("SELECT * FROM user WHERE userToken = ?");
+        $stmt->bind_param("s", $token);
+        return $stmt;
+    }
 }

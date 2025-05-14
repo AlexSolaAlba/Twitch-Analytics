@@ -3,6 +3,7 @@
 namespace TwitchAnalytics\Controllers\Validator;
 
 use TwitchAnalytics\Controllers\ValidationException;
+use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 
 class Validator
 {
@@ -31,5 +32,16 @@ class Validator
     private function checkEmail($email): false|int
     {
         return preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email);
+    }
+
+    private function validateToken(?string $authorization): string
+    {
+        /*$authorization = $request->header('Authorization');*/
+
+        if ($authorization && str_starts_with($authorization, 'Bearer ')) {
+            return substr($authorization, 7);
+        }
+
+        throw new ApiKeyException('Unauthorized. Token is invalid or expired.');
     }
 }
