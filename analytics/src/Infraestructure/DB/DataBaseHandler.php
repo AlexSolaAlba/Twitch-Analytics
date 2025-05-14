@@ -69,9 +69,6 @@ class DataBaseHandler
 
             return new User($userId, $email, $key, "", 0);
         } finally {
-            if ($stmt instanceof \mysqli_stmt) {
-                $stmt->close();
-            }
             if ($connection instanceof \mysqli) {
                 $connection->close();
             }
@@ -125,9 +122,6 @@ class DataBaseHandler
 
             return new User($userId, $email, $key, "", 0);
         } finally {
-            if ($stmt instanceof \mysqli_stmt) {
-                $stmt->close();
-            }
             if ($connection instanceof \mysqli) {
                 $connection->close();
             }
