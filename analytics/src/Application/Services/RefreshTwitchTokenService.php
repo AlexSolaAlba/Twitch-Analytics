@@ -17,7 +17,7 @@ class RefreshTwitchTokenService
     }
     public function refreshTwitchToken(string $token): void
     {
-        $this->userRepository->verifyUserToken($token);
+        /*$this->userRepository->verifyUserToken($token);*/
         $this->getValidToken();
     }
 
