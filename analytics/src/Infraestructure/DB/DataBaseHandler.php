@@ -3,6 +3,7 @@
 namespace TwitchAnalytics\Infraestructure\DB;
 
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
 
 class DataBaseHandler
@@ -187,6 +188,88 @@ class DataBaseHandler
     {
         $stmt = $connection->prepare("UPDATE user SET userToken = ? , userTokenExpire = ?  WHERE userID = ?");
         $stmt->bind_param("sdi", $token, $expiration, $userId);
+        return $stmt;
+    }
+
+    public function verifyToken(string $token): void
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        $stmt = $this->getUserWithToken($connection, $token);
+        $this->checkStmtExecution($stmt);
+        $dataRaw = $stmt->get_result();
+
+        $user = $dataRaw->fetch_assoc();
+        $stmt->close();
+        $connection->close();
+        if (($dataRaw->num_rows === 0) or ($user['userTokenExpire'] < time())) {
+            throw new ApiKeyException('Unauthorized. Token is invalid or expired.');
+        }
+    }
+
+    private function getUserWithToken(false|\mysqli $connection, string $token): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("SELECT * FROM user WHERE userToken = ?");
+        $stmt->bind_param("s", $token);
+        return $stmt;
+    }
+
+    public function getTwitchUserFromDB(): TwitchUser
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        try {
+            $stmt = $this->getTwitchUserQuery($connection);
+            $this->checkStmtExecution($stmt);
+
+            $dataRaw = $stmt->get_result();
+            $twitchUser = $dataRaw->fetch_assoc();
+            $accessToken = $twitchUser['accessToken'];
+            $tokenExpire = $twitchUser['tokenExpire'];
+            $clientId = $twitchUser['clientId'];
+            $stmt->close();
+            $connection->close();
+            return new TwitchUser(1, $accessToken, $tokenExpire, $clientId, "");
+        } finally {
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
+
+    private function getTwitchUserQuery(false|\mysqli $connection): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("SELECT accessToken, tokenExpire, clientId FROM token WHERE tokenID =?");
+        $tokenId = 1;
+        $stmt->bind_param("i", $tokenId);
+        return $stmt;
+    }
+
+    private function updateTokenInDB($accessToken, $expiresIn): void
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        try {
+            $expiresAt = time() + $expiresIn;
+            $stmt = $this->updateTokenQuery($connection, $accessToken, $expiresAt);
+            $this->checkStmtExecution($stmt);
+
+            $stmt->close();
+            $connection->close();
+        } finally {
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
+
+    private function updateTokenQuery(false|\mysqli $connection, int $accessToken, int $expiresAt): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("UPDATE token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
+        $stmt->bind_param("si", $accessToken, $expiresAt);
         return $stmt;
     }
 }
