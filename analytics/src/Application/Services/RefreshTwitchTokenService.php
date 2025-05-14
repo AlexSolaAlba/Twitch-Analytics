@@ -5,25 +5,27 @@ namespace TwitchAnalytics\Application\Services;
 use Random\RandomException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
+use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\DB\DBException;
 
 class RefreshTwitchTokenService
 {
-    private RandomKeyGenerator $keyGenerator;
     private TwitchUserRepositoryInterface $twitchUserRepository;
-    public function __construct(RandomKeyGenerator $keyGenerator, TwitchUserRepositoryInterface $twitchUserRepository)
+    public function __construct(TwitchUserRepositoryInterface $twitchUserRepository)
     {
         $this->twitchUserRepository = $twitchUserRepository;
-        $this->keyGenerator = $keyGenerator;
     }
-    public function refreshTwitchToken(string $token): void
+    public function refreshTwitchToken(string $token): TwitchUser
     {
         /*$this->userRepository->verifyUserToken($token);*/
         try {
-            $this->getValidToken();
-        } catch (RandomException) {
-            throw new RandomException('Internal server error');
+            $twitchUser = $this->twitchUserRepository->getTwitchUser();
+            if (!$twitchUser || time() >= $twitchUser->getTokenExpire()) {
+                /*return ['accessToken' => $newToken, 'clientId' => $twitchUser->getClientID()];*/
+                return $this->getAccessToken();
+            }
+            return $twitchUser;
         } catch (ApiKeyException $e) {
             throw new ApiKeyException($e->getMessage());
         } catch (DBException $e) {
@@ -81,39 +83,5 @@ class RefreshTwitchTokenService
             echo json_encode(["error" => "Internal server error."]);
             exit();
         }
-    }
-
-    private function saveTokenToDB($accessToken, $expiresIn): void
-    {
-        $expiresAt = time() + $expiresIn;
-        $conexion = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
-        #$conexion = mysqli_connect("localhost", "root", "", "twitch-analytics");
-        if (!$conexion) {
-            http_response_code(500);
-            echo json_encode(["error" => "Internal server error."]);
-            exit();
-        }
-        $consulta = $conexion->prepare("UPDATE token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
-        $consulta->bind_param("si", $accessToken, $expiresAt);
-        if (!$consulta->execute()) {
-            $consulta->close();
-            $conexion->close();
-            http_response_code(500);
-            echo json_encode(["error" => "Internal server error."]);
-            exit();
-        }
-        $consulta->close();
-        $conexion->close();
-    }
-
-
-    private function getValidToken()
-    {
-        $tokenData = $this->twitchUserRepository->getTwitchUserFromDB();
-        if (!$tokenData || time() >= $tokenData['tokenExpire']) {
-            $newToken = $this->getAccessToken();
-            return ['accessToken' => $newToken, 'clientId' => $tokenData['clientId']];
-        }
-        return ['accessToken' => $tokenData['accessToken'], 'clientId' => $tokenData['clientId']];
     }
 }

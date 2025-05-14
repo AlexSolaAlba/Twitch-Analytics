@@ -220,17 +220,23 @@ class DataBaseHandler
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
 
-        $stmt = $this->getTwitchUserQuery($connection);
-        $this->checkStmtExecution($stmt);
+        try {
+            $stmt = $this->getTwitchUserQuery($connection);
+            $this->checkStmtExecution($stmt);
 
-        $dataRaw = $stmt->get_result();
-        $twitchUser = $dataRaw->fetch_assoc();
-        $accessToken = $twitchUser['accessToken'];
-        $tokenExpire = $twitchUser['tokenExpire'];
-        $clientId = $twitchUser['clientId'];
-        $stmt->close();
-        $connection->close();
-        return new TwitchUser(1, $accessToken, $tokenExpire, $clientId, "");
+            $dataRaw = $stmt->get_result();
+            $twitchUser = $dataRaw->fetch_assoc();
+            $accessToken = $twitchUser['accessToken'];
+            $tokenExpire = $twitchUser['tokenExpire'];
+            $clientId = $twitchUser['clientId'];
+            $stmt->close();
+            $connection->close();
+            return new TwitchUser(1, $accessToken, $tokenExpire, $clientId, "");
+        } finally {
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
     }
 
     private function getTwitchUserQuery(false|\mysqli $connection): false|\mysqli_stmt
@@ -238,6 +244,32 @@ class DataBaseHandler
         $stmt = $connection->prepare("SELECT accessToken, tokenExpire, clientId FROM token WHERE tokenID =?");
         $tokenId = 1;
         $stmt->bind_param("i", $tokenId);
+        return $stmt;
+    }
+
+    private function updateTokenInDB($accessToken, $expiresIn): void
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        try {
+            $expiresAt = time() + $expiresIn;
+            $stmt = $this->updateTokenQuery($connection, $accessToken, $expiresAt);
+            $this->checkStmtExecution($stmt);
+
+            $stmt->close();
+            $connection->close();
+        } finally {
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
+
+    private function updateTokenQuery(false|\mysqli $connection, int $accessToken, int $expiresAt): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("UPDATE token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
+        $stmt->bind_param("si", $accessToken, $expiresAt);
         return $stmt;
     }
 }
