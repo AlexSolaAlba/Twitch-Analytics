@@ -7,8 +7,8 @@ use TwitchAnalytics\Domain\Time\TimeProviderInterface;
 
 class SystemTimeProvider implements TimeProviderInterface
 {
-    public function now(): DateTime
+    public function now(): int
     {
-        return new DateTime();
+        return time();
     }
 }

@@ -229,7 +229,6 @@ class DataBaseHandler
             $accessToken = $twitchUser['accessToken'];
             $tokenExpire = $twitchUser['tokenExpire'];
             $stmt->close();
-            $connection->close();
             return new TwitchUser(1, $accessToken, $tokenExpire);
         } finally {
             if ($connection instanceof \mysqli) {
@@ -257,7 +256,6 @@ class DataBaseHandler
             $this->checkStmtExecution($stmt);
 
             $stmt->close();
-            $connection->close();
         } finally {
             if ($connection instanceof \mysqli) {
                 $connection->close();

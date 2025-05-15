@@ -6,7 +6,7 @@ use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Infraestructure\DB\DBException;
 
-class ApiTwitchClient
+class ApiTwitchClient implements ApiTwitchClientInterface
 {
     public function getTwitchAccessTokenFromApi(): TwitchUser
     {

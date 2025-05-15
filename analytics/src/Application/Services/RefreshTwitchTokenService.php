@@ -20,7 +20,7 @@ class RefreshTwitchTokenService
         $this->twitchUserRepository = $twitchUserRepository;
         $this->timeProvider = $timeProvider;
     }
-    public function refreshTwitchToken(string $token): TwitchUser
+    public function refreshTwitchToken(): TwitchUser
     {
         /*$this->userRepository->verifyUserToken($token);*/
         try {
