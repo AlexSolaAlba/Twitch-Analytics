@@ -42,6 +42,15 @@ $dotenv->safeLoad();
 | your own bindings here if you like or you can make another file.
 |
 */
+$app->singleton(
+    TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface::class,
+    TwitchAnalytics\Infraestructure\Repositories\UserRepository::class
+);
+
+$app->singleton(
+    TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface::class,
+    TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository::class
+);
 
 $app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
