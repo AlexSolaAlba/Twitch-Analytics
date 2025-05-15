@@ -22,8 +22,8 @@ class RefreshTwitchTokenService
         /*$this->userRepository->verifyUserToken($token);*/
         try {
             $twitchUser = $this->twitchUserRepository->getTwitchUser();
-            if (!$twitchUser || time() >= $twitchUser->getTokenExpire()) {
-                return $this->getTwitchAccessToken();
+            if (time() >= $twitchUser->getTokenExpire()) {
+                return $this->twitchUserRepository->getTwitchAccessToken();
             }
             return $twitchUser;
         } catch (ApiKeyException $e) {
