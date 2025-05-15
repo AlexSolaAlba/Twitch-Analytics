@@ -37,19 +37,12 @@ class RefreshTwitchTokenServiceTest extends TestCase
     {
         $expectedAccessToken = 'jostpf5q0puzmxmkba9iyug38kjtg';
 
-        $twitchUser = new TwitchUser(
-            1,
-            $expectedAccessToken,
-            5011271
-        );
-
         $this->timeProvider
             ->shouldReceive('now')
-            ->andReturn(501270);
+            ->andReturn(0);
 
         $result = $this->refreshTwitchTokenService->refreshTwitchToken();
 
-        $this->assertSame($twitchUser->getAccessToken(), $result->getAccessToken());
-        $this->assertEquals($expectedAccessToken, $result->getAccessToken());
+        $this->assertSame($expectedAccessToken, $result->getAccessToken());
     }
 }
