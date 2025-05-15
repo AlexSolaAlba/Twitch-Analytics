@@ -228,10 +228,9 @@ class DataBaseHandler
             $twitchUser = $dataRaw->fetch_assoc();
             $accessToken = $twitchUser['accessToken'];
             $tokenExpire = $twitchUser['tokenExpire'];
-            $clientId = $twitchUser['clientId'];
             $stmt->close();
             $connection->close();
-            return new TwitchUser(1, $accessToken, $tokenExpire, $clientId, "");
+            return new TwitchUser(1, $accessToken, $tokenExpire);
         } finally {
             if ($connection instanceof \mysqli) {
                 $connection->close();
@@ -241,13 +240,13 @@ class DataBaseHandler
 
     private function getTwitchUserQuery(false|\mysqli $connection): false|\mysqli_stmt
     {
-        $stmt = $connection->prepare("SELECT accessToken, tokenExpire, clientId FROM token WHERE tokenID =?");
+        $stmt = $connection->prepare("SELECT accessToken, tokenExpire FROM token WHERE tokenID =?");
         $tokenId = 1;
         $stmt->bind_param("i", $tokenId);
         return $stmt;
     }
 
-    private function updateTokenInDB($accessToken, $expiresIn): void
+    public function updateTokenInDB($accessToken, $expiresIn): void
     {
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
