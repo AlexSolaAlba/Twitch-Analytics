@@ -53,6 +53,16 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchClientInterface::class,
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchClient::class
+);
+
+$app->singleton(
+    TwitchAnalytics\Domain\Time\TimeProviderInterface::class,
+    TwitchAnalytics\Infraestructure\Time\SystemTimeProvider::class
+);
+
+$app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(

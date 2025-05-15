@@ -8,21 +8,24 @@ use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface;
+use TwitchAnalytics\Domain\Time\TimeProviderInterface;
 use TwitchAnalytics\Infraestructure\DB\DBException;
 
 class RefreshTwitchTokenService
 {
     private TwitchUserRepositoryInterface $twitchUserRepository;
-    public function __construct(TwitchUserRepositoryInterface $twitchUserRepository)
+    private TimeProviderInterface $timeProvider;
+    public function __construct(TwitchUserRepositoryInterface $twitchUserRepository, TimeProviderInterface $timeProvider)
     {
         $this->twitchUserRepository = $twitchUserRepository;
+        $this->timeProvider = $timeProvider;
     }
-    public function refreshTwitchToken(string $token): TwitchUser
+    public function refreshTwitchToken(): TwitchUser
     {
         /*$this->userRepository->verifyUserToken($token);*/
         try {
             $twitchUser = $this->twitchUserRepository->getTwitchUser();
-            if (time() >= $twitchUser->getTokenExpire()) {
+            if ($this->timeProvider->now() >= $twitchUser->getTokenExpire()) {
                 return $this->twitchUserRepository->getTwitchAccessToken();
             }
             return $twitchUser;

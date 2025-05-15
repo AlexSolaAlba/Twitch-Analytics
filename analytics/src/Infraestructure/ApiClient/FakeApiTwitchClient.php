@@ -4,7 +4,7 @@ namespace TwitchAnalytics\Infraestructure\ApiClient;
 
 use TwitchAnalytics\Domain\Models\TwitchUser;
 
-class FakeApiTwitchClient
+class FakeApiTwitchClient implements ApiTwitchClientInterface
 {
     private array $fakeTwitchUser = [
             "access_token" => "jostpf5q0puzmxmkba9iyug38kjtg",
@@ -12,15 +12,12 @@ class FakeApiTwitchClient
             "token_type" => "bearer"
     ];
 
-    public function getTwitchAccessTokenFromApi(string $clientID, string $clientSecret): ?TwitchUser
+    public function getTwitchAccessTokenFromApi(): TwitchUser
     {
-        if (strcasecmp($clientID, env('CLIENT_ID')) === 0 && strcasecmp($clientSecret, env('CLIENT_SECRET')) === 0) {
-            return new TwitchUser(
-                1,
-                $this->fakeTwitchUser['access_token'],
-                $this->fakeTwitchUser['expires_in']
-            );
-        }
-        return null;
+        return new TwitchUser(
+            1,
+            $this->fakeTwitchUser['access_token'],
+            $this->fakeTwitchUser['expires_in']
+        );
     }
 }
