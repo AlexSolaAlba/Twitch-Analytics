@@ -7,15 +7,12 @@ class TwitchUser
     private int $tokenID;
     private string $accessToken;
     private int $tokenExpire;
-    private string $clientID;
-    private string $clientSecret;
-    public function __construct(int $tokenID, string $accessToken, int $tokenExpire, string $clientId, string $clientSecret)
+
+    public function __construct(int $tokenID, string $accessToken, int $tokenExpire)
     {
         $this->tokenID = $tokenID;
         $this->accessToken = $accessToken;
         $this->tokenExpire = $tokenExpire;
-        $this->clientID = $clientId;
-        $this->clientSecret = $clientSecret;
     }
 
     public function getTokenID(): int
@@ -46,25 +43,5 @@ class TwitchUser
     public function setTokenExpire(int $tokenExpire): void
     {
         $this->tokenExpire = $tokenExpire;
-    }
-
-    public function getClientID(): string
-    {
-        return $this->clientID;
-    }
-
-    public function setClientID(string $clientID): void
-    {
-        $this->clientID = $clientID;
-    }
-
-    public function getClientSecret(): string
-    {
-        return $this->clientSecret;
-    }
-
-    public function setClientSecret(string $clientSecret): void
-    {
-        $this->clientSecret = $clientSecret;
     }
 }
