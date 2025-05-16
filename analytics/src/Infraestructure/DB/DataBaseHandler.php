@@ -263,7 +263,7 @@ class DataBaseHandler
         }
     }
 
-    private function updateTokenQuery(false|\mysqli $connection, int $accessToken, int $expiresAt): false|\mysqli_stmt
+    private function updateTokenQuery(false|\mysqli $connection, string $accessToken, int $expiresAt): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("UPDATE token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
         $stmt->bind_param("si", $accessToken, $expiresAt);
