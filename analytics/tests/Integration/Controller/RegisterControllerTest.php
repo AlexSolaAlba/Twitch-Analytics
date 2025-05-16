@@ -1,6 +1,6 @@
 <?php
 
-namespace Integration\Controller;
+namespace TwitchAnalytics\Tests\Integration\Controller;
 
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
