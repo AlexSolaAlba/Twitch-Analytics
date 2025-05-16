@@ -45,4 +45,17 @@ class RefreshTwitchTokenServiceTest extends TestCase
 
         $this->assertSame($expectedAccessToken, $result->getAccessToken());
     }
+
+    public function testReturnsTwitchApiTokenIfExpired()
+    {
+        $expectedAccessToken = 'jostpf5q0puzmxmkba9iyug38kjtg';
+
+        $this->timeProvider
+            ->shouldReceive('now')
+            ->andReturn(1750899999999);
+
+        $result = $this->refreshTwitchTokenService->refreshTwitchToken();
+
+        $this->assertSame($expectedAccessToken, $result->getAccessToken());
+    }
 }
