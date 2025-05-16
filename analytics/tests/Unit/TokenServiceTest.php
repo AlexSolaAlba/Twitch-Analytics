@@ -2,22 +2,23 @@
 
 namespace TwitchAnalytics\Tests\Unit;
 
-use Laravel\Lumen\Testing\TestCase;
 use Mockery;
 use Random\RandomException;
 use TwitchAnalytics\Application\Services\RegisterService;
+use TwitchAnalytics\Application\Services\TokenService;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
+use Laravel\Lumen\Testing\TestCase;
 
-class RegisterServiceTest extends TestCase
+class TokenServiceTest extends TestCase
 {
     public function createApplication()
     {
         return require __DIR__ . '/../../bootstrap/app.php';
     }
 
-    private RegisterService $registerService;
+    private TokenService $tokenService;
 
     /**
      * @throws RandomException
@@ -30,17 +31,17 @@ class RegisterServiceTest extends TestCase
         $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
         $dataBaseHandler = new DatabaseHandler();
         $userRepository = new UserRepository($dataBaseHandler);
-        $this->registerService  = new RegisterService($keyGenerator, $userRepository);
+        $this->tokenService  = new TokenService($keyGenerator, $userRepository);
     }
 
     /**
      * @test
      * @throws RandomException
      */
-    public function givenAnEmailReturnsApiKey(): void
+    public function givenAnEmailAndKeyReturnsToken(): void
     {
-        $response = $this->registerService->register("test@example.com");
+        $response = $this->tokenService->generateToken("test@example.com", "24e9a3dea44346393f632e4161bc83e6");
 
-        $this->assertEquals(['api_key' => "24e9a3dea44346393f632e4161bc83e6"], $response);
+        $this->assertEquals(['token' => "24e9a3dea44346393f632e4161bc83e6"], $response);
     }
 }
