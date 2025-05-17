@@ -57,4 +57,12 @@ class ValidatorTest extends TestCase
     {
         $this->assertEquals("hola@gmail.com", $this->validator->validateEmail("hola@gmail.com"));
     }
+
+    /**
+     * @test
+     */
+    public function givenRightAuthorizationReturnsToken(): void
+    {
+        $this->assertEquals("jshgfdsjh", $this->validator->validateToken("Bearer jshgfdsjh"));
+    }
 }
