@@ -45,6 +45,6 @@ class ApiStreamer implements ApiStreamerInterface
             case 404:
                 throw new NotFoundException('User not found.');
         }
-        throw new TwitchApiException('User not found.');
+        throw new TwitchApiException('Internal server error.');
     }
 }

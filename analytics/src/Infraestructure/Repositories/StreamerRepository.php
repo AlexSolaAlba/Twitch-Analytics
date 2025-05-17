@@ -17,14 +17,14 @@ class StreamerRepository implements StreamerRepositoryInterface
         $this->apiStreamer = $apiStreamer;
     }
 
-    public function returnStreamerInfoFromDB($userId, $accessToken): bool|Streamer
+    public function returnStreamerInfoFromDB(int $streamerId, string $accessToken): bool|Streamer
     {
-        return $this->dataBaseHandler->getStreamerFromDB($userId);
+        return $this->dataBaseHandler->getStreamerFromDB($streamerId);
     }
 
-    public function returnStreamerInfoFromAPI($userId, $accessToken): Streamer
+    public function returnStreamerInfoFromAPI(int $streamerId, string $accessToken): Streamer
     {
-        $streamer = $this->apiStreamer->getStreamerFromTwitch($userId, $accessToken);
+        $streamer = $this->apiStreamer->getStreamerFromTwitch($streamerId, $accessToken);
         $this->dataBaseHandler->insertStreamerIntoDB($streamer);
         return $streamer;
     }

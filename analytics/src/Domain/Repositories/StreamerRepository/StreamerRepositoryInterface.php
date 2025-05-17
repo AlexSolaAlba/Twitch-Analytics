@@ -6,6 +6,6 @@ use TwitchAnalytics\Domain\Models\Streamer;
 
 interface StreamerRepositoryInterface
 {
-    public function returnStreamerInfoFromDB($userId, $accessToken): bool|Streamer;
-    public function returnStreamerInfoFromAPI($userId, $accessToken): Streamer;
+    public function returnStreamerInfoFromDB(int $streamerId, string $accessToken): bool|Streamer;
+    public function returnStreamerInfoFromAPI(int $streamerId, string $accessToken): Streamer;
 }

@@ -9,20 +9,20 @@ use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 class FakeApiStreamer implements ApiStreamerInterface
 {
     private array $FakeStreamer = [
-        "id" => "1",
+        "id" => "4",
         "login" => "elsmurfoz",
         "display_name" => "elsmurfoz",
         "type" => "",
         "broadcaster_type" => "",
         "description" => "",
-        "profile_image_url" => "https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png",
+        "profile_image_url" => "https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png",
         "offline_image_url" => "",
         "view_count" => "0",
         "created_at" => "2007-05-22T10:37:47Z"
     ];
     public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer
     {
-        if ($streamerId != 1) {
+        if ($streamerId !== 4) {
             throw new NotFoundException('User not found.');
         }
         return new Streamer(

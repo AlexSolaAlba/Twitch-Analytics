@@ -290,24 +290,35 @@ class DataBaseHandler
         }
     }
 
-    public function insertStreamerInDBQuery($connection, $streamer): mixed
+    public function insertStreamerInDBQuery($connection, Streamer $streamer): false|\mysqli_stmt
     {
+        $streamerId = $streamer->getStreamerId();
+        $login = $streamer->getLogin();
+        $displayName = $streamer->getDisplayName();
+        $type = $streamer->getType();
+        $broadcasterType = $streamer->getBroadcasterType();
+        $description = $streamer->getDescription();
+        $profileImageUrl = $streamer->getProfileImageUrl();
+        $offlineImageUrl = $streamer->getOfflineImageUrl();
+        $viewCount = $streamer->getViewCount();
+        $createdAt = $streamer->getCreatedAt();
+
         $stmt = $connection->prepare(
-            "INSERT INTO usersTwitch(id, user_login, display_name, user_type, broadcaster_type,
-        user_description, profile_image_url, offline_image_url, view_count, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
+            "INSERT INTO userstwitch(id, user_login, display_name, user_type, broadcaster_type,
+        user_description, profile_image_url, offline_image_url, view_count, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param(
             "ssssssssss",
-            $streamer["id"],
-            $streamer["login"],
-            $streamer["display_name"],
-            $streamer["type"],
-            $streamer["broadcaster_type"],
-            $streamer["description"],
-            $streamer["profile_image_url"],
-            $streamer["offline_image_url"],
-            $streamer["view_count"],
-            $streamer["created_at"]
+            $streamerId,
+            $login,
+            $displayName,
+            $type,
+            $broadcasterType,
+            $description,
+            $profileImageUrl,
+            $offlineImageUrl,
+            $viewCount,
+            $createdAt
         );
         return $stmt;
     }
@@ -321,7 +332,7 @@ class DataBaseHandler
             $stmt = $this->getStreamerQuery($connection, $streamerId);
             $this->checkStmtExecution($stmt);
             $streamerRaw = $stmt->get_result();
-
+            $stmt->close();
             if ($streamerRaw->num_rows > 0) {
                 $streamer = $streamerRaw->fetch_assoc();
                 return new Streamer(
@@ -339,15 +350,40 @@ class DataBaseHandler
             }
             return false;
         } finally {
-            $connection->close();
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
         }
     }
-
 
     private function getStreamerQuery(false|\mysqli $connection, $userId): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT * FROM usersTwitch where id = ?");
         $stmt->bind_param("i", $userId);
+        return $stmt;
+    }
+
+    public function deleteTestStreamerFromDB(): void
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        try {
+            $stmt = $this->deleteTestStreamerFromDBQuery($connection);
+            $this->checkStmtExecution($stmt);
+            $stmt->close();
+        } finally {
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
+
+    private function deleteTestStreamerFromDBQuery(false|\mysqli $connection): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("DELETE FROM usersTwitch where id = ?");
+        $streamerId = 4;
+        $stmt->bind_param("i", $streamerId);
         return $stmt;
     }
 }
