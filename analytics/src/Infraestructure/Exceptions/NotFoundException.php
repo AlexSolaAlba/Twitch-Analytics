@@ -1,10 +1,10 @@
 <?php
 
-namespace TwitchAnalytics\Infraestructure\DB;
+namespace TwitchAnalytics\Infraestructure\Exceptions;
 
 use TwitchAnalytics\Domain\Exceptions\ApplicationException;
 
-class DBException extends ApplicationException
+class NotFoundException extends ApplicationException
 {
     public function __construct(string $message)
     {

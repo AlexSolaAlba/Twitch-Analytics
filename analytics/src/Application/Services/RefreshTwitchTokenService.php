@@ -2,14 +2,11 @@
 
 namespace TwitchAnalytics\Application\Services;
 
-use Random\RandomException;
-use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
-use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface;
 use TwitchAnalytics\Domain\Time\TimeProviderInterface;
-use TwitchAnalytics\Infraestructure\DB\DBException;
+use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class RefreshTwitchTokenService
 {
