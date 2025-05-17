@@ -344,7 +344,7 @@ class DataBaseHandler
     }
 
 
-    private function getStreamerQuery(false|\mysqli $connection, $userId):  false|\mysqli_stmt
+    private function getStreamerQuery(false|\mysqli $connection, $userId): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT * FROM usersTwitch where id = ?");
         $stmt->bind_param("i", $userId);

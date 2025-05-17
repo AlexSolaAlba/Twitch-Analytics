@@ -22,7 +22,7 @@ class UserService
     public function returnStreamerInfo($userId, $accessToken): Streamer
     {
         $streamer = $this->streamerRepository->returnStreamerInfoFromDB($userId, $accessToken);
-        if($streamer instanceof Streamer) {
+        if ($streamer instanceof Streamer) {
             return $streamer;
         }
         return $this->streamerRepository->returnStreamerInfoFromAPI($userId, $accessToken);
