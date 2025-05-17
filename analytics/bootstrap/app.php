@@ -68,6 +68,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Domain\Repositories\StreamerRepository\StreamerRepositoryInterface::class,
+    TwitchAnalytics\Infraestructure\Repositories\StreamerRepository::class
+);
+
+$app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
@@ -98,11 +103,10 @@ $app->singleton(
 );
 
 $app->singleton(
-    TwitchAnalytics\Controllers\Token\TokenController::class,
+    TwitchAnalytics\Application\Services\UserService::class,
     function ($app) {
-        return new TwitchAnalytics\Controllers\Token\TokenController(
-            $app->make(TwitchAnalytics\Controllers\Token\TokenValidator::class),
-            $app->make(TwitchAnalytics\Application\Services\TokenService::class)
+        return new TwitchAnalytics\Application\Services\UserService(
+            $app->make(TwitchAnalytics\Domain\Repositories\StreamerRepository\StreamerRepositoryInterface::class)
         );
     }
 );

@@ -10,7 +10,7 @@ use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class ApiStreamer implements ApiStreamerInterface
 {
-    public function getStreamerFromTwitch(int $streamerId, string $accessToken, DataBaseHandler $dataBaseHandler): Streamer
+    public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer
     {
         $curl = curl_init();
         $clientID = env('CLIENT_ID');
@@ -28,7 +28,6 @@ class ApiStreamer implements ApiStreamerInterface
         switch ($httpCode) {
             case 200:
                 if (isset($responseData['data'][0])) {
-                    $dataBaseHandler->insertIntoDB($responseData['data'][0]);
                     return new Streamer(
                         $responseData['data'][0]['id'],
                         $responseData['data'][0]['login'],

@@ -7,5 +7,5 @@ use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
 interface ApiStreamerInterface
 {
-    public function getStreamerFromTwitch(int $streamerId, string $accessToken, DataBaseHandler $dataBaseHandler): Streamer;
+    public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer;
 }
