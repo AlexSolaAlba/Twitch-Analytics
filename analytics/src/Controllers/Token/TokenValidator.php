@@ -15,9 +15,10 @@ class TokenValidator extends Validator
         }
 
         $sanitizedKey = strip_tags($key);
+
         $sanitizedKey = htmlspecialchars($sanitizedKey, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
-        $sanitizedKey = filter_var($sanitizedKey, FILTER_SANITIZE_EMAIL);
+        $sanitizedKey = trim($sanitizedKey);
 
         if (empty($sanitizedKey)) {
             throw new ApiKeyException('Unauthorized. API access token is invalid.');
