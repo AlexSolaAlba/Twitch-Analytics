@@ -19,12 +19,35 @@ class UserService
      * @SuppressWarnings(PHPMD.ElseExpression)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function returnStreamerInfo($userId, $accessToken): Streamer
+    public function returnStreamerInfo($userId, $accessToken): array
     {
         $streamer = $this->streamerRepository->returnStreamerInfoFromDB($userId, $accessToken);
         if ($streamer instanceof Streamer) {
-            return $streamer;
+            return [
+                'id' => $streamer->getStreamerId(),
+                'login' => $streamer->getLogin(),
+                'display_name' => $streamer->getDisplayName(),
+                'type' => $streamer->getType(),
+                'broadcaster_type' => $streamer->getBroadcasterType(),
+                'description' => $streamer->getDescription(),
+                'profile_image_url' => $streamer->getProfileImageUrl(),
+                'offline_image_url' => $streamer->getOfflineImageUrl(),
+                'view_count' => $streamer->getViewCount(),
+                'created_at' => $streamer->getCreatedAt(),
+            ];
         }
-        return $this->streamerRepository->returnStreamerInfoFromAPI($userId, $accessToken);
+        $streamer = $this->streamerRepository->returnStreamerInfoFromAPI($userId, $accessToken);
+        return [
+            'id' => $streamer->getStreamerId(),
+            'login' => $streamer->getLogin(),
+            'display_name' => $streamer->getDisplayName(),
+            'type' => $streamer->getType(),
+            'broadcaster_type' => $streamer->getBroadcasterType(),
+            'description' => $streamer->getDescription(),
+            'profile_image_url' => $streamer->getProfileImageUrl(),
+            'offline_image_url' => $streamer->getOfflineImageUrl(),
+            'view_count' => $streamer->getViewCount(),
+            'created_at' => $streamer->getCreatedAt(),
+        ];
     }
 }

@@ -9,23 +9,23 @@ use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
 class StreamerRepository implements StreamerRepositoryInterface
 {
-    private DatabaseHandler $databaseHandler;
+    private DatabaseHandler $dataBaseHandler;
     private ApiStreamerInterface $apiStreamer;
-    public function __construct(DatabaseHandler $databaseHandler, ApiStreamerInterface $apiStreamer)
+    public function __construct(DatabaseHandler $dataBaseHandler, ApiStreamerInterface $apiStreamer)
     {
-        $this->databaseHandler = $databaseHandler;
+        $this->dataBaseHandler = $dataBaseHandler;
         $this->apiStreamer = $apiStreamer;
     }
 
     public function returnStreamerInfoFromDB($userId, $accessToken): bool|Streamer
     {
-        return $this->databaseHandler->getStreamerFromDB($userId);
+        return $this->dataBaseHandler->getStreamerFromDB($userId);
     }
 
     public function returnStreamerInfoFromAPI($userId, $accessToken): Streamer
     {
         $streamer = $this->apiStreamer->getStreamerFromTwitch($userId, $accessToken);
-        $this->databaseHandler->insertStreamerIntoDB($streamer);
+        $this->dataBaseHandler->insertStreamerIntoDB($streamer);
         return $streamer;
     }
 }

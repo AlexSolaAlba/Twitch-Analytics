@@ -11,6 +11,7 @@ use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Infraestructure\ApiClient\FakeApiTwitchClient;
 use TwitchAnalytics\Infraestructure\ApiStreamer\ApiStreamer;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
 use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
@@ -38,7 +39,8 @@ class UserControllerTest extends TestCase
         $userValidator = new UserValidator();
         $userRepository = new UserRepository($dataBaseHandler);
         $apiStreamer = new ApiStreamer();
-        $userService = new UserService($dataBaseHandler, $apiStreamer);
+        $streamerRepository = new StreamerRepository($dataBaseHandler, $apiStreamer);
+        $userService = new UserService($streamerRepository);
         $this->userController = new UserController($refreshTwitchToken, $userValidator, $userRepository, $userService);
     }
 
