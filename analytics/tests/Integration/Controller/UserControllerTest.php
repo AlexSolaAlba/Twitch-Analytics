@@ -201,4 +201,24 @@ class UserControllerTest extends TestCase
             'created_at' => '2007-05-22T10:37:47Z',
         ], $response->getData(true));
     }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenStreamerIdThatNotExistsInDBNeitherInAPIReturnsAnException()
+    {
+        $request = Request::create('/user', 'GET', [
+            'id' => 5,
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
+        ]);
+
+        $response = $this->userController->__invoke($request);
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'User not found.'
+        ], $response->getData(true));
+    }
 }
