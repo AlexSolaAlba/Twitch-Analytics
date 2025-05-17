@@ -5,6 +5,7 @@ namespace TwitchAnalytics\Tests\Unit;
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\Validator\Validator;
 use TwitchAnalytics\Controllers\ValidationException;
+use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 
 class ValidatorTest extends TestCase
 {
@@ -56,5 +57,33 @@ class ValidatorTest extends TestCase
     public function givenRightEmailReturnsEmail(): void
     {
         $this->assertEquals("hola@gmail.com", $this->validator->validateEmail("hola@gmail.com"));
+    }
+
+    /**
+     * @test
+     */
+    public function givenRightAuthorizationReturnsToken(): void
+    {
+        $this->assertEquals("jshgfdsjh", $this->validator->validateToken("Bearer jshgfdsjh"));
+    }
+
+    /**
+     * @test
+     */
+    public function givenNoAuthorizationReturnsAnException(): void
+    {
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. Token is invalid or expired.');
+        $this->validator->validateToken("");
+    }
+
+    /**
+     * @test
+     */
+    public function givenWrongAuthorizationReturnsAnException(): void
+    {
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. Token is invalid or expired.');
+        $this->validator->validateToken("Beare");
     }
 }
