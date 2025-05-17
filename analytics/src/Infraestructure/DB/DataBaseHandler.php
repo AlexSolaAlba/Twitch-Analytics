@@ -8,7 +8,7 @@ use TwitchAnalytics\Domain\Models\User;
 
 class DataBaseHandler
 {
-    private function connectWithDB(): false|\mysqli
+    public function connectWithDB(): false|\mysqli
     {
         return mysqli_connect(
             env('DB_HOST'),
@@ -18,14 +18,14 @@ class DataBaseHandler
         );
     }
 
-    private function checkConnection(false|\mysqli $connection): void
+    public function checkConnection(false|\mysqli $connection): void
     {
         if (!$connection) {
             throw new DBException('Internal server error.');
         }
     }
 
-    private function checkStmtExecution(false|\mysqli_stmt $stmt): void
+    public function checkStmtExecution(false|\mysqli_stmt $stmt): void
     {
         if (!$stmt->execute()) {
             throw new DBException('Internal server error.');

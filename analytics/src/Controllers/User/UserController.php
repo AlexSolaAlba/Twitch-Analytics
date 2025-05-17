@@ -9,20 +9,24 @@ use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
 use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
 class UserController extends BaseController
 {
     private RefreshTwitchTokenService $refreshTwitchToken;
     private UserValidator $userValidator;
     private UserRepositoryInterface $userRepository;
+    private DataBaseHandler $dataBaseHandler;
     public function __construct(
         RefreshTwitchTokenService $refreshTwitchToken,
         UserValidator $userValidator,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        DataBaseHandler $dataBaseHandler
     ) {
         $this->refreshTwitchToken = $refreshTwitchToken;
         $this->userValidator = $userValidator;
         $this->userRepository = $userRepository;
+        $this->dataBaseHandler = $dataBaseHandler;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -48,35 +52,28 @@ class UserController extends BaseController
      */
     private function returnStreamerInfo($userId, $clientID, $accessToken): array
     {
-        $conection = mysqli_connect("db5017192767.hosting-data.io", "dbu2466002", "s9saGODU^mg2SU", "dbs13808365");
-        #$conection = mysqli_connect("localhost", "root", "", "twitch-analytics");
-        if (!$conection) {
-            return [
-                'error' => 'Internal server error.'
-            ];
-        }
-        $user = $conection->query("SELECT * FROM usersTwitch where id = $userId");
-        if ($user == false) {
-            http_response_code(400);
-            die("Error en la consulta: " . mysqli_error($conection));
-        }
+        $connection = $this->dataBaseHandler->connectWithDB();
+        $this->dataBaseHandler->checkConnection($connection);
 
-        if ($user->num_rows > 0) {
-            while ($row = $user->fetch_assoc()) {
-                $data = [
-                    "id" => $row["id"],
-                    "login" => $row["user_login"],
-                    "display_name" => $row["display_name"],
-                    "type" => $row["user_type"],
-                    "broadcaster_type" => $row["broadcaster_type"],
-                    "description" => $row["user_description"],
-                    "profile_image_url" => $row["profile_image_url"],
-                    "offline_image_url" => $row["offline_image_url"],
-                    "view_count" => $row["view_count"],
-                    "created_at" => $row["created_at"]
-                ];
-            }
-            echo json_encode($data);
+        $stmt = $connection->prepare("SELECT * FROM usersTwitch where id = ?");
+        $stmt->bind_param("i", $userId);
+        $this->dataBaseHandler->checkStmtExecution($stmt);
+        $streamerRaw = $stmt->get_result();
+
+        if ($streamerRaw->num_rows > 0) {
+            $streamer = $streamerRaw->fetch_assoc();
+            return [
+                "id" => $streamer["id"],
+                "login" => $streamer["user_login"],
+                "display_name" => $streamer["display_name"],
+                "type" => $streamer["user_type"],
+                "broadcaster_type" => $streamer["broadcaster_type"],
+                "description" => $streamer["user_description"],
+                "profile_image_url" => $streamer["profile_image_url"],
+                "offline_image_url" => $streamer["offline_image_url"],
+                "view_count" => $streamer["view_count"],
+                "created_at" => $streamer["created_at"]
+            ];
         } else {
             $curl = curl_init();
 
@@ -135,7 +132,7 @@ class UserController extends BaseController
                     break;
             }
         }
-        $conection->close();
+        $connection->close();
     }
 
     private function insertIntoDB($user)
