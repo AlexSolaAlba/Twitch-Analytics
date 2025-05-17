@@ -5,6 +5,7 @@ namespace TwitchAnalytics\Infraestructure\DB;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
+use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class DataBaseHandler
 {
@@ -269,6 +270,45 @@ class DataBaseHandler
     {
         $stmt = $connection->prepare("UPDATE token set accessToken = ?, tokenExpire = ? WHERE tokenID = 1");
         $stmt->bind_param("si", $accessToken, $expiresAt);
+        return $stmt;
+    }
+
+    public function insertIntoDB($streamer): void
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        try {
+            $stmt = $this->insertStreamerInDB($connection, $streamer);
+            $this->checkStmtExecution($stmt);
+
+            $stmt->close();
+        } finally {
+            if ($connection instanceof \mysqli) {
+                $connection->close();
+            }
+        }
+    }
+
+    public function insertStreamerInDB($connection, $streamer): mixed
+    {
+        $stmt = $connection->prepare(
+            "INSERT INTO usersTwitch(id, user_login, display_name, user_type, broadcaster_type,
+        user_description, profile_image_url, offline_image_url, view_count, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
+        );
+        $stmt->bind_param(
+            "ssssssssss",
+            $streamer["id"],
+            $streamer["login"],
+            $streamer["display_name"],
+            $streamer["type"],
+            $streamer["broadcaster_type"],
+            $streamer["description"],
+            $streamer["profile_image_url"],
+            $streamer["offline_image_url"],
+            $streamer["view_count"],
+            $streamer["created_at"]
+        );
         return $stmt;
     }
 }

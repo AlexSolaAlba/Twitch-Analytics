@@ -4,7 +4,6 @@ namespace TwitchAnalytics\Infraestructure\ApiClient;
 
 use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Models\TwitchUser;
-use TwitchAnalytics\Infraestructure\DB\DBException;
 
 class ApiTwitchClient implements ApiTwitchClientInterface
 {

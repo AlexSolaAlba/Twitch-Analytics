@@ -63,6 +63,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Infraestructure\ApiStreamer\ApiStreamerInterface::class,
+    TwitchAnalytics\Infraestructure\ApiStreamer\FakeApiStreamer::class
+);
+
+$app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
