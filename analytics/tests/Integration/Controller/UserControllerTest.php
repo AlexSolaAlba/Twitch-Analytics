@@ -79,4 +79,24 @@ class UserControllerTest extends TestCase
             'error' => 'Unauthorized. Token is invalid or expired.'
         ], $response->getData(true));
     }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenWrongIdReturnsAnException()
+    {
+        $request = Request::create('/user', 'GET', [
+            'id' => 'a',
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer ',
+        ]);
+
+        $response = $this->userController->__invoke($request);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'Invalid or missing id parameter.'
+        ], $response->getData(true));
+    }
 }
