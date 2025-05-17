@@ -9,7 +9,7 @@ use TwitchAnalytics\Application\Services\UserService;
 use TwitchAnalytics\Controllers\User\UserController;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Infraestructure\ApiClient\FakeApiTwitchClient;
-use TwitchAnalytics\Infraestructure\ApiStreamer\ApiStreamer;
+use TwitchAnalytics\Infraestructure\ApiStreamer\FakeApiStreamer;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
@@ -24,22 +24,22 @@ class UserControllerTest extends TestCase
     }
 
     private UserController $userController;
-
+    private DataBaseHandler $dataBaseHandler;
     /**
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     protected function setUp(): void
     {
         parent::setUp();
-        $dataBaseHandler = new DataBaseHandler();
+        $this->dataBaseHandler = new DataBaseHandler();
         $fakeApiTwitchClient = new FakeApiTwitchClient();
-        $twitchUserRepository = new TwitchUserRepository($dataBaseHandler, $fakeApiTwitchClient);
+        $twitchUserRepository = new TwitchUserRepository($this->dataBaseHandler, $fakeApiTwitchClient);
         $timeProvider = new SystemTimeProvider();
         $refreshTwitchToken = new RefreshTwitchTokenService($twitchUserRepository, $timeProvider);
         $userValidator = new UserValidator();
-        $userRepository = new UserRepository($dataBaseHandler);
-        $apiStreamer = new ApiStreamer();
-        $streamerRepository = new StreamerRepository($dataBaseHandler, $apiStreamer);
+        $userRepository = new UserRepository($this->dataBaseHandler);
+        $apiStreamer = new FakeApiStreamer();
+        $streamerRepository = new StreamerRepository($this->dataBaseHandler, $apiStreamer);
         $userService = new UserService($streamerRepository);
         $this->userController = new UserController($refreshTwitchToken, $userValidator, $userRepository, $userService);
     }
@@ -170,6 +170,55 @@ class UserControllerTest extends TestCase
             'offline_image_url' => '',
             'view_count' => '0',
             'created_at' => '2007-05-22T10:37:47Z',
+        ], $response->getData(true));
+    }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenStreamerIdThatNotExistsInDBReturnsStreamerInfoFromAPI()
+    {
+        $request = Request::create('/user', 'GET', [
+            'id' => 4,
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
+        ]);
+
+        $response = $this->userController->__invoke($request);
+        $this->dataBaseHandler->deleteTestStreamerFromDB();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals([
+            'id' => '4',
+            'login' => 'elsmurfoz',
+            'display_name' => 'elsmurfoz',
+            'type' => '',
+            'broadcaster_type' => '',
+            'description' => '',
+            'profile_image_url' => 'https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png',
+            'offline_image_url' => '',
+            'view_count' => '0',
+            'created_at' => '2007-05-22T10:37:47Z',
+        ], $response->getData(true));
+    }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenStreamerIdThatNotExistsInDBNeitherInAPIReturnsAnException()
+    {
+        $request = Request::create('/user', 'GET', [
+            'id' => 5,
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
+        ]);
+
+        $response = $this->userController->__invoke($request);
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'User not found.'
         ], $response->getData(true));
     }
 }
