@@ -19,7 +19,7 @@ class FakeApiStreamer implements ApiStreamerInterface
         "view_count" => "0",
         "created_at" => "2007-05-22T10:37:47Z"
     ];
-    public function getStreamerFromTwitch(int $streamerId, string $accessToken, DataBaseHandler $dataBaseHandler): Streamer
+    public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer
     {
         return new Streamer(
             $this->FakeStreamer['id'],

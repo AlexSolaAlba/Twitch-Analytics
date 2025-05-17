@@ -3,13 +3,14 @@
 namespace TwitchAnalytics\Infraestructure\DB;
 
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Models\Streamer;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class DataBaseHandler
 {
-    public function connectWithDB(): false|\mysqli
+    private function connectWithDB(): false|\mysqli
     {
         return mysqli_connect(
             env('DB_HOST'),
@@ -19,14 +20,14 @@ class DataBaseHandler
         );
     }
 
-    public function checkConnection(false|\mysqli $connection): void
+    private function checkConnection(false|\mysqli $connection): void
     {
         if (!$connection) {
             throw new DBException('Internal server error.');
         }
     }
 
-    public function checkStmtExecution(false|\mysqli_stmt $stmt): void
+    private function checkStmtExecution(false|\mysqli_stmt $stmt): void
     {
         if (!$stmt->execute()) {
             throw new DBException('Internal server error.');
@@ -272,13 +273,13 @@ class DataBaseHandler
         return $stmt;
     }
 
-    public function insertIntoDB($streamer): void
+    public function insertStreamerIntoDB($streamer): void
     {
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
 
         try {
-            $stmt = $this->insertStreamerInDB($connection, $streamer);
+            $stmt = $this->insertStreamerInDBQuery($connection, $streamer);
             $this->checkStmtExecution($stmt);
 
             $stmt->close();
@@ -289,7 +290,7 @@ class DataBaseHandler
         }
     }
 
-    public function insertStreamerInDB($connection, $streamer): mixed
+    public function insertStreamerInDBQuery($connection, $streamer): mixed
     {
         $stmt = $connection->prepare(
             "INSERT INTO usersTwitch(id, user_login, display_name, user_type, broadcaster_type,
@@ -308,6 +309,45 @@ class DataBaseHandler
             $streamer["view_count"],
             $streamer["created_at"]
         );
+        return $stmt;
+    }
+
+    public function getStreamerFromDB(int $streamerId): bool|Streamer
+    {
+        $connection = $this->connectWithDB();
+        $this->checkConnection($connection);
+
+        try {
+            $stmt = $this->getStreamerQuery($connection, $streamerId);
+            $this->checkStmtExecution($stmt);
+            $streamerRaw = $stmt->get_result();
+
+            if ($streamerRaw->num_rows > 0) {
+                $streamer = $streamerRaw->fetch_assoc();
+                return new Streamer(
+                    $streamer["id"],
+                    $streamer["user_login"],
+                    $streamer["display_name"],
+                    $streamer["user_type"],
+                    $streamer["broadcaster_type"],
+                    $streamer["user_description"],
+                    $streamer["profile_image_url"],
+                    $streamer["offline_image_url"],
+                    $streamer["view_count"],
+                    $streamer["created_at"]
+                );
+            }
+            return false;
+        } finally {
+            $connection->close();
+        }
+    }
+
+
+    private function getStreamerQuery(false|\mysqli $connection, $userId): false|\mysqli_stmt
+    {
+        $stmt = $connection->prepare("SELECT * FROM usersTwitch where id = ?");
+        $stmt->bind_param("i", $userId);
         return $stmt;
     }
 }
