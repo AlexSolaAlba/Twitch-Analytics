@@ -34,10 +34,8 @@ class Validator
         return preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email);
     }
 
-    private function validateToken(?string $authorization): string
+    public function validateToken(?string $authorization): string
     {
-        /*$authorization = $request->header('Authorization');*/
-
         if ($authorization && str_starts_with($authorization, 'Bearer ')) {
             return substr($authorization, 7);
         }

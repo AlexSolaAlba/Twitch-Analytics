@@ -191,7 +191,7 @@ class DataBaseHandler
         return $stmt;
     }
 
-    public function verifyToken(string $token): void
+    public function verifyToken(string $token): User
     {
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
@@ -206,6 +206,8 @@ class DataBaseHandler
         if (($dataRaw->num_rows === 0) or ($user['userTokenExpire'] < time())) {
             throw new ApiKeyException('Unauthorized. Token is invalid or expired.');
         }
+
+        return new User($user['userID'], $user['userEmail'], $user['userApiKey'], $user['userToken'], $user['userTokenExpire']);
     }
 
     private function getUserWithToken(false|\mysqli $connection, string $token): false|\mysqli_stmt
