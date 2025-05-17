@@ -76,4 +76,14 @@ class ValidatorTest extends TestCase
         $this->expectExceptionMessage('Unauthorized. Token is invalid or expired.');
         $this->validator->validateToken("");
     }
+
+    /**
+     * @test
+     */
+    public function givenWrongAuthorizationReturnsAnException(): void
+    {
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. Token is invalid or expired.');
+        $this->validator->validateToken("Beare");
+    }
 }
