@@ -86,7 +86,8 @@ $app->singleton(
     TwitchAnalytics\Application\Services\RefreshTwitchTokenService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RefreshTwitchTokenService(
-            $app->make(TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface::class)
+            $app->make(TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface::class),
+            $app->make(TwitchAnalytics\Domain\Time\TimeProviderInterface::class)
         );
     }
 );

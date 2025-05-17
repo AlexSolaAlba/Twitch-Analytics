@@ -26,4 +26,8 @@ class UserRepository implements UserRepositoryInterface
     {
         $this->databaseHandler->insertTokenIntoDB($user, $token);
     }
+    public function verifyUserToken(string $token): User
+    {
+        return $this->databaseHandler->verifyToken($token);
+    }
 }
