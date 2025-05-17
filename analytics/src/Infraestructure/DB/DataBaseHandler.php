@@ -200,7 +200,6 @@ class DataBaseHandler
         $stmt = $this->getUserWithToken($connection, $token);
         $this->checkStmtExecution($stmt);
         $dataRaw = $stmt->get_result();
-        dd($dataRaw->num_rows);
         $user = $dataRaw->fetch_assoc();
         $stmt->close();
         $connection->close();
