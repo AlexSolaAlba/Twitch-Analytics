@@ -5,6 +5,7 @@ namespace Integration\Controller;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
+use TwitchAnalytics\Application\Services\UserService;
 use TwitchAnalytics\Controllers\User\UserController;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Infraestructure\ApiClient\FakeApiTwitchClient;
@@ -37,7 +38,8 @@ class UserControllerTest extends TestCase
         $userValidator = new UserValidator();
         $userRepository = new UserRepository($dataBaseHandler);
         $apiStreamer = new ApiStreamer();
-        $this->userController = new UserController($refreshTwitchToken, $userValidator, $userRepository, $dataBaseHandler, $apiStreamer);
+        $userService = new UserService($dataBaseHandler, $apiStreamer);
+        $this->userController = new UserController($refreshTwitchToken, $userValidator, $userRepository, $userService);
     }
 
     /**
