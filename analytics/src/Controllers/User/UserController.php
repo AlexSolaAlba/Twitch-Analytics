@@ -39,8 +39,8 @@ class UserController extends BaseController
         try {
             $this->refreshTwitchToken->refreshTwitchToken();
             $this->userValidator->validateUserId($request->get('id'));
-            $this->userValidator->validateToken($request->header('Authorization'));
-            $user = $this->userRepository->verifyUserToken($request->header('Authorization'));
+            $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
+            $user = $this->userRepository->verifyUserToken($tokenUser);
 
             return response()->json($this->returnStreamerInfo($request->get('id'), $user->getToken()));
         } catch (ApiKeyException $ex) {
