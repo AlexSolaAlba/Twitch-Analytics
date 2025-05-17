@@ -4,6 +4,7 @@ namespace TwitchAnalytics\Infraestructure\ApiStreamer;
 
 use TwitchAnalytics\Domain\Models\Streamer;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class FakeApiStreamer implements ApiStreamerInterface
 {
@@ -21,6 +22,9 @@ class FakeApiStreamer implements ApiStreamerInterface
     ];
     public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer
     {
+        if ($streamerId != 1) {
+            throw new NotFoundException('User not found.');
+        }
         return new Streamer(
             $this->FakeStreamer['id'],
             $this->FakeStreamer['login'],

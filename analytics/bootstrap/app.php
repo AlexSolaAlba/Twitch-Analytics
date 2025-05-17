@@ -186,11 +186,7 @@ $app->router->post("/register", [
 $app->router->post("/token", [
     'uses' => TokenController::class,
 ]);
-/*
-$app->router->post("/token", function () {
-    require __DIR__ . "/../src/token.php";
-});
-*/
+
 $app->router->group([
     'prefix' => 'analytics',
 ], function ($router) {
