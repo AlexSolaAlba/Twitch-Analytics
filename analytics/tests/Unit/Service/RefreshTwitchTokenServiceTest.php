@@ -1,6 +1,6 @@
 <?php
 
-namespace TwitchAnalytics\Tests\Unit;
+namespace TwitchAnalytics\Tests\Unit\Service;
 
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;

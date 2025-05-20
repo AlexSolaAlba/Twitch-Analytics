@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit;
+namespace TwitchAnalytics\Tests\Unit\Validator;
 
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\User\UserValidator;

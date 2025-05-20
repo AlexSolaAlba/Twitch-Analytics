@@ -1,6 +1,6 @@
 <?php
 
-namespace TwitchAnalytics\Tests\Unit;
+namespace TwitchAnalytics\Tests\Unit\Validator;
 
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\Token\TokenValidator;
