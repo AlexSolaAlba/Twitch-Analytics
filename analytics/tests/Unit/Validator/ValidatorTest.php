@@ -11,7 +11,7 @@ class ValidatorTest extends TestCase
 {
     public function createApplication()
     {
-        return require __DIR__ . '/../../bootstrap/app.php';
+        return require __DIR__ . '/../../../bootstrap/app.php';
     }
 
     private Validator $validator;
