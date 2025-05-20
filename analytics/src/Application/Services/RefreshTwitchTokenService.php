@@ -4,7 +4,7 @@ namespace TwitchAnalytics\Application\Services;
 
 use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Models\TwitchUser;
-use TwitchAnalytics\Domain\Repositories\TwitchUserRepository\TwitchUserRepositoryInterface;
+use TwitchAnalytics\Domain\Repositories\TwitchUserRepositoryInterface;
 use TwitchAnalytics\Domain\Time\TimeProviderInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 

@@ -2,8 +2,8 @@
 
 namespace TwitchAnalytics\Controllers\User;
 
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Controllers\Validator\Validator;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class UserValidator extends Validator
 {

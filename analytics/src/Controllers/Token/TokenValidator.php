@@ -2,9 +2,9 @@
 
 namespace TwitchAnalytics\Controllers\Token;
 
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Controllers\Validator\Validator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class TokenValidator extends Validator
 {

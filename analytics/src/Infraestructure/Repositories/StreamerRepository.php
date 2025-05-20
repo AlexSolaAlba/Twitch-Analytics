@@ -3,15 +3,15 @@
 namespace TwitchAnalytics\Infraestructure\Repositories;
 
 use TwitchAnalytics\Domain\Models\Streamer;
-use TwitchAnalytics\Domain\Repositories\StreamerRepository\StreamerRepositoryInterface;
-use TwitchAnalytics\Infraestructure\ApiStreamer\ApiStreamerInterface;
+use TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
 class StreamerRepository implements StreamerRepositoryInterface
 {
     private DatabaseHandler $dataBaseHandler;
-    private ApiStreamerInterface $apiStreamer;
-    public function __construct(DatabaseHandler $dataBaseHandler, ApiStreamerInterface $apiStreamer)
+    private ApiTwitchStreamerInterface $apiStreamer;
+    public function __construct(DatabaseHandler $dataBaseHandler, ApiTwitchStreamerInterface $apiStreamer)
     {
         $this->dataBaseHandler = $dataBaseHandler;
         $this->apiStreamer = $apiStreamer;

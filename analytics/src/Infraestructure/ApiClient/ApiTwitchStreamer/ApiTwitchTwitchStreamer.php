@@ -1,14 +1,12 @@
 <?php
 
-namespace TwitchAnalytics\Infraestructure\ApiStreamer;
+namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer;
 
 use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Models\Streamer;
-use TwitchAnalytics\Infraestructure\ApiStreamer\ApiStreamerInterface;
-use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
-class ApiStreamer implements ApiStreamerInterface
+class ApiTwitchTwitchStreamer implements \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface
 {
     public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace TwitchAnalytics\Infraestructure\ApiClient;
+namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken;
 
 use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 
-class ApiTwitchClient implements ApiTwitchClientInterface
+class ApiTwitchToken implements ApiTwitchTokenInterface
 {
     public function getTwitchAccessTokenFromApi(): TwitchUser
     {

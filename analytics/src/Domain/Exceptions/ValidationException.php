@@ -1,8 +1,6 @@
 <?php
 
-namespace TwitchAnalytics\Controllers;
-
-use TwitchAnalytics\Domain\Exceptions\ApplicationException;
+namespace TwitchAnalytics\Domain\Exceptions;
 
 class ValidationException extends ApplicationException
 {

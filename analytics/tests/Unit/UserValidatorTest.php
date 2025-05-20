@@ -3,9 +3,8 @@
 namespace Unit;
 
 use Laravel\Lumen\Testing\TestCase;
-use TwitchAnalytics\Controllers\Token\TokenValidator;
 use TwitchAnalytics\Controllers\User\UserValidator;
-use TwitchAnalytics\Controllers\ValidationException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class UserValidatorTest extends TestCase
 {

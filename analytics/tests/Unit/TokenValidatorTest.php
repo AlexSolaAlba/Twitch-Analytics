@@ -4,8 +4,8 @@ namespace TwitchAnalytics\Tests\Unit;
 
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\Token\TokenValidator;
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class TokenValidatorTest extends TestCase
 {

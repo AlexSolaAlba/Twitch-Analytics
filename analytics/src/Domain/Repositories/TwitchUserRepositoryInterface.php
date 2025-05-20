@@ -1,6 +1,6 @@
 <?php
 
-namespace TwitchAnalytics\Domain\Repositories\TwitchUserRepository;
+namespace TwitchAnalytics\Domain\Repositories;
 
 use TwitchAnalytics\Domain\Models\TwitchUser;
 

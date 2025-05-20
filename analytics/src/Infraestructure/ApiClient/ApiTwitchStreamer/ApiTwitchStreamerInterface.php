@@ -1,11 +1,10 @@
 <?php
 
-namespace TwitchAnalytics\Infraestructure\ApiStreamer;
+namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer;
 
 use TwitchAnalytics\Domain\Models\Streamer;
-use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
-interface ApiStreamerInterface
+interface ApiTwitchStreamerInterface
 {
     public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer;
 }

@@ -4,7 +4,7 @@ namespace TwitchAnalytics\Application\Services;
 
 use Random\RandomException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
-use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class RegisterService
