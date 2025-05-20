@@ -1,11 +1,11 @@
 <?php
 
-namespace TwitchAnalytics\Tests\Unit;
+namespace TwitchAnalytics\Tests\Unit\Validator;
 
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Controllers\Validator\Validator;
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class ValidatorTest extends TestCase
 {

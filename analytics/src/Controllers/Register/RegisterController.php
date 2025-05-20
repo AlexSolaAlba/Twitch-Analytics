@@ -6,8 +6,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Application\Services\RegisterService;
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Controllers\Validator\Validator;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class RegisterController extends BaseController
 {

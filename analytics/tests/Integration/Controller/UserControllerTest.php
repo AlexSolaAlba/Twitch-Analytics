@@ -8,8 +8,8 @@ use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
 use TwitchAnalytics\Application\Services\UserService;
 use TwitchAnalytics\Controllers\User\UserController;
 use TwitchAnalytics\Controllers\User\UserValidator;
-use TwitchAnalytics\Infraestructure\ApiClient\FakeApiTwitchClient;
-use TwitchAnalytics\Infraestructure\ApiStreamer\FakeApiStreamer;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
@@ -32,13 +32,13 @@ class UserControllerTest extends TestCase
     {
         parent::setUp();
         $this->dataBaseHandler = new DataBaseHandler();
-        $fakeApiTwitchClient = new FakeApiTwitchClient();
+        $fakeApiTwitchClient = new FakeApiTwitchToken();
         $twitchUserRepository = new TwitchUserRepository($this->dataBaseHandler, $fakeApiTwitchClient);
         $timeProvider = new SystemTimeProvider();
         $refreshTwitchToken = new RefreshTwitchTokenService($twitchUserRepository, $timeProvider);
         $userValidator = new UserValidator();
         $userRepository = new UserRepository($this->dataBaseHandler);
-        $apiStreamer = new FakeApiStreamer();
+        $apiStreamer = new FakeApiTwitchStreamer();
         $streamerRepository = new StreamerRepository($this->dataBaseHandler, $apiStreamer);
         $userService = new UserService($streamerRepository);
         $this->userController = new UserController($refreshTwitchToken, $userValidator, $userRepository, $userService);

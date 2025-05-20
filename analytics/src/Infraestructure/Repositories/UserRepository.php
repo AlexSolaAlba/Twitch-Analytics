@@ -3,7 +3,7 @@
 namespace TwitchAnalytics\Infraestructure\Repositories;
 
 use TwitchAnalytics\Domain\Models\User;
-use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 
 class UserRepository implements UserRepositoryInterface

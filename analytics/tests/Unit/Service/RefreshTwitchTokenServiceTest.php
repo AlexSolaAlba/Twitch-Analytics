@@ -1,13 +1,11 @@
 <?php
 
-namespace TwitchAnalytics\Tests\Unit;
+namespace TwitchAnalytics\Tests\Unit\Service;
 
-use DateTime;
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
-use TwitchAnalytics\Domain\Models\TwitchUser;
-use TwitchAnalytics\Infraestructure\ApiClient\FakeApiTwitchClient;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
 use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
@@ -27,7 +25,7 @@ class RefreshTwitchTokenServiceTest extends TestCase
     {
         parent::setUp();
         $this->dataBaseHandler = new DatabaseHandler();
-        $this->fakeApiTwitchClient = new FakeApiTwitchClient();
+        $this->fakeApiTwitchClient = new FakeApiTwitchToken();
         $this->twitchUserRepository = new TwitchUserRepository($this->dataBaseHandler, $this->fakeApiTwitchClient);
         $this->timeProvider = Mockery::mock(SystemTimeProvider::class);
         $this->refreshTwitchTokenService = new RefreshTwitchTokenService($this->twitchUserRepository, $this->timeProvider);

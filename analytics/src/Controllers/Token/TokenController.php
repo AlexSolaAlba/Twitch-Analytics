@@ -6,9 +6,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Application\Services\TokenService;
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\EmailException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class TokenController extends BaseController
 {

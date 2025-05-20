@@ -1,10 +1,10 @@
 <?php
 
-namespace TwitchAnalytics\Infraestructure\ApiClient;
+namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken;
 
 use TwitchAnalytics\Domain\Models\TwitchUser;
 
-class FakeApiTwitchClient implements ApiTwitchClientInterface
+class FakeApiTwitchToken implements ApiTwitchTokenInterface
 {
     private array $fakeTwitchUser = [
             "access_token" => "jostpf5q0puzmxmkba9iyug38kjtg",

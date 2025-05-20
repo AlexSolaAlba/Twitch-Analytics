@@ -3,9 +3,7 @@
 namespace TwitchAnalytics\Application\Services;
 
 use TwitchAnalytics\Domain\Models\Streamer;
-use TwitchAnalytics\Domain\Repositories\StreamerRepository\StreamerRepositoryInterface;
-use TwitchAnalytics\Infraestructure\ApiStreamer\ApiStreamerInterface;
-use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface;
 
 class UserService
 {

@@ -1,12 +1,11 @@
 <?php
 
-namespace TwitchAnalytics\Infraestructure\ApiStreamer;
+namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer;
 
 use TwitchAnalytics\Domain\Models\Streamer;
-use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
-class FakeApiStreamer implements ApiStreamerInterface
+class FakeApiTwitchStreamer implements ApiTwitchStreamerInterface
 {
     private array $FakeStreamer = [
         "id" => "4",

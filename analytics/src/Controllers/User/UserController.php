@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
 use TwitchAnalytics\Application\Services\UserService;
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
-use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
+use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class UserController extends BaseController

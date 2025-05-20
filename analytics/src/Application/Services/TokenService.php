@@ -6,7 +6,7 @@ use Random\RandomException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\EmailException;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
-use TwitchAnalytics\Domain\Repositories\UserRepository\UserRepositoryInterface;
+use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class TokenService

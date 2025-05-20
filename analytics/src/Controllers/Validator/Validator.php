@@ -2,8 +2,8 @@
 
 namespace TwitchAnalytics\Controllers\Validator;
 
-use TwitchAnalytics\Controllers\ValidationException;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class Validator
 {
