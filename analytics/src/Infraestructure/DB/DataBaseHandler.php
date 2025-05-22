@@ -304,7 +304,7 @@ class DataBaseHandler
         $createdAt = $streamer->getCreatedAt();
 
         $stmt = $connection->prepare(
-            "INSERT INTO userstwitch(id, user_login, display_name, user_type, broadcaster_type,
+            "INSERT INTO usersTwitch(id, user_login, display_name, user_type, broadcaster_type,
         user_description, profile_image_url, offline_image_url, view_count, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param(
