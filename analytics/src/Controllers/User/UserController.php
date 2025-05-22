@@ -33,12 +33,12 @@ class UserController extends BaseController
     public function __invoke(Request $request): JsonResponse
     {
         try {
-            $this->refreshTwitchToken->refreshTwitchToken();
+            $twitchUser = $this->refreshTwitchToken->refreshTwitchToken();
             $this->userValidator->validateUserId($request->get('id'));
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
-            $user = $this->userRepository->verifyUserToken($tokenUser);
+            $this->userRepository->verifyUserToken($tokenUser);
 
-            return response()->json($this->userService->returnStreamerInfo($request->get('id'), $user->getToken()));
+            return response()->json($this->userService->returnStreamerInfo($request->get('id'), $twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {

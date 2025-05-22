@@ -1,7 +1,13 @@
 <?php
 
-namespace TwitchAnalytics\Tests\Integration\Controller;
+namespace Integration\Controller;
 
-class StreamsControllerTest
+use Laravel\Lumen\Testing\TestCase;
+
+class StreamsControllerTest extends TestCase
 {
+    public function createApplication()
+    {
+        return require __DIR__ . '/../../../bootstrap/app.php';
+    }
 }
