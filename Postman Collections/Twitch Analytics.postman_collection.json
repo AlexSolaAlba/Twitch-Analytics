@@ -1,0 +1,1192 @@
+{
+	"info": {
+		"_postman_id": "203836b6-5a5f-4235-b19c-cfa1070a12d7",
+		"name": "Twitch Analytics",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41821631",
+		"_collection_link": "https://martian-equinox-980901.postman.co/workspace/Twitch-Analytics~fd37a36a-df9a-4ca8-bd81-a42f973333ca/collection/41708904-203836b6-5a5f-4235-b19c-cfa1070a12d7?action=share&source=collection_link&creator=41821631"
+	},
+	"item": [
+		{
+			"name": "Entrega 1",
+			"item": [
+				{
+					"name": "Caso de uso 1 respuesta 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the response schema for the fields 'id', 'login', 'display_name', 'type', 'broadcaster_type', 'description', 'profile_image_url', 'offline_image_url', 'view_count', 'created_at'\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.login).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.display_name).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.type).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.broadcaster_type).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.profile_image_url).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.offline_image_url).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.view_count).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.created_at).to.exist.and.to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"id, login, display_name and created_at  are non-empty strings\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"id should not be empty\");\r",
+									"    pm.expect(responseData.login).to.be.a('string').and.to.have.lengthOf.at.least(1, \"login should not be empty\");\r",
+									"    pm.expect(responseData.display_name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"display_name should not be empty\");\r",
+									"    pm.expect(responseData.created_at).to.be.a('string').and.to.have.lengthOf.at.least(1, \"created_at should not be empty\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "c19ec9f33d007e5621c9e746dbd321a2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/user?id=2",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caso de uso 1 respuesta 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Invalid or missing id parameter.\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "c19ec9f33d007e5621c9e746dbd321a2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/user?id=XXX",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "XXX"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caso de uso 1 respuesta 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"// Test for status code\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type header\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message in the response body\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.error).to.exist;\r",
+									"    pm.expect(responseBody.error).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/user?id=2",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caso de uso 1 respuesta 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Test for content type header\r",
+									"pm.test(\"Content-Type is present and has value 'application/json'\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message in the response body\r",
+									"pm.test(\"Error message 'User not found.' is present in the response body\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.error).to.equal(\"User not found.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "c19ec9f33d007e5621c9e746dbd321a2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/user?id=1900000009",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1900000009"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caso de uso 2 respuesta 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for response body properties\r",
+									"pm.test(\"Response body has title and user_name properties\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(response[0]).to.have.property('title');\r",
+									"    pm.expect(response[0]).to.have.property('user_name');\r",
+									"    pm.expect(response[1]).to.have.property('title');\r",
+									"    pm.expect(response[1]).to.have.property('user_name');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "c19ec9f33d007e5621c9e746dbd321a2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/streams",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"streams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caso de uso 3 respuesta 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for response body properties\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Each item has stream_id property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('stream_id');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has user_id property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('user_id');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has user_name property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('user_name');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has viewer_count property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('viewer_count');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has user_display_name property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('user_display_name');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has title property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('title');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item has profile_image_url property\", function () {\r",
+									"    jsonData.forEach(item => {\r",
+									"        pm.expect(item).to.have.property('profile_image_url');\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "c19ec9f33d007e5621c9e746dbd321a2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/streams/enriched?limit=10",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"streams",
+								"enriched"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caso de uso 3 respuesta 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "dfe18b674c8b96d6ee310ae9bba0e16e",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/streams/enriched?limit=XXX",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"streams",
+								"enriched"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "XXX"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entrega 2",
+			"item": [
+				{
+					"name": "Registro de usuarios 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Test for response body schema/properties\r",
+									"pm.test(\"Response body has an 'api_key'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody).to.have.property('api_key');\r",
+									"    pm.expect(responseBody.api_key).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"holaquetal@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/register",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro de usuarios 400 (1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for specific error message\r",
+									"pm.test(\"Error message is as expected\", function () {\r",
+									"    pm.expect(pm.response.json().error).to.equal(\"The email must be a valid email address\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"XXX\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/register",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro de usuarios 400 (2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"The email is mandatory\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/register",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtención token 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for the presence and type of token\r",
+									"pm.test(\"Token is present and is a string\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.token).to.exist;\r",
+									"    pm.expect(jsonData.token).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"holaquetal22@gmail.com\",\r\n    \"api_key\": \"8ebf2dd9e613b068ae3cfbdffbeb730f\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/token",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtencion token 400 (1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message\r",
+									"pm.test(\"Error message is present and valid\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"The email must be a valid email address\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"XXX\",\r\n    \"api_key\": \"XXX2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/token",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtencion token 400 (2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type header\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message presence\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"The email is mandatory\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/token",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtencion token 400 (3)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for specific error message\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.equal(\"The api_key is mandatory\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"holaquetal@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/token",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtencion token 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"\r",
+									"// Test for content type header\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message in the response body\r",
+									"pm.test(\"Error message is present in the response body\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.error).to.equal(\"Unauthorized. API access token is invalid.\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"holaquetal22@gmail.com\",\r\n    \"api_key\": \"XXX2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://vyvbts.com/token",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tops de videos 200 (1)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test for response time\r",
+									"\r",
+									"// Test for response body schema and properties\r",
+									"pm.test(\"Response body has the correct schema and properties\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(response).to.be.an('array');\r",
+									"    pm.expect(response[0]).to.have.property('game_id');\r",
+									"    pm.expect(response[0]).to.have.property('game_name');\r",
+									"    pm.expect(response[0]).to.have.property('user_name');\r",
+									"    pm.expect(response[0]).to.have.property('total_videos');\r",
+									"    pm.expect(response[0]).to.have.property('total_views');\r",
+									"    pm.expect(response[0]).to.have.property('most_viewed_title');\r",
+									"    pm.expect(response[0]).to.have.property('most_viewed_views');\r",
+									"    pm.expect(response[0]).to.have.property('most_viewed_duration');\r",
+									"    pm.expect(response[0]).to.have.property('most_viewed_created_at');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer c19ec9f33d007e5621c9e746dbd321a2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/topsofthetops?since=2",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"topsofthetops"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tops de videos 200 (2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content-Type is present and is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for each object in the response array\r",
+									"pm.test(\"Each object has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    for (let i = 0; i < responseData.length; i++) {\r",
+									"        pm.expect(responseData[i]).to.have.property('game_id');\r",
+									"        pm.expect(responseData[i]).to.have.property('game_name');\r",
+									"        pm.expect(responseData[i]).to.have.property('user_name');\r",
+									"        pm.expect(responseData[i]).to.have.property('total_videos');\r",
+									"        pm.expect(responseData[i]).to.have.property('total_views');\r",
+									"        pm.expect(responseData[i]).to.have.property('most_viewed_title');\r",
+									"        pm.expect(responseData[i]).to.have.property('most_viewed_views');\r",
+									"        pm.expect(responseData[i]).to.have.property('most_viewed_duration');\r",
+									"        pm.expect(responseData[i]).to.have.property('most_viewed_created_at');\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer c19ec9f33d007e5621c9e746dbd321a2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/topsofthetops",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"topsofthetops"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tops de videos 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for status code\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Test for content type\r",
+									"pm.test(\"Content type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test for error message presence\r",
+									"pm.test(\"Error message is present\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.error).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 41f5d43a7f6bd0e721dbd6cced148840",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://vyvbts.com/analytics/topsofthetops?since=XXX",
+							"protocol": "https",
+							"host": [
+								"vyvbts",
+								"com"
+							],
+							"path": [
+								"analytics",
+								"topsofthetops"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "XXX"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
