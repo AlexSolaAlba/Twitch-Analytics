@@ -43,18 +43,23 @@ $dotenv->safeLoad();
 |
 */
 $app->singleton(
-    \TwitchAnalytics\Domain\Repositories\UserRepositoryInterface::class,
+    TwitchAnalytics\Domain\Repositories\UserRepositoryInterface::class,
     TwitchAnalytics\Infraestructure\Repositories\UserRepository::class
 );
 
 $app->singleton(
-    \TwitchAnalytics\Domain\Repositories\TwitchUserRepositoryInterface::class,
+    TwitchAnalytics\Domain\Repositories\TwitchUserRepositoryInterface::class,
     TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository::class
 );
 
 $app->singleton(
-    \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\ApiTwitchTokenInterface::class,
-    \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\ApiTwitchToken::class
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\ApiTwitchTokenInterface::class,
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\ApiTwitchToken::class
+);
+
+$app->singleton(
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\ApiTwitchStreamsInterface::class,
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\ApiTwitchStreams::class
 );
 
 $app->singleton(
@@ -63,12 +68,12 @@ $app->singleton(
 );
 
 $app->singleton(
-    \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface::class,
-    \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer::class
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface::class,
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer::class
 );
 
 $app->singleton(
-    \TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface::class,
+    TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface::class,
     TwitchAnalytics\Infraestructure\Repositories\StreamerRepository::class
 );
 
@@ -77,7 +82,7 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
             $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
-            $app->make(\TwitchAnalytics\Domain\Repositories\UserRepositoryInterface::class)
+            $app->make(TwitchAnalytics\Domain\Repositories\UserRepositoryInterface::class)
         );
     }
 );
@@ -87,7 +92,7 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\TokenService(
             $app->make(TwitchAnalytics\Domain\Key\RandomKeyGenerator::class),
-            $app->make(\TwitchAnalytics\Domain\Repositories\UserRepositoryInterface::class)
+            $app->make(TwitchAnalytics\Domain\Repositories\UserRepositoryInterface::class)
         );
     }
 );
@@ -96,7 +101,7 @@ $app->singleton(
     TwitchAnalytics\Application\Services\RefreshTwitchTokenService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RefreshTwitchTokenService(
-            $app->make(\TwitchAnalytics\Domain\Repositories\TwitchUserRepositoryInterface::class),
+            $app->make(TwitchAnalytics\Domain\Repositories\TwitchUserRepositoryInterface::class),
             $app->make(TwitchAnalytics\Domain\Time\TimeProviderInterface::class)
         );
     }
@@ -106,7 +111,7 @@ $app->singleton(
     TwitchAnalytics\Application\Services\UserService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\UserService(
-            $app->make(\TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface::class)
+            $app->make(TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface::class)
         );
     }
 );

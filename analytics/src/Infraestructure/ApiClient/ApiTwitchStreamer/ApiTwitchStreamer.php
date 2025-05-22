@@ -6,7 +6,7 @@ use TwitchAnalytics\Domain\Exceptions\TwitchApiException;
 use TwitchAnalytics\Domain\Models\Streamer;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
-class ApiTwitchTwitchStreamer implements \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface
+class ApiTwitchStreamer implements \TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface
 {
     public function getStreamerFromTwitch(int $streamerId, string $accessToken): Streamer
     {
