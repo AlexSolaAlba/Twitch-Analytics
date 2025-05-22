@@ -13,15 +13,16 @@
 |
 */
 
+use TwitchAnalytics\Controllers\Streams\StreamsController;
 use TwitchAnalytics\Controllers\User\UserController;
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('streams', function () {
-    require __DIR__ . '/../src/streams.php';
-});
+$router->get("/streams", [
+    'uses' => StreamsController::class,
+]);
 
 $router->get("/user", [
     'uses' => UserController::class,
