@@ -10,6 +10,8 @@ use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideosInterface;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class TopsOfTheTopsController extends BaseController
@@ -18,25 +20,33 @@ class TopsOfTheTopsController extends BaseController
     private UserValidator $userValidator;
     private TopsOfTheTopsValidator $topsValidator;
     private UserRepositoryInterface $userRepository;
+    private ApiTwitchVideosInterface $apiTwitchVideos;
+    private DataBaseHandler $databaseHandler;
     public function __construct(
         RefreshTwitchTokenService $refreshTwitchToken,
         UserValidator $userValidator,
         TopsOfTheTopsValidator $topsValidator,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ApiTwitchVideosInterface $apiTwitchVideos,
+        DataBaseHandler $databaseHandler
     ) {
         $this->refreshTwitchToken = $refreshTwitchToken;
         $this->userValidator = $userValidator;
         $this->topsValidator = $topsValidator;
         $this->userRepository = $userRepository;
+        $this->apiTwitchVideos = $apiTwitchVideos;
+        $this->databaseHandler = $databaseHandler;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         try {
             $twitchUser = $this->refreshTwitchToken->refreshTwitchToken();
-            $this->topsValidator->validateSince($request->get('since'));
+            $since = $request->get('since');
+            $this->topsValidator->validateSince($since);
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
+            return response()->json($this->returnVideosInfo($twitchUser - getAccessToken(), $since));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
@@ -46,6 +56,20 @@ class TopsOfTheTopsController extends BaseController
         } catch (\Throwable $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
+    }
+
+    private function returnVideosInfo($accessToken, $since): array
+    {
+        $videos = $this->databaseHandler->getVideosFromDB();
+        $currentDate = time();
+        $interval = $currentDate - strtotime($videos[0]->getCreatedAt());
+
+        if ($interval > 600 || (isset($since) && ($interval < $since))) {
+            $this->databaseHandler->deleteAllVideosFromDB();
+            $videos = $this->apiTwitchVideos->getGamesFromTwitch($accessToken);
+            $this->databaseHandler->insertVideosInDB($videos);
+        }
+        return $videos;
     }
 }
 
