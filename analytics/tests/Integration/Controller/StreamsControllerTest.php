@@ -5,11 +5,13 @@ namespace Integration\Controller;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
+use TwitchAnalytics\Application\Services\StreamsService;
 use TwitchAnalytics\Controllers\Streams\StreamsController;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\FakeApiTwitchStreams;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Repositories\StreamsRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
 use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
@@ -34,7 +36,9 @@ class StreamsControllerTest extends TestCase
         $userValidator = new UserValidator();
         $userRepository = new UserRepository($this->dataBaseHandler);
         $apiStreams = new FakeApiTwitchStreams();
-        $this->streamsController = new StreamsController($refreshTwitchToken, $userValidator, $userRepository, $apiStreams);
+        $streamsRepository = new StreamsRepository($apiStreams);
+        $streamsService = new StreamsService($streamsRepository);
+        $this->streamsController = new StreamsController($refreshTwitchToken, $userValidator, $userRepository, $apiStreams, $streamsService);
     }
     /**
      * @test
