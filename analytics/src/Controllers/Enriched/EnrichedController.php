@@ -1,50 +1,49 @@
 <?php
 
-namespace TwitchAnalytics\Controllers\Streams;
+namespace TwitchAnalytics\Controllers\Enriched;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
-use TwitchAnalytics\Application\Services\StreamsService;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
-use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\ApiTwitchStreamsInterface;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
-use TwitchAnalytics\Domain\Models\Stream;
 
-class StreamsController extends BaseController
+class EnrichedController extends BaseController
 {
     private RefreshTwitchTokenService $refreshTwitchToken;
     private UserValidator $userValidator;
+    private EnrichedValidator $enrichedValidator;
     private UserRepositoryInterface $userRepository;
-    private ApiTwitchStreamsInterface $apiTwitchStreams;
-    private StreamsService $streamsService;
+    private ApiTwitchEnriched $apiTwitchEnriched;
+
     public function __construct(
         RefreshTwitchTokenService $refreshTwitchToken,
         UserValidator $userValidator,
+        EnrichedValidator $enrichedValidator,
         UserRepositoryInterface $userRepository,
-        ApiTwitchStreamsInterface $apiTwitchStreams,
-        StreamsService $streamsService
+        ApiTwitchEnriched $apiTwitchEnriched,
     ) {
+        $this->userRepository = $userRepository;
         $this->refreshTwitchToken = $refreshTwitchToken;
         $this->userValidator = $userValidator;
-        $this->userRepository = $userRepository;
-        $this->apiTwitchStreams = $apiTwitchStreams;
-        $this->streamsService = $streamsService;
+        $this->enrichedValidator = $enrichedValidator;
+        $this->apiTwitchEnriched = $apiTwitchEnriched;
     }
 
     public function __invoke(Request $request): JsonResponse
     {
-
         try {
             $twitchUser = $this->refreshTwitchToken->refreshTwitchToken();
+            $this->enrichedValidator->validateLimit($request->get('limit'));
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
 
-            return response()->json($this->streamsService->returnStreamsInfo($twitchUser->getAccessToken()));
+            return response()->json($this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
