@@ -44,7 +44,19 @@ class EnrichedController extends BaseController
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
 
-            return response()->json($this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken()));
+            $streamObjects = $this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken());
+            $streams = array_map(fn($stream) => [
+                'streamerId' => $stream->getStreamerId(),
+                'userId' => $stream->getUserId(),
+                'userName' => $stream->getUserName(),
+                'viewerCount' => $stream->getViewerCount(),
+                'userDisplayName' => $stream->getUserDisplayName(),
+                'title' => $stream->getTitle(),
+                'profileImageUrl' => $stream->getProfileImageUrl(),
+            ], $streamObjects);
+
+            return response()->json($streams);
+            #return response()->json($this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {

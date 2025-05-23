@@ -134,4 +134,39 @@ class EnrichedControllerTest extends TestCase
             'error' => 'Unauthorized. Token is invalid or expired.'
         ], $response->getData(true));
     }
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenGoodLimitAndTokenReturnsStreamsInfo()
+    {
+        $request = Request::create('/streams/enriched', 'GET', [
+            'limit' => 2,
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
+        ]);
+
+        $response = $this->enrichedController->__invoke($request);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals([
+            [
+                'streamerId' => '1',
+                'userId' => '1001',
+                'userName' => 'TechGuru',
+                'viewerCount' => '1500',
+                'userDisplayName' => 'TechGuruLive',
+                'title' => 'Desarrollando apps con Laravel en vivo',
+                'profileImageUrl' => 'https://example.com/images/techguru.jpg'
+            ],
+            [
+                'streamerId' => '2',
+                'userId' => '1002',
+                'userName' => 'MusicLover',
+                'viewerCount' => '900',
+                'userDisplayName' => 'TheMusicLover',
+                'title' => 'Sesión chill en piano',
+                'profileImageUrl' => 'https://example.com/images/musiclover.jpg'
+            ]
+        ], $response->getData(true));
+    }
 }
