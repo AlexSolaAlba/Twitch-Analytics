@@ -96,4 +96,23 @@ class EnrichedControllerTest extends TestCase
             'error' => 'Invalid or missing limit parameter.'
         ], $response->getData(true));
     }
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenTokenThatNotExistsReturnsAnException()
+    {
+        $request = Request::create('/streams/enriched', 'GET', [
+            'limit' => 2,
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer ',
+        ]);
+
+        $response = $this->enrichedController->__invoke($request);
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'Unauthorized. Token is invalid or expired.'
+        ], $response->getData(true));
+    }
 }
