@@ -5,15 +5,11 @@ namespace Integration\Controller;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
-use TwitchAnalytics\Application\Services\UserService;
 use TwitchAnalytics\Controllers\Streams\StreamsController;
-use TwitchAnalytics\Controllers\User\UserController;
 use TwitchAnalytics\Controllers\User\UserValidator;
-use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\FakeApiTwitchStreams;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
-use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
 use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
@@ -48,6 +44,23 @@ class StreamsControllerTest extends TestCase
     {
         $request = Request::create('/streams', 'GET', [], [], [], [
             'HTTP_Authorization' => 'Bear',
+        ]);
+
+        $response = $this->streamsController->__invoke($request);
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'Unauthorized. Token is invalid or expired.'
+        ], $response->getData(true));
+    }
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function notGivenTokenReturnsAnException()
+    {
+        $request = Request::create('/streams', 'GET', [], [], [], [
+            'HTTP_Authorization' => '',
         ]);
 
         $response = $this->streamsController->__invoke($request);
