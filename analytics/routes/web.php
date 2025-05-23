@@ -15,6 +15,7 @@
 
 use TwitchAnalytics\Controllers\Streams\StreamsController;
 use TwitchAnalytics\Controllers\User\UserController;
+use TwitchAnalytics\Controllers\TopsOfTheTops\TopsOfTheTopsController;
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
@@ -33,6 +34,6 @@ $router->get('/streams/enriched', function () {
     require __DIR__ . '/../src/enriched.php';
 });
 
-$router->get('topsofthetops', function () {
-    require __DIR__ . '/../src/topsofthetops.php';
-});
+$router->get("/TopsOfTheTops", [
+    'uses' => TopsOfTheTopsController::class,
+]);
