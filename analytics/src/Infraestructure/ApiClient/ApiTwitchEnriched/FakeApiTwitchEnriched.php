@@ -4,7 +4,6 @@ namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched;
 
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Models\EnrichedStream;
-use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class FakeApiTwitchEnriched implements ApiTwitchEnrichedInterface
 {

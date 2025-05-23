@@ -11,6 +11,7 @@ use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class EnrichedController extends BaseController
@@ -19,14 +20,14 @@ class EnrichedController extends BaseController
     private UserValidator $userValidator;
     private EnrichedValidator $enrichedValidator;
     private UserRepositoryInterface $userRepository;
-    private ApiTwitchEnriched $apiTwitchEnriched;
+    private ApiTwitchEnrichedInterface $apiTwitchEnriched;
 
     public function __construct(
         RefreshTwitchTokenService $refreshTwitchToken,
         UserValidator $userValidator,
         EnrichedValidator $enrichedValidator,
         UserRepositoryInterface $userRepository,
-        ApiTwitchEnriched $apiTwitchEnriched,
+        ApiTwitchEnrichedInterface $apiTwitchEnriched,
     ) {
         $this->userRepository = $userRepository;
         $this->refreshTwitchToken = $refreshTwitchToken;
