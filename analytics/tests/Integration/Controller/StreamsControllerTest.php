@@ -2,12 +2,59 @@
 
 namespace Integration\Controller;
 
+use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
+use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
+use TwitchAnalytics\Application\Services\UserService;
+use TwitchAnalytics\Controllers\Streams\StreamsController;
+use TwitchAnalytics\Controllers\User\UserController;
+use TwitchAnalytics\Controllers\User\UserValidator;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\FakeApiTwitchStreams;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
+use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
+use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
+use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
+use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
 
 class StreamsControllerTest extends TestCase
 {
     public function createApplication()
     {
         return require __DIR__ . '/../../../bootstrap/app.php';
+    }
+
+    private StreamsController $streamsController;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->dataBaseHandler = new DataBaseHandler();
+        $fakeApiTwitchClient = new FakeApiTwitchToken();
+        $twitchUserRepository = new TwitchUserRepository($this->dataBaseHandler, $fakeApiTwitchClient);
+        $timeProvider = new SystemTimeProvider();
+        $refreshTwitchToken = new RefreshTwitchTokenService($twitchUserRepository, $timeProvider);
+        $userValidator = new UserValidator();
+        $userRepository = new UserRepository($this->dataBaseHandler);
+        $apiStreams = new FakeApiTwitchStreams();
+        $this->streamsController = new StreamsController($refreshTwitchToken, $userValidator, $userRepository, $apiStreams);
+    }
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenWrongTokenReturnsAnException()
+    {
+        $request = Request::create('/streams', 'GET', [], [], [], [
+            'HTTP_Authorization' => 'Bear',
+        ]);
+
+        $response = $this->streamsController->__invoke($request);
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'Unauthorized. Token is invalid or expired.'
+        ], $response->getData(true));
     }
 }
