@@ -21,15 +21,12 @@ class FakeApiTwitchStreams implements ApiTwitchStreamsInterface
     {
         $streams = [];
 
-        $streams[] = new Stream(
-            'Jugando Elden Ring con mods',
-            'GamerPro88'
-        );
-
-        $streams[] = new Stream(
-            'Diseñando en Figma en vivo',
-            'UXLaura'
-        );
+        foreach ($this->FakeStreams as $streamData) {
+            $streams[] = new Stream(
+                $streamData['title'],
+                $streamData['userName']
+            );
+        }
 
         return $streams;
     }
