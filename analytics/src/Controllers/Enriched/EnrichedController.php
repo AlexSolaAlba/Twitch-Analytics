@@ -11,6 +11,7 @@ use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class EnrichedController extends BaseController
@@ -19,14 +20,14 @@ class EnrichedController extends BaseController
     private UserValidator $userValidator;
     private EnrichedValidator $enrichedValidator;
     private UserRepositoryInterface $userRepository;
-    private ApiTwitchEnriched $apiTwitchEnriched;
+    private ApiTwitchEnrichedInterface $apiTwitchEnriched;
 
     public function __construct(
         RefreshTwitchTokenService $refreshTwitchToken,
         UserValidator $userValidator,
         EnrichedValidator $enrichedValidator,
         UserRepositoryInterface $userRepository,
-        ApiTwitchEnriched $apiTwitchEnriched,
+        ApiTwitchEnrichedInterface $apiTwitchEnriched,
     ) {
         $this->userRepository = $userRepository;
         $this->refreshTwitchToken = $refreshTwitchToken;
@@ -43,7 +44,19 @@ class EnrichedController extends BaseController
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
 
-            return response()->json($this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken()));
+            $streamObjects = $this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken());
+            $streams = array_map(fn($stream) => [
+                'streamerId' => $stream->getStreamerId(),
+                'userId' => $stream->getUserId(),
+                'userName' => $stream->getUserName(),
+                'viewerCount' => $stream->getViewerCount(),
+                'userDisplayName' => $stream->getUserDisplayName(),
+                'title' => $stream->getTitle(),
+                'profileImageUrl' => $stream->getProfileImageUrl(),
+            ], $streamObjects);
+
+            return response()->json($streams);
+            #return response()->json($this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
