@@ -15,7 +15,7 @@ class ApiTwitchStreams implements ApiTwitchStreamsInterface
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Client-ID: $clientID",
-            "Authorization: Bearer $accessToken"
+            "Authorization: Bearer tb9rmjd4bo2ldoru98wogmfaclvrng"
         ]);
 
         $response = curl_exec($curl);

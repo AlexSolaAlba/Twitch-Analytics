@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
+use TwitchAnalytics\Application\Services\StreamsService;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
@@ -24,12 +25,14 @@ class StreamsController extends BaseController
         RefreshTwitchTokenService $refreshTwitchToken,
         UserValidator $userValidator,
         UserRepositoryInterface $userRepository,
-        ApiTwitchStreamsInterface $apiTwitchStreams
+        ApiTwitchStreamsInterface $apiTwitchStreams,
+        StreamsService $streamsService
     ) {
         $this->refreshTwitchToken = $refreshTwitchToken;
         $this->userValidator = $userValidator;
         $this->userRepository = $userRepository;
         $this->apiTwitchStreams = $apiTwitchStreams;
+        $this->streamsService = $streamsService;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -40,15 +43,7 @@ class StreamsController extends BaseController
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
 
-            #return response()->json($this->apiTwitchStreams->getStreamsFromTwitch($twitchUser->getAccessToken()));
-            $streamObjects = $this->apiTwitchStreams->getStreamsFromTwitch($twitchUser->getAccessToken());
-
-            $streams = array_map(fn($Stream) => [
-                'title' => $Stream->getStreamTitle(),
-                'userName' => $Stream->getStreamUserName(),
-            ], $streamObjects);
-
-            return response()->json($streams);
+            return response()->json($this->streamsService->returnStreamsInfo($twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
