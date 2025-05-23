@@ -6,7 +6,6 @@ use TwitchAnalytics\Domain\Models\Video;
 
 class DataBaseHandlerVideos extends DataBaseHandler
 {
-
     public function insertVideosInDB($videos): void
     {
         $connection = $this->connectWithDB();
