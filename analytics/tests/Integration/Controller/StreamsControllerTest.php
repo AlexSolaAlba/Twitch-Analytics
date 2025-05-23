@@ -70,4 +70,21 @@ class StreamsControllerTest extends TestCase
             'error' => 'Unauthorized. Token is invalid or expired.'
         ], $response->getData(true));
     }
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenTokenThatNotExistsReturnsAnException()
+    {
+        $request = Request::create('/streams', 'GET', [], [], [], [
+            'HTTP_Authorization' => 'Bearer ',
+        ]);
+
+        $response = $this->streamsController->__invoke($request);
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'Unauthorized. Token is invalid or expired.'
+        ], $response->getData(true));
+    }
 }
