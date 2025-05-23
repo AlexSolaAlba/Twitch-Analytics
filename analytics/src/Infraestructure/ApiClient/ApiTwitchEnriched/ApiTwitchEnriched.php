@@ -50,7 +50,7 @@ class ApiTwitchEnriched implements ApiTwitchEnrichedInterface
                                     $EnrichedStream['viewer_count'],
                                     $EnrichedStream['user_login'],
                                     $EnrichedStream['title'],
-                                    $EnrichedStream['thumbnail_url']
+                                    $EnrichedStream['profile_image_url']
                                 );
                             }
                         }
