@@ -12,7 +12,6 @@ use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface;
-use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class EnrichedController extends BaseController
 {
@@ -28,6 +27,7 @@ class EnrichedController extends BaseController
         EnrichedValidator $enrichedValidator,
         UserRepositoryInterface $userRepository,
         ApiTwitchEnrichedInterface $apiTwitchEnriched,
+
     ) {
         $this->userRepository = $userRepository;
         $this->refreshTwitchToken = $refreshTwitchToken;
@@ -57,6 +57,7 @@ class EnrichedController extends BaseController
 
             return response()->json($streams);
             #return response()->json($this->apiTwitchEnriched->getEnrichedStreamsFromTwitch($request->get('limit'), $twitchUser->getAccessToken()));
+
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
