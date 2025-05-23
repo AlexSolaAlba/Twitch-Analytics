@@ -9,11 +9,11 @@ class FakeApiTwitchStreams implements ApiTwitchStreamsInterface
     private array $FakeStreams = [
         [
             'title' => 'Explorando el universo en vivo',
-            'userName' => 'AstroNico'
+            'user_name' => 'AstroNico'
         ],
         [
             'title' => 'Cocinando con estilo',
-            'userName' => 'ChefLaura'
+            'user_name' => 'ChefLaura'
         ]
     ];
 
@@ -24,7 +24,7 @@ class FakeApiTwitchStreams implements ApiTwitchStreamsInterface
         foreach ($this->FakeStreams as $streamData) {
             $streams[] = new Stream(
                 $streamData['title'],
-                $streamData['userName']
+                $streamData['user_name']
             );
         }
 

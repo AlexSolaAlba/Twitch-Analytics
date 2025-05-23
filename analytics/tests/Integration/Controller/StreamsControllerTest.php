@@ -118,11 +118,11 @@ class StreamsControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals([[
             'title' => 'Explorando el universo en vivo',
-            'userName' => 'AstroNico'
+            'user_name' => 'AstroNico'
         ],
         [
             'title' => 'Cocinando con estilo',
-            'userName' => 'ChefLaura'
+            'user_name' => 'ChefLaura'
         ]], $response->getData(true));
     }
 }

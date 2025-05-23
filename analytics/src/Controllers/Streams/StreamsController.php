@@ -45,7 +45,7 @@ class StreamsController extends BaseController
 
             $streams = array_map(fn($Stream) => [
                 'title' => $Stream->getStreamTitle(),
-                'userName' => $Stream->getStreamUserName(),
+                'user_name' => $Stream->getStreamUserName(),
             ], $streamObjects);
 
             return response()->json($streams);
