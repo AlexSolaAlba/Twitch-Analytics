@@ -83,6 +83,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface::class,
+    TwitchAnalytics\Infraestructure\Repositories\EnrichedRepository::class
+);
+
+$app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
@@ -126,6 +131,15 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\StreamsService(
             $app->make(TwitchAnalytics\Domain\Repositories\StreamsRepositoryInterface::class)
+        );
+    }
+);
+
+$app->singleton(
+    TwitchAnalytics\Application\Services\EnrichedService::class,
+    function ($app) {
+        return new TwitchAnalytics\Application\Services\EnrichedService(
+            $app->make(TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface::class)
         );
     }
 );

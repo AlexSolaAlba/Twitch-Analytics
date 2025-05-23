@@ -4,6 +4,7 @@ namespace TwitchAnalytics\Tests\Integration\Controller;
 
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
+use TwitchAnalytics\Application\Services\EnrichedService;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
 use TwitchAnalytics\Controllers\Enriched\EnrichedController;
 use TwitchAnalytics\Controllers\Enriched\EnrichedValidator;
@@ -11,6 +12,7 @@ use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\FakeApiTwitchEnriched;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Repositories\EnrichedRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
 use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
@@ -35,7 +37,9 @@ class EnrichedControllerTest extends TestCase
         $enrichedValidator = new EnrichedValidator();
         $userRepository = new UserRepository($this->dataBaseHandler);
         $apiStreams = new FakeApiTwitchEnriched();
-        $this->enrichedController = new EnrichedController($refreshTwitchToken, $userValidator, $enrichedValidator, $userRepository, $apiStreams);
+        $enrichedRepository = new EnrichedRepository($apiStreams);
+        $enrichedService = new EnrichedService($enrichedRepository);
+        $this->enrichedController = new EnrichedController($refreshTwitchToken, $userValidator, $enrichedValidator, $userRepository, $apiStreams, $enrichedService);
     }
 
     /**
@@ -150,22 +154,22 @@ class EnrichedControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals([
             [
-                'streamerId' => '1',
-                'userId' => '1001',
-                'userName' => 'TechGuru',
-                'viewerCount' => '1500',
-                'userDisplayName' => 'TechGuruLive',
+                'streamer_id' => '1',
+                'user_id' => '1001',
+                'user_name' => 'TechGuru',
+                'viewer_count' => '1500',
+                'user_display_name' => 'TechGuruLive',
                 'title' => 'Desarrollando apps con Laravel en vivo',
-                'profileImageUrl' => 'https://example.com/images/techguru.jpg'
+                'profile_image_url' => 'https://example.com/images/techguru.jpg'
             ],
             [
-                'streamerId' => '2',
-                'userId' => '1002',
-                'userName' => 'MusicLover',
-                'viewerCount' => '900',
-                'userDisplayName' => 'TheMusicLover',
+                'streamer_id' => '2',
+                'user_id' => '1002',
+                'user_name' => 'MusicLover',
+                'viewer_count' => '900',
+                'user_display_name' => 'TheMusicLover',
                 'title' => 'Sesión chill en piano',
-                'profileImageUrl' => 'https://example.com/images/musiclover.jpg'
+                'profile_image_url' => 'https://example.com/images/musiclover.jpg'
             ]
         ], $response->getData(true));
     }
