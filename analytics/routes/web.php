@@ -13,6 +13,7 @@
 |
 */
 
+use TwitchAnalytics\Controllers\Enriched\EnrichedController;
 use TwitchAnalytics\Controllers\Streams\StreamsController;
 use TwitchAnalytics\Controllers\User\UserController;
 use TwitchAnalytics\Controllers\TopsOfTheTops\TopsOfTheTopsController;
@@ -29,10 +30,9 @@ $router->get("/user", [
     'uses' => UserController::class,
 ]);
 
-
-$router->get('/streams/enriched', function () {
-    require __DIR__ . '/../src/enriched.php';
-});
+$router->get("/streams/enriched", [
+    'uses' => EnrichedController::class,
+]);
 
 $router->get("/TopsOfTheTops", [
     'uses' => TopsOfTheTopsController::class,
