@@ -9,10 +9,10 @@ use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
-use TwitchAnalytics\Domain\Repositories\StreamerRepositoryInterface;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\ApiTwitchStreamsInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
+use TwitchAnalytics\Domain\Models\Stream;
 
 class StreamsController extends BaseController
 {
@@ -40,7 +40,15 @@ class StreamsController extends BaseController
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
 
-            return response()->json($this->apiTwitchStreams->getStreamsFromTwitch($twitchUser->getAccessToken()));
+            #return response()->json($this->apiTwitchStreams->getStreamsFromTwitch($twitchUser->getAccessToken()));
+            $streamObjects = $this->apiTwitchStreams->getStreamsFromTwitch($twitchUser->getAccessToken());
+
+            $streams = array_map(fn($Stream) => [
+                'title' => $Stream->getStreamTitle(),
+                'userName' => $Stream->getStreamUserName(),
+            ], $streamObjects);
+
+            return response()->json($streams);
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
