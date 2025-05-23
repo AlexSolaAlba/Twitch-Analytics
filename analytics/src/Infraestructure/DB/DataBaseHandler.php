@@ -6,11 +6,12 @@ use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Models\Streamer;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
+use TwitchAnalytics\Domain\Models\Video;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class DataBaseHandler
 {
-    private function connectWithDB(): false|\mysqli
+    protected function connectWithDB(): false|\mysqli
     {
         return mysqli_connect(
             env('DB_HOST'),
@@ -20,14 +21,14 @@ class DataBaseHandler
         );
     }
 
-    private function checkConnection(false|\mysqli $connection): void
+    protected function checkConnection(false|\mysqli $connection): void
     {
         if (!$connection) {
             throw new DBException('Internal server error.');
         }
     }
 
-    private function checkStmtExecution(false|\mysqli_stmt $stmt): void
+    protected function checkStmtExecution(false|\mysqli_stmt $stmt): void
     {
         if (!$stmt->execute()) {
             throw new DBException('Internal server error.');
