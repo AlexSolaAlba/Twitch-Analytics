@@ -47,4 +47,26 @@ class UserServiceTest extends TestCase
             'created_at' => '2007-05-22T10:37:47Z',
         ], $response);
     }
+
+    /**
+     * @test
+     */
+    public function givenStreamerIdThatNotExistsInDBReturnsStreamerInfoFromAPI()
+    {
+        $response = $this->userService->returnStreamerInfo(4, "24e9a3dea44346393f632e4161bc83e6");
+        $this->dataBaseHandler->deleteTestStreamerFromDB();
+
+        $this->assertEquals([
+            'id' => '4',
+            'login' => 'elsmurfoz',
+            'display_name' => 'elsmurfoz',
+            'type' => '',
+            'broadcaster_type' => '',
+            'description' => '',
+            'profile_image_url' => 'https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png',
+            'offline_image_url' => '',
+            'view_count' => '0',
+            'created_at' => '2007-05-22T10:37:47Z',
+        ], $response);
+    }
 }
