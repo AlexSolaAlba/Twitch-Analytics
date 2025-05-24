@@ -6,6 +6,7 @@ use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Application\Services\UserService;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
 
 class UserServiceTest extends TestCase
@@ -68,5 +69,15 @@ class UserServiceTest extends TestCase
             'view_count' => '0',
             'created_at' => '2007-05-22T10:37:47Z',
         ], $response);
+    }
+
+    /**
+     * @test
+     */
+    public function givenStreamerIdThatNotExistsInDBNeitherInAPIReturnsAnException()
+    {
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('User not found.');
+        $this->userService->returnStreamerInfo(5, "24e9a3dea44346393f632e4161bc83e6");
     }
 }
