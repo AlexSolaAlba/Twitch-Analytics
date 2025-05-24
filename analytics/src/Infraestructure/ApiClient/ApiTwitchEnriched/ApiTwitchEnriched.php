@@ -10,59 +10,64 @@ class ApiTwitchEnriched implements ApiTwitchEnrichedInterface
 {
     public function getEnrichedStreamsFromTwitch(int $limit, string $accessToken): array
     {
-        $curl = curl_init();
         $clientID = env('CLIENT_ID');
-        curl_setopt($curl, CURLOPT_URL, "https://api.twitch.tv/helix/streams?first=$limit");
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            "Client-ID: $clientID",
-            "Authorization: Bearer $accessToken"
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.twitch.tv/helix/streams?first={$limit}",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                "Client-ID: $clientID",
+                "Authorization: Bearer $accessToken",
+            ],
         ]);
         $response = curl_exec($curl);
-        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
-        $response_data = json_decode($response, true);
-
-        $streams = [];
-        switch ($http_code) {
+        $data = json_decode($response, true)['data'] ?? [];
+        switch ($httpCode) {
             case 200:
-                if (isset($response_data['data'])) {
-                    foreach ($response_data['data'] as $stream) {
-                        $userId = $stream['user_id'];
-                        $curl = curl_init();
+                $streams = [];
+                foreach ($data as $stream) {
+                    $streamId    = $stream['id'];
+                    $userId      = $stream['user_id'];
+                    $userName    = $stream['user_name'];
+                    $viewerCount = $stream['viewer_count'];
+                    $title       = $stream['title'];
 
-                        curl_setopt($curl, CURLOPT_URL, "https://api.twitch.tv/helix/users?id=$userId");
-                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                    $curl2 = curl_init();
+                    curl_setopt_array($curl2, [
+                        CURLOPT_URL => "https://api.twitch.tv/helix/users?id={$userId}",
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_HTTPHEADER => [
                             "Client-ID: $clientID",
-                            "Authorization: Bearer $accessToken"
-                        ]);
-                        $response2 = curl_exec($curl);
-                        curl_close($curl);
-                        $response_data2 = json_decode($response2, true);
+                            "Authorization: Bearer $accessToken",
+                        ],
+                    ]);
+                    $resp2 = curl_exec($curl2);
+                    curl_close($curl2);
 
-                        if (isset($response_data2['data'])) {
-                            foreach ($response_data2['data'] as $EnrichedStream) {
-                                $streams[] = new EnrichedStream(
-                                    $EnrichedStream['id'],
-                                    $EnrichedStream['user_id'],
-                                    $EnrichedStream['user_name'],
-                                    $EnrichedStream['viewer_count'],
-                                    $EnrichedStream['user_login'],
-                                    $EnrichedStream['title'],
-                                    $EnrichedStream['thumbnail_url']
-                                );
-                            }
-                        }
-                        return $streams;
-                    }
+                    $userData = json_decode($resp2, true)['data'][0] ?? null;
+                    $profileImage = $userData['profile_image_url'] ?? "";
+
+                    $streams[] = new EnrichedStream(
+                        $streamId,
+                        $userId,
+                        $userName,
+                        $viewerCount,
+                        $userName,
+                        $title,
+                        $profileImage
+                    );
                 }
-                throw new TwitchApiException('Invalid or missing limit parameter.');
+                return $streams;
             case 400:
                 throw new TwitchApiException('Invalid or missing limit parameter.');
+            case 401:
+                throw new TwitchApiException('Unauthorized. Twitch access token is invalid or has expired.');
             case 500:
                 throw new TwitchApiException('Internal server error.');
+            default:
+                throw new ValidationException('Invalid or missing limit parameter.');
         }
-        throw new ValidationException('Invalid or missing limit parameter.');
     }
 }

@@ -9,22 +9,22 @@ class FakeApiTwitchEnriched implements ApiTwitchEnrichedInterface
 {
     private array $FakeStream = [
         [
-            'streamerId' => '1',
-            'userId' => '1001',
-            'userName' => 'TechGuru',
-            'viewerCount' => '1500',
-            'userDisplayName' => 'TechGuruLive',
+            'streamer_id' => '1',
+            'user_id' => '1001',
+            'user_name' => 'TechGuru',
+            'viewer_count' => '1500',
+            'user_display_name' => 'TechGuruLive',
             'title' => 'Desarrollando apps con Laravel en vivo',
-            'profileImageUrl' => 'https://example.com/images/techguru.jpg'
+            'profile_image_url' => 'https://example.com/images/techguru.jpg'
         ],
         [
-            'streamerId' => '2',
-            'userId' => '1002',
-            'userName' => 'MusicLover',
-            'viewerCount' => '900',
-            'userDisplayName' => 'TheMusicLover',
+            'streamer_id' => '2',
+            'user_id' => '1002',
+            'user_name' => 'MusicLover',
+            'viewer_count' => '900',
+            'user_display_name' => 'TheMusicLover',
             'title' => 'Sesión chill en piano',
-            'profileImageUrl' => 'https://example.com/images/musiclover.jpg'
+            'profile_image_url' => 'https://example.com/images/musiclover.jpg'
         ]
     ];
 
@@ -37,13 +37,13 @@ class FakeApiTwitchEnriched implements ApiTwitchEnrichedInterface
 
         foreach ($this->FakeStream as $stream) {
             $streams[] = new EnrichedStream(
-                $stream['streamerId'],
-                $stream['userId'],
-                $stream['userName'],
-                $stream['viewerCount'],
-                $stream['userDisplayName'],
+                $stream['streamer_id'],
+                $stream['user_id'],
+                $stream['user_name'],
+                $stream['viewer_count'],
+                $stream['user_display_name'],
                 $stream['title'],
-                $stream['profileImageUrl']
+                $stream['profile_image_url']
             );
         }
         return $streams;
