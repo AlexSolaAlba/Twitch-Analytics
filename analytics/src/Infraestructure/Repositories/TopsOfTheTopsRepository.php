@@ -4,13 +4,14 @@ namespace TwitchAnalytics\Infraestructure\Repositories;
 
 use TwitchAnalytics\Domain\Repositories\TopsOfTheTopsRepositoryInterface;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideos;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideosInterface;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandlerVideos;
 
 class TopsOfTheTopsRepository implements TopsOfTheTopsRepositoryInterface
 {
-    private ApiTwitchVideos $apiVideos;
+    private ApiTwitchVideosInterface $apiVideos;
     private DataBaseHandlerVideos $dataBaseHandler;
-    public function __construct(ApiTwitchVideos $apiVideos, DataBaseHandlerVideos $dataBaseHandler)
+    public function __construct(ApiTwitchVideosInterface $apiVideos, DataBaseHandlerVideos $dataBaseHandler)
     {
         $this->apiVideos = $apiVideos;
         $this->dataBaseHandler = $dataBaseHandler;
