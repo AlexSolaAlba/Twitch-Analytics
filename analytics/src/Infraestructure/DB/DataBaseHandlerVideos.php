@@ -21,7 +21,7 @@ class DataBaseHandlerVideos extends DataBaseHandler
         }
     }
 
-    private function insertVideosInDBQuery(false|\mysqli_stmt $connection, array $videos): false|\mysqli_stmt
+    private function insertVideosInDBQuery($connection, array $videos): false|\mysqli_stmt
     {
         $stmt = $connection->prepare(
             "INSERT INTO topscache(game_id, game_name, user_name, total_videos, total_views,
@@ -90,7 +90,7 @@ class DataBaseHandlerVideos extends DataBaseHandler
         }
     }
 
-    private function getVideosFromDBQuery(false|\mysqli_stmt $connection): false|\mysqli_stmt
+    private function getVideosFromDBQuery($connection): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT * FROM topscache");
         return $stmt;
@@ -112,7 +112,7 @@ class DataBaseHandlerVideos extends DataBaseHandler
         }
     }
 
-    private function deleteAllVideosFromDBQuery(false|\mysqli_stmt $connection): false|\mysqli_stmt
+    private function deleteAllVideosFromDBQuery($connection): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("DELETE FROM topscache");
         return $stmt;

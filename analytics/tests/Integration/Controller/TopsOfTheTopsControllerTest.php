@@ -5,12 +5,14 @@ namespace Integration\Controller;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
+use TwitchAnalytics\Application\Services\TopsOfTheTopsService;
 use TwitchAnalytics\Controllers\TopsOfTheTops\TopsOfTheTopsController;
 use TwitchAnalytics\Controllers\TopsOfTheTops\TopsOfTheTopsValidator;
 use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\FakeApiTwitchVideos;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandlerVideos;
+use TwitchAnalytics\Infraestructure\Repositories\TopsOfTheTopsRepository;
 use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
 use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
@@ -34,7 +36,9 @@ class TopsOfTheTopsControllerTest extends TestCase
         $topsValidator = new TopsOfTheTopsValidator();
         $userRepository = new UserRepository($this->dataBaseHandler);
         $apiVideos = new FakeApiTwitchVideos();
-        $this->topsController = new TopsOfTheTopsController($refreshTwitchToken, $userValidator, $topsValidator, $userRepository, $apiVideos, $this->dataBaseHandler);
+        $topsRepository = new TopsOfTheTopsRepository($apiVideos, $this->dataBaseHandler);
+        $topsService = new TopsOfTheTopsService($topsRepository);
+        $this->topsController = new TopsOfTheTopsController($refreshTwitchToken, $userValidator, $topsValidator, $userRepository, $topsService);
     }
 
     /**
@@ -174,7 +178,7 @@ class TopsOfTheTopsControllerTest extends TestCase
             'most_viewed_duration' => '15h15m21s',
             'most_viewed_created_at' => '2020-09-11T18:52:09Z'
         ]
-        ], $response->getOriginalContent());
+        ], $response->getData(true));
     }
 
     /**
