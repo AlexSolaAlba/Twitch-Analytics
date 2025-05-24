@@ -34,6 +34,6 @@ $router->get("/streams/enriched", [
     'uses' => EnrichedController::class,
 ]);
 
-$router->get("/TopsOfTheTops", [
+$router->get("/topsofthetops", [
     'uses' => TopsOfTheTopsController::class,
 ]);

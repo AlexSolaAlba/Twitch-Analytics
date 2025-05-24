@@ -13,7 +13,7 @@ class Video
     private int $mostViewedViews;
     private string $mostViewedDuration;
     private string $mostViewedCreatedAt;
-    private string $createdAt;
+    private $createdAt;
 
     /**
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -28,7 +28,7 @@ class Video
         int $mostViewedViews,
         string $mostViewedDuration,
         string $mostViewedCreatedAt,
-        string $createdAt = null
+        $createdAt = null
     ) {
         $this->gameId = $gameId;
         $this->gameName = $gameName;
@@ -132,12 +132,12 @@ class Video
         $this->mostViewedCreatedAt = $mostViewedCreatedAt;
     }
 
-    public function getCreatedAt(): string
+    public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(string $createdAt): void
+    public function setCreatedAt(?string $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

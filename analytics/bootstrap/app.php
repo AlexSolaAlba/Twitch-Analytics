@@ -64,7 +64,7 @@ $app->singleton(
 
 $app->singleton(
     TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideosInterface::class,
-    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\FakeApiTwitchVideos::class
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideos::class
 );
 
 $app->singleton(

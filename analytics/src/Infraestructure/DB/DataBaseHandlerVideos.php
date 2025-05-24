@@ -13,7 +13,6 @@ class DataBaseHandlerVideos extends DataBaseHandler
 
         try {
             $stmt = $this->insertVideosInDBQuery($connection, $videos);
-            $this->checkStmtExecution($stmt);
             $stmt->close();
         } finally {
             if ($connection instanceof \mysqli) {
@@ -29,18 +28,28 @@ class DataBaseHandlerVideos extends DataBaseHandler
             most_viewed_title, most_viewed_views, most_viewed_duration, most_viewed_created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         foreach ($videos as $video) {
+            $gameId = $video->getGameId();
+            $gameName = $video->getGameName();
+            $userName = $video->getUserName();
+            $totalVideos = $video->getTotalVideos();
+            $totalViews = $video->getTotalViews();
+            $mostViewedTitle = $video->getMostViewedTitle();
+            $mostViewedViews = $video->getMostViewedViews();
+            $mostViewedDuration = $video->getMostViewedDuration();
+            $mostViewedCreatedAt = $video->getMostViewedCreatedAt();
             $stmt->bind_param(
                 "issiisiss",
-                $video->getGameId(),
-                $video->getGameName(),
-                $video->getUserName(),
-                $video->getTotalVideos(),
-                $video->getTotalViews(),
-                $video->getMostViewedTitle(),
-                $video->getMostViewedViews(),
-                $video->getMostViewedDuration(),
-                $video->getMostViewedCreatedAt()
+                $gameId,
+                $gameName,
+                $userName,
+                $totalVideos,
+                $totalViews,
+                $mostViewedTitle,
+                $mostViewedViews,
+                $mostViewedDuration,
+                $mostViewedCreatedAt
             );
+            $this->checkStmtExecution($stmt);
         }
         return $stmt;
     }

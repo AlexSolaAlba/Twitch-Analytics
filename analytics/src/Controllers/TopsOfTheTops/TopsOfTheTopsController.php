@@ -46,7 +46,7 @@ class TopsOfTheTopsController extends BaseController
             $this->topsValidator->validateSince($since);
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
-            return response()->json($this->returnVideosInfo($twitchUser - getAccessToken(), $since));
+            return response()->json($this->returnVideosInfo($twitchUser->getAccessToken(), $since));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
         } catch (ValidationException $ex) {
@@ -62,21 +62,33 @@ class TopsOfTheTopsController extends BaseController
     {
         $videos = $this->databaseHandler->getVideosFromDB();
         $currentDate = time();
-        $interval = $currentDate - strtotime($videos[0]->getCreatedAt());
-
+        try {
+            $interval = $currentDate - strtotime($videos[0]->getCreatedAt());
+        } catch (\Throwable $ex) {
+            $interval = 700;
+        }
         if ($interval > 600 || (isset($since) && ($interval < $since))) {
             $this->databaseHandler->deleteAllVideosFromDB();
-            $videos = $this->apiTwitchVideos->getGamesFromTwitch($accessToken);
+            $videos = $this->apiTwitchVideos->getVideosFromTwitch($accessToken);
             $this->databaseHandler->insertVideosInDB($videos);
         }
-        return $videos;
+        $videoArray = array_map(fn($video) => [
+            'game_id' => $video->getGameId(),
+            'game_name' => $video->getGameName(),
+            'user_name' => $video->getUserName(),
+            'total_videos' => $video->getTotalVideos(),
+            'total_views' => $video->getTotalViews(),
+            'most_viewed_title' => $video->getMostViewedTitle(),
+            'most_viewed_views' => $video->getMostViewedViews(),
+            'most_viewed_duration' => $video->getMostViewedDuration(),
+            'most_viewed_created_at' => $video->getMostViewedCreatedAt()
+        ], $videos);
+
+        return $videoArray;
     }
 }
 
-$metodo = $_SERVER['REQUEST_METHOD'];
-$headerData = getValidToken();
-$clientID = $headerData['clientId'];
-$accesstoken = $headerData['accessToken'];
+$metodo = 'POST';
 if (strcmp($metodo, 'GET') === 0) {
     $filtered_videos = leerCache();
     $currentDate = time();
