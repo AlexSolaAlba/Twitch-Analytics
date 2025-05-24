@@ -68,6 +68,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface::class,
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched::class
+);
+
+$app->singleton(
     TwitchAnalytics\Domain\Time\TimeProviderInterface::class,
     TwitchAnalytics\Infraestructure\Time\SystemTimeProvider::class
 );
