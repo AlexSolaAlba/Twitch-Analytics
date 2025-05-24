@@ -16,8 +16,8 @@ class ApiTwitchEnriched implements ApiTwitchEnrichedInterface
             CURLOPT_URL => "https://api.twitch.tv/helix/streams?first={$limit}",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => [
-                "Client-ID: {$clientID}",
-                "Authorization: Bearer tb9rmjd4bo2ldoru98wogmfaclvrng",
+                "Client-ID: $clientID",
+                "Authorization: Bearer $accessToken",
             ],
         ]);
         $response = curl_exec($curl);
@@ -39,8 +39,8 @@ class ApiTwitchEnriched implements ApiTwitchEnrichedInterface
                         CURLOPT_URL => "https://api.twitch.tv/helix/users?id={$userId}",
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_HTTPHEADER => [
-                            "Client-ID: {$clientID}",
-                            "Authorization: Bearer tb9rmjd4bo2ldoru98wogmfaclvrng",
+                            "Client-ID: $clientID",
+                            "Authorization: Bearer $accessToken",
                         ],
                     ]);
                     $resp2 = curl_exec($curl2);
