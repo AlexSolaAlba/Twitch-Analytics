@@ -217,6 +217,6 @@ class TopsOfTheTopsControllerTest extends TestCase
                 'most_viewed_duration' => '15h15m21s',
                 'most_viewed_created_at' => '2020-09-11T18:52:09Z'
             ]
-        ], $response->getOriginalContent());
+        ], $response->getData(true));
     }
 }
