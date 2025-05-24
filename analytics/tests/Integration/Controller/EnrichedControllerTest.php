@@ -39,7 +39,7 @@ class EnrichedControllerTest extends TestCase
         $apiStreams = new FakeApiTwitchEnriched();
         $enrichedRepository = new EnrichedRepository($apiStreams);
         $enrichedService = new EnrichedService($enrichedRepository);
-        $this->enrichedController = new EnrichedController($refreshTwitchToken, $userValidator, $enrichedValidator, $userRepository, $apiStreams, $enrichedService);
+        $this->enrichedController = new EnrichedController($refreshTwitchToken, $userValidator, $enrichedValidator, $userRepository, $enrichedService);
     }
 
     /**
