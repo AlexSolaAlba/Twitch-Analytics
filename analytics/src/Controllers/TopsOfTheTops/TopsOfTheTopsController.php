@@ -73,10 +73,7 @@ class TopsOfTheTopsController extends BaseController
     }
 }
 
-$metodo = $_SERVER['REQUEST_METHOD'];
-$headerData = getValidToken();
-$clientID = $headerData['clientId'];
-$accesstoken = $headerData['accessToken'];
+$metodo = 'POST';
 if (strcmp($metodo, 'GET') === 0) {
     $filtered_videos = leerCache();
     $currentDate = time();

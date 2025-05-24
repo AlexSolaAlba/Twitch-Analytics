@@ -7,7 +7,7 @@ use TwitchAnalytics\Domain\Models\Video;
 
 class ApiTwitchVideos implements ApiTwitchVideosInterface
 {
-    public function getGamesFromTwitch($accessToken): array
+    public function getVideosFromTwitch($accessToken): array
     {
         $curl = curl_init();
         $clientID = env('CLIENT_ID');

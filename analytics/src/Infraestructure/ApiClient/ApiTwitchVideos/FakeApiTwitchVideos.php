@@ -4,7 +4,7 @@ namespace TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos;
 
 use TwitchAnalytics\Domain\Models\Video;
 
-class FakeApiTwitchVideos
+class FakeApiTwitchVideos implements ApiTwitchVideosInterface
 {
     private array $fakeVideos = [
         [
@@ -31,7 +31,7 @@ class FakeApiTwitchVideos
         ]
     ];
 
-    public function getVideosFromTwitch($accessToken)
+    public function getVideosFromTwitch($accessToken) : array
     {
         $videos = [];
         foreach ($this->fakeVideos as $video) {

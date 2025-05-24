@@ -68,6 +68,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface::class,
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\FakeApiTwitchEnriched::class
+);
+
+$app->singleton(
     TwitchAnalytics\Domain\Time\TimeProviderInterface::class,
     TwitchAnalytics\Infraestructure\Time\SystemTimeProvider::class
 );
@@ -85,6 +90,11 @@ $app->singleton(
 $app->singleton(
     TwitchAnalytics\Domain\Repositories\StreamsRepositoryInterface::class,
     TwitchAnalytics\Infraestructure\Repositories\StreamsRepository::class
+);
+
+$app->singleton(
+    TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface::class,
+    TwitchAnalytics\Infraestructure\Repositories\EnrichedRepository::class
 );
 
 $app->singleton(
@@ -131,6 +141,15 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\StreamsService(
             $app->make(TwitchAnalytics\Domain\Repositories\StreamsRepositoryInterface::class)
+        );
+    }
+);
+
+$app->singleton(
+    TwitchAnalytics\Application\Services\EnrichedService::class,
+    function ($app) {
+        return new TwitchAnalytics\Application\Services\EnrichedService(
+            $app->make(TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface::class)
         );
     }
 );
