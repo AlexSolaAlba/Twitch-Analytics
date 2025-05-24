@@ -98,6 +98,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    TwitchAnalytics\Domain\Repositories\TopsOfTheTopsRepositoryInterface::class,
+    TwitchAnalytics\Infraestructure\Repositories\TopsOfTheTopsRepository::class
+);
+
+$app->singleton(
     TwitchAnalytics\Application\Services\RegisterService::class,
     function ($app) {
         return new TwitchAnalytics\Application\Services\RegisterService(
@@ -150,6 +155,15 @@ $app->singleton(
     function ($app) {
         return new TwitchAnalytics\Application\Services\EnrichedService(
             $app->make(TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface::class)
+        );
+    }
+);
+
+$app->singleton(
+    TwitchAnalytics\Application\Services\TopsOfTheTopsService::class,
+    function ($app) {
+        return new TwitchAnalytics\Application\Services\TopsOfTheTopsService(
+            $app->make(TwitchAnalytics\Domain\Repositories\TopsOfTheTopsRepositoryInterface::class)
         );
     }
 );
