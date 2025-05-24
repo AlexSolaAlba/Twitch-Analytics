@@ -6,7 +6,7 @@ use TwitchAnalytics\Domain\Models\Video;
 
 class DataBaseHandlerVideos extends DataBaseHandler
 {
-    public function insertVideosInDB($videos): void
+    public function insertVideosInDB(array $videos): void
     {
         $connection = $this->connectWithDB();
         $this->checkConnection($connection);
@@ -21,7 +21,7 @@ class DataBaseHandlerVideos extends DataBaseHandler
         }
     }
 
-    private function insertVideosInDBQuery($connection, $videos): false|\mysqli_stmt
+    private function insertVideosInDBQuery(false|\mysqli_stmt $connection, array $videos): false|\mysqli_stmt
     {
         $stmt = $connection->prepare(
             "INSERT INTO topscache(game_id, game_name, user_name, total_videos, total_views,
@@ -90,10 +90,9 @@ class DataBaseHandlerVideos extends DataBaseHandler
         }
     }
 
-    private function getVideosFromDBQuery($connection): false|\mysqli_stmt
+    private function getVideosFromDBQuery(false|\mysqli_stmt $connection): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("SELECT * FROM topscache");
-        $stmt->execute();
         return $stmt;
     }
 
@@ -113,10 +112,9 @@ class DataBaseHandlerVideos extends DataBaseHandler
         }
     }
 
-    private function deleteAllVideosFromDBQuery($connection): false|\mysqli_stmt
+    private function deleteAllVideosFromDBQuery(false|\mysqli_stmt $connection): false|\mysqli_stmt
     {
         $stmt = $connection->prepare("DELETE FROM topscache");
-        $stmt->execute();
         return $stmt;
     }
 }
