@@ -47,7 +47,6 @@ class EnrichedController extends BaseController
             $this->enrichedValidator->validateLimit($request->get('limit'));
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
-
             return response()->json($this->enrichedService->returnEnrichedStreamsInfo($request->get('limit'), $twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);
