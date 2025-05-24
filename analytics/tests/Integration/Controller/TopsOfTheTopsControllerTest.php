@@ -150,7 +150,7 @@ class TopsOfTheTopsControllerTest extends TestCase
         $request = Request::create('/topsofthetops', 'GET', [
             'since' => 50,
         ], [], [], [
-            'HTTP_Authorization' => 'Bearer 3d211f8be2f71ebd34ab2707d90c935f',
+            'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
         ]);
 
         $response = $this->topsController->__invoke($request);
@@ -189,7 +189,7 @@ class TopsOfTheTopsControllerTest extends TestCase
     {
         $request = Request::create('/topsofthetops', 'GET', [
         ], [], [], [
-            'HTTP_Authorization' => 'Bearer 3d211f8be2f71ebd34ab2707d90c935f',
+            'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
         ]);
 
         $response = $this->topsController->__invoke($request);
