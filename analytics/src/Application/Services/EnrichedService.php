@@ -15,8 +15,8 @@ class EnrichedService
     public function returnEnrichedStreamsInfo($limit, $accessToken): array
     {
         $streamObjects = $this->enrichedRepository->returnEnrichedStreamInfoFromAPI($limit, $accessToken);
-        $streams = array_map(fn($stream) => [
-            'streamer_id' => $stream->getStreamerId(),
+        return array_map(fn($stream) => [
+            'stream_id' => $stream->getStreamerId(),
             'user_id' => $stream->getUserId(),
             'user_name' => $stream->getUserName(),
             'viewer_count' => $stream->getViewerCount(),
@@ -24,6 +24,5 @@ class EnrichedService
             'title' => $stream->getTitle(),
             'profile_image_url' => $stream->getProfileImageUrl(),
         ], $streamObjects);
-        return $streams;
     }
 }

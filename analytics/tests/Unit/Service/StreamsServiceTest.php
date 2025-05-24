@@ -8,6 +8,8 @@ use Random\RandomException;
 use TwitchAnalytics\Application\Services\StreamsService;
 use TwitchAnalytics\Domain\Models\Stream;
 use TwitchAnalytics\Domain\Repositories\StreamsRepositoryInterface;
+use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\FakeApiTwitchStreams;
+use TwitchAnalytics\Infraestructure\Repositories\StreamsRepository;
 
 class StreamsServiceTest extends TestCase
 {
@@ -15,27 +17,31 @@ class StreamsServiceTest extends TestCase
     {
         return require __DIR__ . '/../../../bootstrap/app.php';
     }
-    /**
-     * @throws RandomException
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
-    public function testReturnStreamsInfoReturnsFormattedData()
-    {
-        $accessToken = 'fake-token';
-        $stream1 = new Stream('Explorando el universo en vivo', 'AstroNico');
-        $stream2 = new Stream('Cocinando con estilo', 'ChefLaura');
 
-        $repositoryMock = Mockery::mock(StreamsRepositoryInterface::class);
-        $repositoryMock
-            ->shouldReceive('returnStreamsInfoFromAPI')
-            ->once()
-            ->with($accessToken)
-            ->andReturn([$stream1, $stream2]);
-        $service = new StreamsService($repositoryMock);
-        $result = $service->returnStreamsInfo($accessToken);
+    private StreamsService $streamsService;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $apiStreams = new FakeApiTwitchStreams();
+        $streamsRepository = new StreamsRepository($apiStreams);
+        $this->streamsService = new StreamsService($streamsRepository);
+    }
+    /**
+     * @test
+     */
+    public function returnStreamsInfoReturnsFormattedData()
+    {
+        $result = $this->streamsService->returnStreamsInfo("24e9a3dea44346393f632e4161bc83e6");
         $this->assertEquals([
-            ['title' => 'Explorando el universo en vivo', 'user_name' => 'AstroNico'],
-            ['title' => 'Cocinando con estilo', 'user_name' => 'ChefLaura'],
+            [
+                'title' => 'Explorando el universo en vivo',
+                'user_name' => 'AstroNico'
+            ],
+            [
+                'title' => 'Cocinando con estilo',
+                'user_name' => 'ChefLaura'
+            ]
         ], $result);
     }
 }
