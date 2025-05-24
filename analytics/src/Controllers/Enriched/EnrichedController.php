@@ -11,8 +11,6 @@ use TwitchAnalytics\Controllers\User\UserValidator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Repositories\UserRepositoryInterface;
-use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched;
-use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface;
 use TwitchAnalytics\Infraestructure\Exceptions\NotFoundException;
 
 class EnrichedController extends BaseController
@@ -21,7 +19,6 @@ class EnrichedController extends BaseController
     private UserValidator $userValidator;
     private EnrichedValidator $enrichedValidator;
     private UserRepositoryInterface $userRepository;
-    private ApiTwitchEnrichedInterface $apiTwitchEnriched;
     private EnrichedService $enrichedService;
 
     public function __construct(
@@ -29,14 +26,12 @@ class EnrichedController extends BaseController
         UserValidator $userValidator,
         EnrichedValidator $enrichedValidator,
         UserRepositoryInterface $userRepository,
-        ApiTwitchEnrichedInterface $apiTwitchEnriched,
         EnrichedService $enrichedService
     ) {
         $this->userRepository = $userRepository;
         $this->refreshTwitchToken = $refreshTwitchToken;
         $this->userValidator = $userValidator;
         $this->enrichedValidator = $enrichedValidator;
-        $this->apiTwitchEnriched = $apiTwitchEnriched;
         $this->enrichedService = $enrichedService;
     }
 
@@ -47,6 +42,7 @@ class EnrichedController extends BaseController
             $this->enrichedValidator->validateLimit($request->get('limit'));
             $tokenUser = $this->userValidator->validateToken($request->header('Authorization'));
             $this->userRepository->verifyUserToken($tokenUser);
+
             return response()->json($this->enrichedService->returnEnrichedStreamsInfo($request->get('limit'), $twitchUser->getAccessToken()));
         } catch (ApiKeyException $ex) {
             return response()->json(['error' => $ex->getMessage()], 401);

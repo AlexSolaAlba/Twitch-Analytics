@@ -9,7 +9,7 @@ class FakeApiTwitchEnriched implements ApiTwitchEnrichedInterface
 {
     private array $FakeStream = [
         [
-            'streamer_id' => '1',
+            'stream_id' => '1',
             'user_id' => '1001',
             'user_name' => 'TechGuru',
             'viewer_count' => '1500',
@@ -18,7 +18,7 @@ class FakeApiTwitchEnriched implements ApiTwitchEnrichedInterface
             'profile_image_url' => 'https://example.com/images/techguru.jpg'
         ],
         [
-            'streamer_id' => '2',
+            'stream_id' => '2',
             'user_id' => '1002',
             'user_name' => 'MusicLover',
             'viewer_count' => '900',
@@ -37,7 +37,7 @@ class FakeApiTwitchEnriched implements ApiTwitchEnrichedInterface
 
         foreach ($this->FakeStream as $stream) {
             $streams[] = new EnrichedStream(
-                $stream['streamer_id'],
+                $stream['stream_id'],
                 $stream['user_id'],
                 $stream['user_name'],
                 $stream['viewer_count'],

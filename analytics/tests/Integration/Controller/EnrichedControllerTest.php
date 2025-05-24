@@ -39,7 +39,7 @@ class EnrichedControllerTest extends TestCase
         $apiStreams = new FakeApiTwitchEnriched();
         $enrichedRepository = new EnrichedRepository($apiStreams);
         $enrichedService = new EnrichedService($enrichedRepository);
-        $this->enrichedController = new EnrichedController($refreshTwitchToken, $userValidator, $enrichedValidator, $userRepository, $apiStreams, $enrichedService);
+        $this->enrichedController = new EnrichedController($refreshTwitchToken, $userValidator, $enrichedValidator, $userRepository, $enrichedService);
     }
 
     /**
@@ -154,7 +154,7 @@ class EnrichedControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals([
             [
-                'streamer_id' => '1',
+                'stream_id' => '1',
                 'user_id' => '1001',
                 'user_name' => 'TechGuru',
                 'viewer_count' => '1500',
@@ -163,7 +163,7 @@ class EnrichedControllerTest extends TestCase
                 'profile_image_url' => 'https://example.com/images/techguru.jpg'
             ],
             [
-                'streamer_id' => '2',
+                'stream_id' => '2',
                 'user_id' => '1002',
                 'user_name' => 'MusicLover',
                 'viewer_count' => '900',
