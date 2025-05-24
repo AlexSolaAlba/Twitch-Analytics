@@ -96,4 +96,24 @@ class TopsOfTheTopsControllerTest extends TestCase
             'error' => 'Invalid since parameter.'
         ], $response->getData(true));
     }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function givenTokenThatNotExistsReturnsAnException()
+    {
+        $request = Request::create('/topsofthetops', 'GET', [
+            'since' => 50,
+        ], [], [], [
+            'HTTP_Authorization' => 'Bearer ',
+        ]);
+
+        $response = $this->topsController->__invoke($request);
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals([
+            'error' => 'Unauthorized. Token is invalid or expired.'
+        ], $response->getData(true));
+    }
 }
