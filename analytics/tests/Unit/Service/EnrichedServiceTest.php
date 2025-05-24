@@ -4,6 +4,7 @@ namespace TwitchAnalytics\Tests\Unit\Service;
 
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;
+use Random\RandomException;
 use TwitchAnalytics\Application\Services\EnrichedService;
 use TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface;
 use TwitchAnalytics\Domain\Models\EnrichedStream;
@@ -14,6 +15,10 @@ class EnrichedServiceTest extends TestCase
     {
         return require __DIR__ . '/../../../bootstrap/app.php';
     }
+    /**
+     * @throws RandomException
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function testReturnEnrichedStreamsInfo()
     {
         $repositoryMock = Mockery::mock(EnrichedRepositoryInterface::class);

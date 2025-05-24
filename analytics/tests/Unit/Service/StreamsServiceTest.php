@@ -4,6 +4,7 @@ namespace TwitchAnalytics\Tests\Unit\Service;
 
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;
+use Random\RandomException;
 use TwitchAnalytics\Application\Services\StreamsService;
 use TwitchAnalytics\Domain\Models\Stream;
 use TwitchAnalytics\Domain\Repositories\StreamsRepositoryInterface;
@@ -14,7 +15,10 @@ class StreamsServiceTest extends TestCase
     {
         return require __DIR__ . '/../../../bootstrap/app.php';
     }
-
+    /**
+     * @throws RandomException
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function testReturnStreamsInfoReturnsFormattedData()
     {
         $accessToken = 'fake-token';
