@@ -34,7 +34,7 @@ class TopsOfTheTopsControllerTest extends TestCase
         $topsValidator = new TopsOfTheTopsValidator();
         $userRepository = new UserRepository($this->dataBaseHandler);
         $apiVideos = new FakeApiTwitchVideos();
-        $this->topsController = new TopsOfTheTopsController($refreshTwitchToken,$userValidator,$topsValidator,$userRepository,$apiVideos,$this->dataBaseHandler);
+        $this->topsController = new TopsOfTheTopsController($refreshTwitchToken, $userValidator, $topsValidator, $userRepository, $apiVideos, $this->dataBaseHandler);
     }
 
     /**

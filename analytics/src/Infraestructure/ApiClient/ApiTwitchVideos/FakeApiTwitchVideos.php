@@ -31,7 +31,7 @@ class FakeApiTwitchVideos implements ApiTwitchVideosInterface
         ]
     ];
 
-    public function getVideosFromTwitch($accessToken) : array
+    public function getVideosFromTwitch($accessToken): array
     {
         $videos = [];
         foreach ($this->fakeVideos as $video) {
