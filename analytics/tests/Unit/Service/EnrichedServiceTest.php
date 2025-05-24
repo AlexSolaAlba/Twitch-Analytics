@@ -3,22 +3,10 @@
 namespace TwitchAnalytics\Tests\Unit\Service;
 
 use Laravel\Lumen\Testing\TestCase;
-use Mockery;
-use Random\RandomException;
 use TwitchAnalytics\Application\Services\EnrichedService;
-use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
-use TwitchAnalytics\Controllers\Enriched\EnrichedController;
-use TwitchAnalytics\Controllers\Enriched\EnrichedValidator;
-use TwitchAnalytics\Controllers\User\UserValidator;
-use TwitchAnalytics\Domain\Repositories\EnrichedRepositoryInterface;
-use TwitchAnalytics\Domain\Models\EnrichedStream;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\FakeApiTwitchEnriched;
-use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
-use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Repositories\EnrichedRepository;
-use TwitchAnalytics\Infraestructure\Repositories\TwitchUserRepository;
-use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
-use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
 
 class EnrichedServiceTest extends TestCase
 {
@@ -35,6 +23,16 @@ class EnrichedServiceTest extends TestCase
         $apiStreams = new FakeApiTwitchEnriched();
         $enrichedRepository = new EnrichedRepository($apiStreams);
         $this->enrichedService = new EnrichedService($enrichedRepository);
+    }
+
+    /**
+     * @test
+     */
+    public function givenWrongLimitReturnEnrichedStreamsInfo(): void
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Invalid or missing limit parameter.');
+        $this->enrichedService->returnEnrichedStreamsInfo(1, '24e9a3dea44346393f632e4161bc83e6');
     }
 
     /**
