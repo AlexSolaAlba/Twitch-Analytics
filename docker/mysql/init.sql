@@ -51,7 +51,7 @@ INSERT INTO `token` (`tokenID`, `accessToken`, `tokenExpire`, `clientId`, `clien
 CREATE TABLE `topscache` (
   `game_id` int(11) NOT NULL,
   `game_name` varchar(100) NOT NULL,
-  `user_name` int(11) NOT NULL,
+  `user_name` varchar(100) NOT NULL,
   `total_videos` int(11) NOT NULL,
   `total_views` int(11) NOT NULL,
   `most_viewed_title` varchar(100) NOT NULL,
@@ -98,10 +98,10 @@ INSERT INTO `user` (`userID`, `userEmail`, `userApiKey`, `userToken`, `userToken
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `userstwitch`
+-- Estructura de tabla para la tabla `usersTwitch`
 --
 
-CREATE TABLE `userstwitch` (
+CREATE TABLE `usersTwitch` (
   `id` varchar(100) NOT NULL,
   `user_login` text NOT NULL,
   `display_name` text NOT NULL,
@@ -115,10 +115,10 @@ CREATE TABLE `userstwitch` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `userstwitch`
+-- Volcado de datos para la tabla `usersTwitch`
 --
 
-INSERT INTO `userstwitch` (`id`, `user_login`, `display_name`, `user_type`, `broadcaster_type`, `user_description`, `profile_image_url`, `offline_image_url`, `view_count`, `created_at`) VALUES
+INSERT INTO `usersTwitch` (`id`, `user_login`, `display_name`, `user_type`, `broadcaster_type`, `user_description`, `profile_image_url`, `offline_image_url`, `view_count`, `created_at`) VALUES
 ('1', 'elsmurfoz', 'elsmurfoz', '', '', '', 'https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png', '', '0', '2007-05-22T10:37:47Z'),
 ('2', 'goyabean', 'goyabean', '', '', '', 'https://static-cdn.jtvnw.net/user-default-pictures-uv/294c98b5-e34d-42cd-a8f0-140b72fba9b0-profile_image-300x300.png', '', '0', '2007-05-22T10:37:47Z'),
 ('3', 'djracerx', 'djracerx', '', '', '', 'https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png', '', '0', '2007-05-22T10:37:47Z');
@@ -140,9 +140,9 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`userID`);
 
 --
--- Indices de la tabla `userstwitch`
+-- Indices de la tabla `usersTwitch`
 --
-ALTER TABLE `userstwitch`
+ALTER TABLE `usersTwitch`
   ADD PRIMARY KEY (`id`);
 
 --
