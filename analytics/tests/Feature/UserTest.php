@@ -78,4 +78,21 @@ class UserTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets401WhenTokenExistsButIsExpired()
+    {
+        $response = $this->get('/analytics/user?id=1', [], [
+            'Authorization' => 'Bearer e9cb15bba53c9d05a23c21afc7b44f40',
+        ]);
+
+        $response->assertResponseStatus(401);
+        $response->seeJson(
+            [
+                'error' => 'Unauthorized. Token is invalid or expired.'
+            ]
+        );
+    }
 }
