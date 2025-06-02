@@ -52,18 +52,14 @@ class TopsOfTheTopsTest extends TestCase
      */
     public function givenWrongSinceReturnsAnException()
     {
-        $request = Request::create('/topsofthetops', 'GET', [
-            'since' => 'a',
-        ], [], [], [
+        $response = $this->get('/analytics/topsofthetops?since=a', [
             'HTTP_Authorization' => 'Bearer ',
         ]);
 
-        $response = $this->topsController->__invoke($request);
-
-        $this->assertEquals(400, $response->getStatusCode());
-        $this->assertEquals([
+        $response->assertResponseStatus(400);
+        $response->seeJson([
             'error' => 'Invalid since parameter.'
-        ], $response->getData(true));
+        ]);
     }
 
     /**
