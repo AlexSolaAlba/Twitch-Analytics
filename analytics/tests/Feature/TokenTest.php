@@ -42,4 +42,21 @@ class TokenTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets400WhenEmailParameterIsRightAndKeyParameterIsMissing(): void
+    {
+        $response = $this->post('/token', [
+            'email' => 'test@example.com'
+        ]);
+
+        $response->assertResponseStatus(400);
+        $response->seeJson(
+            [
+                'error' => 'The api_key is mandatory'
+            ]
+        );
+    }
 }
