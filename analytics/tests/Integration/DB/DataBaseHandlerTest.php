@@ -28,12 +28,26 @@ class DataBaseHandlerTest extends TestCase
 
     /**
      * @test
-     * @throws RandomException
      */
     public function testSaveUserAndApiKeyInsertsNewUserWhenUserExistsInDB(): void
     {
         $email = 'test@example.com';
-        $apiKey = bin2hex(random_bytes(16));
+        $apiKey = "24e9a3dea44346393f632e4161bc83e6";
+
+        $user = $this->dataBaseHandler->saveUserAndApiKeyInDB($email, $apiKey);
+
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals($email, $user->getEmail());
+        $this->assertEquals($apiKey, $user->getApiKey());
+    }
+
+    /**
+     * @test
+     */
+    public function testSaveUserAndApiKeyInsertsNewUserWhenUserNotExistsInDB(): void
+    {
+        $email = 'test2@example.com';
+        $apiKey = "24e9a3dea44346393f632e4161bc83e6";
 
         $user = $this->dataBaseHandler->saveUserAndApiKeyInDB($email, $apiKey);
 
@@ -46,19 +60,16 @@ class DataBaseHandlerTest extends TestCase
 
     /**
      * @test
-     * @throws RandomException
      */
-    public function testSaveUserAndApiKeyInsertsNewUserWhenUserNotExistsInDB(): void
+    public function testCheckUserExistsInDB(): void
     {
-        $email = 'test2@example.com';
-        $apiKey = bin2hex(random_bytes(16));
+        $email = 'test@example.com';
+        $apiKey = "24e9a3dea44346393f632e4161bc83e6";
 
-        $user = $this->dataBaseHandler->saveUserAndApiKeyInDB($email, $apiKey);
+        $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals($email, $user->getEmail());
         $this->assertEquals($apiKey, $user->getApiKey());
-
-        $this->deleteUserByEmail($email);
     }
 }
