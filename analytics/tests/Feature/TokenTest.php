@@ -59,4 +59,22 @@ class TokenTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets401WhenEmailParameterIsRightAndKeyParameterIsWrong(): void
+    {
+        $response = $this->post('/token', [
+            'email' => 'test@example.com',
+            'api_key' => '21343fse'
+        ]);
+
+        $response->assertResponseStatus(401);
+        $response->seeJson(
+            [
+                'error' => 'Unauthorized. API access token is invalid.'
+            ]
+        );
+    }
 }
