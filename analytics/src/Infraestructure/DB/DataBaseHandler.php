@@ -6,7 +6,6 @@ use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Models\Streamer;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
-use TwitchAnalytics\Domain\Models\Video;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class DataBaseHandler
