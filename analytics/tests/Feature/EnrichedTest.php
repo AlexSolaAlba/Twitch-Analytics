@@ -95,4 +95,35 @@ class EnrichedTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets200GivenGoodLimitAndToken()
+    {
+        $response = $this->get('/analytics/streams/enriched?limit=2', [
+            'Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6'
+        ]);
+
+        $response->assertResponseStatus(200);
+        $response->seeJson([
+            'stream_id' => '1',
+            'user_id' => '1001',
+            'user_name' => 'TechGuru',
+            'viewer_count' => '1500',
+            'user_display_name' => 'TechGuruLive',
+            'title' => 'Desarrollando apps con Laravel en vivo',
+            'profile_image_url' => 'https://example.com/images/techguru.jpg'
+        ]);
+
+        $response->seeJson([
+            'stream_id' => '2',
+            'user_id' => '1002',
+            'user_name' => 'MusicLover',
+            'viewer_count' => '900',
+            'user_display_name' => 'TheMusicLover',
+            'title' => 'Sesión chill en piano',
+            'profile_image_url' => 'https://example.com/images/musiclover.jpg'
+        ]);
+    }
 }
