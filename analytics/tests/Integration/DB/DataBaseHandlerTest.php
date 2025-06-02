@@ -27,6 +27,19 @@ class DataBaseHandlerTest extends TestCase
         $mysqli->close();
     }
 
+    private function selectUserByEmail(string $email): User
+    {
+        $mysqli = mysqli_connect(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'));
+        $stmt = $mysqli->prepare("SELECT * FROM user WHERE userEmail = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+        $mysqli->close();
+        return new User($user['userID'], $user['userEmail'], $user['userApiKey'], $user['userToken'], $user['userTokenExpire']);
+    }
+
     /**
      * @test
      */
@@ -85,7 +98,7 @@ class DataBaseHandlerTest extends TestCase
         $email = 'test2@example.com';
         $apiKey = "24e9a3dea44346393f632e4161bc83e6";
 
-        $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
+        $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
     }
 
     /**
@@ -100,5 +113,45 @@ class DataBaseHandlerTest extends TestCase
         $apiKey = "24e9a3dea44346393f63";
 
         $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
+    }
+
+    /**
+     * @test
+     */
+    public function testInsertTokenIntoDB(): void
+    {
+        $userId = 9;
+        $email = 'test@example.com';
+        $apiKey = "24e9a3dea44346393f632e4161bc83e6";
+        $user = new User($userId, $email, $apiKey, "", 0);
+
+        $this->dataBaseHandler->insertTokenIntoDB($user, $apiKey);
+        $insertResult = $this->selectUserByEmail($email);
+
+        $this->assertInstanceOf(User::class, $insertResult);
+        $this->assertEquals($email, $user->getEmail());
+        $this->assertEquals($apiKey, $user->getApiKey());
+        $this->assertEquals($userId, $user->getUserId());
+        $this->assertEquals($apiKey, $user->getToken());
+    }
+
+    /**
+     * @test
+     */
+    public function testVerifyToken(): void
+    {
+        $userId = 9;
+        $email = 'test@example.com';
+        $apiKey = "24e9a3dea44346393f632e4161bc83e6";
+        $user = new User($userId, $email, $apiKey, "", 0);
+
+        $this->dataBaseHandler->insertTokenIntoDB($user, $apiKey);
+        $insertResult = $this->selectUserByEmail($email);
+
+        $this->assertInstanceOf(User::class, $insertResult);
+        $this->assertEquals($email, $user->getEmail());
+        $this->assertEquals($apiKey, $user->getApiKey());
+        $this->assertEquals($userId, $user->getUserId());
+        $this->assertEquals($apiKey, $user->getToken());
     }
 }
