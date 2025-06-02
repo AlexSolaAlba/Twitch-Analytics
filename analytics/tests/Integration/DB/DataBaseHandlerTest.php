@@ -4,8 +4,10 @@ namespace Integration\DB;
 
 use PHPUnit\Framework\TestCase;
 use Random\RandomException;
+use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Domain\Models\User;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
+use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
 class DataBaseHandlerTest extends TestCase
 {
@@ -71,5 +73,19 @@ class DataBaseHandlerTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals($email, $user->getEmail());
         $this->assertEquals($apiKey, $user->getApiKey());
+    }
+
+    /**
+     * @test
+     */
+    public function testCheckUserExistsInDBWhenEmailNotExists(): void
+    {
+        $this->expectException(DBException::class);
+        $this->expectExceptionMessage('The email must be a valid email address');
+
+        $email = 'test2@example.com';
+        $apiKey = "24e9a3dea44346393f632e4161bc83e6";
+
+        $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
     }
 }
