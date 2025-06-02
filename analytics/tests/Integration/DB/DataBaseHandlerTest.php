@@ -10,6 +10,9 @@ use TwitchAnalytics\Domain\Models\User;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class DataBaseHandlerTest extends TestCase
 {
     private DataBaseHandler $dataBaseHandler;
@@ -114,7 +117,7 @@ class DataBaseHandlerTest extends TestCase
         $email = 'test@example.com';
         $apiKey = "24e9a3dea44346393f63";
 
-        $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
+        $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
     }
 
     /**
@@ -197,5 +200,38 @@ class DataBaseHandlerTest extends TestCase
         $this->assertEquals("", $streamer->getOfflineImageUrl());
         $this->assertEquals("0", $streamer->getViewCount());
         $this->assertEquals("2007-05-22T10:37:47Z", $streamer->getCreatedAt());
+    }
+
+    /**
+     * @test
+     */
+    public function testInsertStreamerIntoDB(): void
+    {
+        $streamer = new Streamer(
+            "4",
+            "elsmurfoz",
+            "elsmurfoz",
+            "",
+            "",
+            "",
+            "https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png",
+            "",
+            "0",
+            "2007-05-22T10:37:47Z"
+        );
+        $this->dataBaseHandler->insertStreamerIntoDB($streamer);
+        $streamerResult = $this->dataBaseHandler->getStreamerFromDB(4);
+        $this->dataBaseHandler->deleteTestStreamerFromDB();
+        $this->assertInstanceOf(Streamer::class, $streamerResult);
+        $this->assertEquals("4", $streamerResult->getStreamerId());
+        $this->assertEquals("elsmurfoz", $streamerResult->getLogin());
+        $this->assertEquals("elsmurfoz", $streamerResult->getDisplayName());
+        $this->assertEquals("", $streamerResult->getType());
+        $this->assertEquals("", $streamerResult->getBroadcasterType());
+        $this->assertEquals("", $streamerResult->getDescription());
+        $this->assertEquals("https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png", $streamer->getProfileImageUrl());
+        $this->assertEquals("", $streamerResult->getOfflineImageUrl());
+        $this->assertEquals("0", $streamerResult->getViewCount());
+        $this->assertEquals("2007-05-22T10:37:47Z", $streamerResult->getCreatedAt());
     }
 }
