@@ -44,4 +44,21 @@ class UserTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets400WhenIdisWrong()
+    {
+        $response = $this->get('/analytics/user?id=s', [], [
+            'Authorization' => 'Bearer ',
+        ]);
+
+        $response->assertResponseStatus(400);
+        $response->seeJson(
+            [
+                'error' => 'Invalid or missing id parameter.'
+            ]
+        );
+    }
 }
