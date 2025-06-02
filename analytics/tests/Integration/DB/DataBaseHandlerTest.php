@@ -3,8 +3,7 @@
 namespace Integration\DB;
 
 use PHPUnit\Framework\TestCase;
-use Random\RandomException;
-use TwitchAnalytics\Domain\Exceptions\ValidationException;
+use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Models\User;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
@@ -85,6 +84,20 @@ class DataBaseHandlerTest extends TestCase
 
         $email = 'test2@example.com';
         $apiKey = "24e9a3dea44346393f632e4161bc83e6";
+
+        $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
+    }
+
+    /**
+     * @test
+     */
+    public function testCheckUserExistsInDBWhenApiKeyIsWrong(): void
+    {
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. API access token is invalid.');
+
+        $email = 'test@example.com';
+        $apiKey = "24e9a3dea44346393f63";
 
         $user = $this->dataBaseHandler->checkUserExistsInDB($email, $apiKey);
     }
