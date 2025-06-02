@@ -3,6 +3,9 @@
 namespace Feature;
 
 use Laravel\Lumen\Testing\TestCase;
+use Mockery;
+use Random\RandomException;
+use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
 
 class TokenTest extends TestCase
 {
@@ -74,6 +77,30 @@ class TokenTest extends TestCase
         $response->seeJson(
             [
                 'error' => 'Unauthorized. API access token is invalid.'
+            ]
+        );
+    }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @throws RandomException
+     */
+    public function gets200WhenEmailParameterIsRightAndKeyParameterIsRight()
+    {
+        $keyGenerator = Mockery::mock(RandomKeyGenerator::class);
+        $keyGenerator->allows()->generateRandomKey()->andReturns("24e9a3dea44346393f632e4161bc83e6");
+        $this->app->instance(RandomKeyGenerator::class, $keyGenerator);
+
+        $response = $this->post('/token', [
+            'email' => 'test@example.com',
+            'api_key' => '24e9a3dea44346393f632e4161bc83e6'
+        ]);
+
+        $response->assertResponseStatus(200);
+        $response->seeJson(
+            [
+                'token' => "24e9a3dea44346393f632e4161bc83e6"
             ]
         );
     }
