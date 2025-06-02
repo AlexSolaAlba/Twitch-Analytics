@@ -41,9 +41,9 @@ class StreamsControllerTest extends TestCase
         $this->streamsController = new StreamsController($refreshTwitchToken, $userValidator, $userRepository, $apiStreams, $streamsService);
     }
     /**
-     * @test
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
+ * @test
+ * @SuppressWarnings(PHPMD.StaticAccess)
+ */
     public function givenWrongTokenReturnsAnException()
     {
         $request = Request::create('/streams', 'GET', [], [], [], [
