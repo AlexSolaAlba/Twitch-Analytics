@@ -68,18 +68,14 @@ class TopsOfTheTopsTest extends TestCase
      */
     public function givenTokenThatNotExistsReturnsAnException()
     {
-        $request = Request::create('/topsofthetops', 'GET', [
-            'since' => 50,
-        ], [], [], [
+        $response = $this->get('/analytics/topsofthetops?since=50', [
             'HTTP_Authorization' => 'Bearer ',
         ]);
 
-        $response = $this->topsController->__invoke($request);
-
-        $this->assertEquals(401, $response->getStatusCode());
-        $this->assertEquals([
+        $response->assertResponseStatus(401);
+        $response->seeJson([
             'error' => 'Unauthorized. Token is invalid or expired.'
-        ], $response->getData(true));
+        ]);
     }
 
     /**
