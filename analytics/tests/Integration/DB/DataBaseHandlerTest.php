@@ -153,4 +153,16 @@ class DataBaseHandlerTest extends TestCase
         $this->assertEquals($apiKey, $user->getApiKey());
         $this->assertEquals($apiKey, $user->getToken());
     }
+
+    /**
+     * @test
+     */
+    public function testVerifyTokenWhenTokenNotExists(): void
+    {
+        $this->expectException(ApiKeyException::class);
+        $this->expectExceptionMessage('Unauthorized. Token is invalid or expired.');
+        $token = "24e9a3dea44346393f632e43e6";
+
+        $this->dataBaseHandler->verifyToken($token);
+    }
 }
