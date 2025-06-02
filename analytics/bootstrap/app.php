@@ -64,12 +64,12 @@ $app->singleton(
 
 $app->singleton(
     TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideosInterface::class,
-    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\ApiTwitchVideos::class
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\FakeApiTwitchVideos::class
 );
 
 $app->singleton(
     TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnrichedInterface::class,
-    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\ApiTwitchEnriched::class
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\FakeApiTwitchEnriched::class
 );
 
 $app->singleton(
@@ -79,7 +79,7 @@ $app->singleton(
 
 $app->singleton(
     TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamerInterface::class,
-    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\ApiTwitchStreamer::class
+    TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer::class
 );
 
 $app->singleton(
