@@ -4,6 +4,7 @@ namespace Integration\DB;
 
 use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Models\Streamer;
 use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
@@ -176,5 +177,25 @@ class DataBaseHandlerTest extends TestCase
 
         $this->assertInstanceOf(TwitchUser::class, $twitchUser);
         $this->assertEquals(1, $twitchUser->getTokenID());
+    }
+
+    /**
+     * @test
+     */
+    public function testGetStreamerFromDB(): void
+    {
+        $streamer = $this->dataBaseHandler->getStreamerFromDB(1);
+
+        $this->assertInstanceOf(Streamer::class, $streamer);
+        $this->assertEquals("1", $streamer->getStreamerId());
+        $this->assertEquals("elsmurfoz", $streamer->getLogin());
+        $this->assertEquals("elsmurfoz", $streamer->getDisplayName());
+        $this->assertEquals("", $streamer->getType());
+        $this->assertEquals("", $streamer->getBroadcasterType());
+        $this->assertEquals("", $streamer->getDescription());
+        $this->assertEquals("https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png", $streamer->getProfileImageUrl());
+        $this->assertEquals("", $streamer->getOfflineImageUrl());
+        $this->assertEquals("0", $streamer->getViewCount());
+        $this->assertEquals("2007-05-22T10:37:47Z", $streamer->getCreatedAt());
     }
 }
