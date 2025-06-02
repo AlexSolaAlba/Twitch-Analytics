@@ -27,4 +27,21 @@ class UserTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets401WhenTokenIsNotGiven()
+    {
+        $response = $this->get('/analytics/user?id=1', [], [
+            'Authorization' => '',
+        ]);
+
+        $response->assertResponseStatus(401);
+        $response->seeJson(
+            [
+                'error' => 'Unauthorized. Token is invalid or expired.'
+            ]
+        );
+    }
 }
