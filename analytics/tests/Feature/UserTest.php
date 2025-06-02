@@ -102,7 +102,9 @@ class UserTest extends TestCase
      */
     public function gets200WhenStreamerIdExistsInDB()
     {
-        $response = $this->get('/analytics/user?id=1', ['Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6']);
+        $response = $this->get('/analytics/user?id=1', [
+            'Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6'
+        ]);
 
         $response->assertResponseStatus(200);
         $response->seeJson(
@@ -126,7 +128,9 @@ class UserTest extends TestCase
      */
     public function gets200WhenStreamerIdNotExistsInDBAndIsInTheApi()
     {
-        $response = $this->get('/analytics/user?id=4', ['Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6']);
+        $response = $this->get('/analytics/user?id=4', [
+            'Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6'
+        ]);
 
         $dataBaseHandler = new DataBaseHandler();
         $dataBaseHandler->deleteTestStreamerFromDB();
@@ -144,6 +148,23 @@ class UserTest extends TestCase
                 'offline_image_url' => '',
                 'view_count' => '0',
                 'created_at' => '2007-05-22T10:37:47Z',
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function gets404WhenStreamerIdNotExistsInDBNeitherInAPI()
+    {
+        $response = $this->get('/analytics/user?id=5', [
+            'Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
+        ]);
+
+        $response->assertResponseStatus(404);
+        $response->seeJson(
+            [
+                'error' => 'User not found.'
             ]
         );
     }
