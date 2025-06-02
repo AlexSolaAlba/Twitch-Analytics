@@ -4,3 +4,8 @@
 .DS_Store
 .phpunit.result.cache
 composer.phar
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+.phpunit.result.cache

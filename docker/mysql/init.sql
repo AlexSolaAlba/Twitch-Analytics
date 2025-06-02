@@ -79,8 +79,8 @@ CREATE TABLE `user` (
   `userID` int(11) NOT NULL,
   `userEmail` varchar(100) NOT NULL,
   `userApiKey` varchar(100) NOT NULL,
-  `userToken` varchar(100) NOT NULL,
-  `userTokenExpire` int(11) NOT NULL
+  `userToken` varchar(100),
+  `userTokenExpire` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -90,8 +90,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`userID`, `userEmail`, `userApiKey`, `userToken`, `userTokenExpire`) VALUES
 (1, 'holaquetal22@gmail.com', '8ebf2dd9e613b068ae3cfbdffbeb730f', 'bab4db4aedcc1cefa549b5bbd080ace9', 1748362944),
 (2, 'holaquetal@gmail.com', '74e365a90fb4b7e129070418d4598a62', '5b0d2de4530b154647a92e714e03d4e7', 1740497735),
-(3, 'ghdjs@gmail.com', 'fb514f2384d96403b50e65723b1745ac', '', 0),
-(4, 'test@example.com', '24e9a3dea44346393f632e4161bc83e6', '24e9a3dea44346393f632e4161bc83e6', 1748382725),
+(3, 'ghdjs@gmail.com', 'fb514f2384d96403b50e65723b1745ac', 'a', 0),
+(9, 'test@example.com', '24e9a3dea44346393f632e4161bc83e6', '24e9a3dea44346393f632e4161bc83e6', 1748382725),
 (5, 'testcaducado@gmail.com', 'e9cb15bba53c9d05a23c21afc7b44f40', 'e9cb15bba53c9d05a23c21afc7b44f40', 0);
 
 -- --------------------------------------------------------
