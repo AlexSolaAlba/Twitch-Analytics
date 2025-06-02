@@ -48,7 +48,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function gets400WhenIdisWrong()
+    public function gets400WhenIdIsWrong()
     {
         $response = $this->get('/analytics/user?id=s', [], [
             'Authorization' => 'Bearer ',
@@ -58,6 +58,23 @@ class UserTest extends TestCase
         $response->seeJson(
             [
                 'error' => 'Invalid or missing id parameter.'
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function gets401WhenTokenNotExists()
+    {
+        $response = $this->get('/analytics/user?id=1', [], [
+            'Authorization' => 'Bearer ',
+        ]);
+
+        $response->assertResponseStatus(401);
+        $response->seeJson(
+            [
+                'error' => 'Unauthorized. Token is invalid or expired.'
             ]
         );
     }
