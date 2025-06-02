@@ -4,6 +4,7 @@ namespace Integration\DB;
 
 use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
+use TwitchAnalytics\Domain\Models\TwitchUser;
 use TwitchAnalytics\Domain\Models\User;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
 use TwitchAnalytics\Infraestructure\Exceptions\DBException;
@@ -164,5 +165,16 @@ class DataBaseHandlerTest extends TestCase
         $token = "24e9a3dea44346393f632e43e6";
 
         $this->dataBaseHandler->verifyToken($token);
+    }
+
+    /**
+     * @test
+     */
+    public function testGetTwitchUserFromDB(): void
+    {
+        $twitchUser = $this->dataBaseHandler->getTwitchUserFromDB();
+
+        $this->assertInstanceOf(TwitchUser::class, $twitchUser);
+        $this->assertEquals(1, $twitchUser->getTokenID());
     }
 }
