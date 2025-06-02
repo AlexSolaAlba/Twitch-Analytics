@@ -64,4 +64,25 @@ class StreamsTest extends TestCase
             'error' => 'Unauthorized. Token is invalid or expired.'
         ]);
     }
+    /**
+     * @test
+     */
+    public function get200WhenTokenIsValid()
+    {
+        $response = $this->get('/analytics/streams', [
+            'Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
+        ]);
+        $response->assertResponseStatus(200);
+        $response->seeJson([
+            'title' => 'Explorando el universo en vivo',
+            'user_name' => 'AstroNico'
+        ]);
+
+        $response->seeJson([
+            'title' => 'Cocinando con estilo',
+            'user_name' => 'ChefLaura'
+        ]);
+
+
+    }
 }
