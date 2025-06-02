@@ -52,4 +52,14 @@ class DataBaseHandlerVideosTest extends TestCase
         $videos[1]->setCreatedAt(null);
         $this->assertEquals($videos, $videosFake);
     }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function deleteAllVideosFromDBDeletesAllVideos()
+    {
+        $this->dataBaseHandler->deleteAllVideosFromDB();
+        $this->assertEquals(false, $this->dataBaseHandler->getVideosFromDB());
+    }
 }
