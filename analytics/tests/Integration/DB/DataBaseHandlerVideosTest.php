@@ -62,4 +62,39 @@ class DataBaseHandlerVideosTest extends TestCase
         $this->dataBaseHandler->deleteAllVideosFromDB();
         $this->assertEquals(false, $this->dataBaseHandler->getVideosFromDB());
     }
+
+    /**
+     * @test
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function insertVideosInDBInsertsVideos()
+    {
+        $videosFake = [
+            new Video(
+                509658,
+                'Just Chatting',
+                'Kai Cenat',
+                36,
+                414857711,
+                '🦃 MAFIATHON 2 🦃 KAI X KEVIN HART X DRUSKI 🦃 DAY 27 🦃 20% OF REVENUE GOING TO SCHOOL IN NIGERIA 🦃 ALL',
+                24868821,
+                '22h5m32s',
+                '2024-11-28T02:06:07Z'
+            ), new Video(
+                516575,
+                'VALORANT',
+                '0',
+                3,
+                7705399,
+                'V a l o r a n t Grind begins | Among us tonight at 8 CENTRAL with a SOLID crew!',
+                4549587,
+                '15h15m21s',
+                '2020-09-11T18:52:09Z'
+            )];
+        $this->dataBaseHandler->insertVideosInDB($videosFake);
+        $videos = $this->dataBaseHandler->getVideosFromDB();
+        $videos[0]->setCreatedAt(null);
+        $videos[1]->setCreatedAt(null);
+        $this->assertEquals($videosFake, $videos);
+    }
 }
