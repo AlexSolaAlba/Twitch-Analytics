@@ -2,22 +2,13 @@
 
 namespace TwitchAnalytics\Tests\Unit\Service;
 
-use Laravel\Lumen\Testing\TestCase;
-use Mockery;
-use Random\RandomException;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Application\Services\StreamsService;
-use TwitchAnalytics\Domain\Models\Stream;
-use TwitchAnalytics\Domain\Repositories\StreamsRepositoryInterface;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreams\FakeApiTwitchStreams;
 use TwitchAnalytics\Infraestructure\Repositories\StreamsRepository;
 
 class StreamsServiceTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     private StreamsService $streamsService;
 
     protected function setUp(): void

@@ -2,8 +2,8 @@
 
 namespace TwitchAnalytics\Tests\Unit\Service;
 
-use Laravel\Lumen\Testing\TestCase;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Application\Services\RefreshTwitchTokenService;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchToken\FakeApiTwitchToken;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
@@ -12,11 +12,6 @@ use TwitchAnalytics\Infraestructure\Time\SystemTimeProvider;
 
 class RefreshTwitchTokenServiceTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     /**
      * @test
      * @SuppressWarnings(PHPMD.StaticAccess)

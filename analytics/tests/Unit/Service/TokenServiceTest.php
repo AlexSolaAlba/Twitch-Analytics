@@ -2,8 +2,8 @@
 
 namespace TwitchAnalytics\Tests\Unit\Service;
 
-use Laravel\Lumen\Testing\TestCase;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 use Random\RandomException;
 use TwitchAnalytics\Application\Services\TokenService;
 use TwitchAnalytics\Domain\Key\RandomKeyGenerator;
@@ -12,11 +12,6 @@ use TwitchAnalytics\Infraestructure\Repositories\UserRepository;
 
 class TokenServiceTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     private TokenService $tokenService;
 
     /**

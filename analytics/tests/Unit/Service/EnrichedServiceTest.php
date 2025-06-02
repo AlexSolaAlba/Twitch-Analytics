@@ -2,7 +2,7 @@
 
 namespace TwitchAnalytics\Tests\Unit\Service;
 
-use Laravel\Lumen\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Application\Services\EnrichedService;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchEnriched\FakeApiTwitchEnriched;
@@ -10,11 +10,6 @@ use TwitchAnalytics\Infraestructure\Repositories\EnrichedRepository;
 
 class EnrichedServiceTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     private EnrichedService $enrichedService;
 
     protected function setUp(): void
