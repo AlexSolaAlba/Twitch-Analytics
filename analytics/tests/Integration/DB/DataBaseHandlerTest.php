@@ -25,13 +25,32 @@ class DataBaseHandlerTest extends TestCase
         $stmt->close();
         $mysqli->close();
     }
+
     /**
      * @test
      * @throws RandomException
      */
-    public function testSaveUserAndApiKeyInsertsNewUser()
+    public function testSaveUserAndApiKeyInsertsNewUserWhenUserExistsInDB(): void
     {
         $email = 'test@example.com';
+        $apiKey = bin2hex(random_bytes(16));
+
+        $user = $this->dataBaseHandler->saveUserAndApiKeyInDB($email, $apiKey);
+
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals($email, $user->getEmail());
+        $this->assertEquals($apiKey, $user->getApiKey());
+
+        $this->deleteUserByEmail($email);
+    }
+
+    /**
+     * @test
+     * @throws RandomException
+     */
+    public function testSaveUserAndApiKeyInsertsNewUserWhenUserNotExistsInDB(): void
+    {
+        $email = 'test2@example.com';
         $apiKey = bin2hex(random_bytes(16));
 
         $user = $this->dataBaseHandler->saveUserAndApiKeyInDB($email, $apiKey);
