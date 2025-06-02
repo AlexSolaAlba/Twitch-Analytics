@@ -14,26 +14,32 @@
 */
 
 use TwitchAnalytics\Controllers\Enriched\EnrichedController;
+use TwitchAnalytics\Controllers\Register\RegisterController;
 use TwitchAnalytics\Controllers\Streams\StreamsController;
+use TwitchAnalytics\Controllers\Token\TokenController;
 use TwitchAnalytics\Controllers\User\UserController;
 use TwitchAnalytics\Controllers\TopsOfTheTops\TopsOfTheTopsController;
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+$router->post("/register", [
+    'uses' => RegisterController::class,
+]);
 
-$router->get("/streams", [
+$router->post("/token", [
+    'uses' => TokenController::class,
+]);
+
+$router->get("/analytics/streams", [
     'uses' => StreamsController::class,
 ]);
 
-$router->get("/user", [
+$router->get("/analytics/user", [
     'uses' => UserController::class,
 ]);
 
-$router->get("/streams/enriched", [
+$router->get("/analytics/streams/enriched", [
     'uses' => EnrichedController::class,
 ]);
 
-$router->get("/topsofthetops", [
+$router->get("/analytics/topsofthetops", [
     'uses' => TopsOfTheTopsController::class,
 ]);

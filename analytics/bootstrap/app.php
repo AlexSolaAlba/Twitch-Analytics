@@ -236,16 +236,8 @@ $app->configure('app');
 |
 */
 
-$app->router->post("/register", [
-    'uses' => RegisterController::class,
-]);
-
-$app->router->post("/token", [
-    'uses' => TokenController::class,
-]);
-
 $app->router->group([
-    'prefix' => 'analytics',
+    'prefix' => '',
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
