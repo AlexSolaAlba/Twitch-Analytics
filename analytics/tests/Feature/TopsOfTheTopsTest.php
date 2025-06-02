@@ -100,15 +100,12 @@ class TopsOfTheTopsTest extends TestCase
      */
     public function givenGoodSinceAndTokenReturnsTopsInfo()
     {
-        $request = Request::create('/topsofthetops', 'GET', [
-            'since' => 50,
-        ], [], [], [
+        $response = $this->get('/analytics/topsofthetops?since=50', [
             'HTTP_Authorization' => 'Bearer 24e9a3dea44346393f632e4161bc83e6',
         ]);
 
-        $response = $this->topsController->__invoke($request);
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals([
+        $response->assertResponseStatus(200);
+        $response->seeJsonEquals([
             [
                 'game_id' => 509658,
                 'game_name' => 'Just Chatting',
@@ -118,7 +115,7 @@ class TopsOfTheTopsTest extends TestCase
                 'most_viewed_title' => '🦃 MAFIATHON 2 🦃 KAI X KEVIN HART X DRUSKI 🦃 DAY 27 🦃 20% OF REVENUE GOING TO SCHOOL IN NIGERIA 🦃 ALL',
                 'most_viewed_views' => 24868821,
                 'most_viewed_duration' => '22h5m32s',
-                'most_viewed_created_at' => '2024-11-28T02:06:07Z'
+                'most_viewed_created_at' => '2024-11-28T02:06:07Z',
             ],
             [
                 'game_id' => 516575,
@@ -131,7 +128,7 @@ class TopsOfTheTopsTest extends TestCase
                 'most_viewed_duration' => '15h15m21s',
                 'most_viewed_created_at' => '2020-09-11T18:52:09Z'
             ]
-        ], $response->getData(true));
+        ]);
     }
 
     /**
