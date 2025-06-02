@@ -61,4 +61,21 @@ class EnrichedTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets401WhenTokenNotExists()
+    {
+        $response = $this->get('/analytics/streams/enriched?limit=2', [
+            'Authorization' => 'Bearer ',
+        ]);
+
+        $response->assertResponseStatus(401);
+        $response->seeJson(
+            [
+                'error' => 'Unauthorized. Token is invalid or expired.'
+            ]
+        );
+    }
 }
