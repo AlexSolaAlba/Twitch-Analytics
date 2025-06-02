@@ -14,7 +14,7 @@ class TokenTest extends TestCase
     /**
      * @test
      */
-    public function gets400WhenEmailParameterIsMissing()
+    public function gets400WhenEmailParameterIsMissing(): void
     {
         $response = $this->post('/token');
 
@@ -22,6 +22,23 @@ class TokenTest extends TestCase
         $response->seeJson(
             [
                 'error' => 'The email is mandatory'
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function gets400WhenEmailParameterIsWrong(): void
+    {
+        $response = $this->post('/token', [
+            'email' => 'testexample.com'
+        ]);
+
+        $response->assertResponseStatus(400);
+        $response->seeJson(
+            [
+                'error' => 'The email must be a valid email address'
             ]
         );
     }
