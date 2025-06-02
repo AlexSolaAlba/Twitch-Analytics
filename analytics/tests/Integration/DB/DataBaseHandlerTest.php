@@ -129,29 +129,28 @@ class DataBaseHandlerTest extends TestCase
         $insertResult = $this->selectUserByEmail($email);
 
         $this->assertInstanceOf(User::class, $insertResult);
-        $this->assertEquals($email, $user->getEmail());
-        $this->assertEquals($apiKey, $user->getApiKey());
-        $this->assertEquals($userId, $user->getUserId());
-        $this->assertEquals($apiKey, $user->getToken());
+        $this->assertEquals($email, $insertResult->getEmail());
+        $this->assertEquals($apiKey, $insertResult->getApiKey());
+        $this->assertEquals($userId, $insertResult->getUserId());
+        $this->assertEquals($apiKey, $insertResult->getToken());
     }
 
     /**
      * @test
      */
-    public function testVerifyToken(): void
+    public function testVerifyTokenWhenTokenExists(): void
     {
         $userId = 9;
         $email = 'test@example.com';
         $apiKey = "24e9a3dea44346393f632e4161bc83e6";
-        $user = new User($userId, $email, $apiKey, "", 0);
+        $token = "24e9a3dea44346393f632e4161bc83e6";
 
-        $this->dataBaseHandler->insertTokenIntoDB($user, $apiKey);
-        $insertResult = $this->selectUserByEmail($email);
+        $user = $this->dataBaseHandler->verifyToken($token);
 
-        $this->assertInstanceOf(User::class, $insertResult);
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals($userId, $user->getUserId());
         $this->assertEquals($email, $user->getEmail());
         $this->assertEquals($apiKey, $user->getApiKey());
-        $this->assertEquals($userId, $user->getUserId());
         $this->assertEquals($apiKey, $user->getToken());
     }
 }
