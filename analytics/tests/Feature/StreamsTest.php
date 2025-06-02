@@ -14,7 +14,7 @@ class StreamsTest extends TestCase
     /**
      * @test
      */
-    public function givenWrongTokenReturnsAnException(): void
+    public function get401WhenWrongToken(): void
     {
         $response = $this->get('/analytics/streams', [
                 'Authorization' => 'Bear',
@@ -27,7 +27,7 @@ class StreamsTest extends TestCase
     /**
      * @test
      */
-    public function notGivenTokenReturnsAnException(): void
+    public function get401WhenNotGivenToken(): void
     {
         $response = $this->get('/analytics/streams', [
             'Authorization' => '',
@@ -40,7 +40,7 @@ class StreamsTest extends TestCase
     /**
      * @test
      */
-    public function givenTokenThatNotExistsReturnsAnException(): void
+    public function get401WhenTokenNotExist(): void
     {
         $response = $this->get('/analytics/streams', [
             'Authorization' => 'Bearer ',
@@ -54,7 +54,7 @@ class StreamsTest extends TestCase
     /**
      * @test
      */
-    public function givenTokenThatExistsButIsExpiredReturnsAnException(): void
+    public function get401WhenTokenExpired(): void
     {
         $response = $this->get('/analytics/streams', [
             'Authorization' => 'Bearer e9cb15bba53c9d05a23c21afc7b44f40',
@@ -82,7 +82,5 @@ class StreamsTest extends TestCase
             'title' => 'Cocinando con estilo',
             'user_name' => 'ChefLaura'
         ]);
-
-
     }
 }
