@@ -2,7 +2,7 @@
 
 namespace TwitchAnalytics\Tests\Unit\Service;
 
-use Laravel\Lumen\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Application\Services\TopsOfTheTopsService;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchVideos\FakeApiTwitchVideos;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandlerVideos;
@@ -10,10 +10,6 @@ use TwitchAnalytics\Infraestructure\Repositories\TopsOfTheTopsRepository;
 
 class TopsOfTheTopsServiceTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
     private TopsOfTheTopsService $topsService;
     private DataBaseHandlerVideos $dataBaseHandler;
     protected function setUp(): void

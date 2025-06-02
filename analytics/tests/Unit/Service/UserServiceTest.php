@@ -2,7 +2,7 @@
 
 namespace Unit\Service;
 
-use Laravel\Lumen\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Application\Services\UserService;
 use TwitchAnalytics\Infraestructure\ApiClient\ApiTwitchStreamer\FakeApiTwitchStreamer;
 use TwitchAnalytics\Infraestructure\DB\DataBaseHandler;
@@ -11,11 +11,6 @@ use TwitchAnalytics\Infraestructure\Repositories\StreamerRepository;
 
 class UserServiceTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     private UserService $userService;
     private DatabaseHandler $dataBaseHandler;
 

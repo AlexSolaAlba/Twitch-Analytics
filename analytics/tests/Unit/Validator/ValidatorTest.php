@@ -2,18 +2,13 @@
 
 namespace TwitchAnalytics\Tests\Unit\Validator;
 
-use Laravel\Lumen\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Controllers\Validator\Validator;
 use TwitchAnalytics\Domain\Exceptions\ApiKeyException;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class ValidatorTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     private Validator $validator;
     protected function setUp(): void
     {

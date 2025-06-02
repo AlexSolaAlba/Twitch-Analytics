@@ -2,17 +2,12 @@
 
 namespace TwitchAnalytics\Tests\Unit\Validator;
 
-use Laravel\Lumen\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use TwitchAnalytics\Controllers\Enriched\EnrichedValidator;
 use TwitchAnalytics\Domain\Exceptions\ValidationException;
 
 class EnrichedValidatorTest extends TestCase
 {
-    public function createApplication()
-    {
-        return require __DIR__ . '/../../../bootstrap/app.php';
-    }
-
     private EnrichedValidator $enrichedValidator;
     protected function setUp(): void
     {
