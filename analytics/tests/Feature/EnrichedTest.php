@@ -44,4 +44,21 @@ class EnrichedTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function gets400WhenLimitIsWrong()
+    {
+        $response = $this->get('/analytics/streams/enriched?limit=a', [
+            'Authorization' => 'Bearer ',
+        ]);
+
+        $response->assertResponseStatus(400);
+        $response->seeJson(
+            [
+                'error' => 'Invalid or missing limit parameter.'
+            ]
+        );
+    }
 }
