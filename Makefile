@@ -1,9 +1,5 @@
 .PHONY: up build down test shell logs
 
-vendor:
-	cd analytics
-	composer install
-
 build:
 	docker-compose up --build -d
 
@@ -11,7 +7,7 @@ up:
 	docker-compose up -d
 
 test:
-	docker exec twitch-analytics ./analytics/vendor/bin/phpunit --configuration=./analytics/phpunit.xml
+	docker exec twitch-analytics ./vendor/bin/phpunit --configuration=./phpunit.xml
 
 down:
 	docker-compose down
